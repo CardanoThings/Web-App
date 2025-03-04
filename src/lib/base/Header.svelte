@@ -14,7 +14,7 @@
 		<Button
 			variant="secondary"
 			size="icon"
-			href="https://bsky.app/profile/cardanothings.bsky.social"
+			href="https://bsky.app/profile/cardanothings.io"
 			target="_top"
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
