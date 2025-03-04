@@ -4,8 +4,8 @@
 	import DarkMode from '$lib/base/DarkMode.svelte';
 </script>
 
-<header class="m-auto flex items-center justify-between py-4 lg:w-[80%]">
-	<h1 class="text-3xl font-semibold">Cardano Things</h1>
+<header class="m-auto mt-4 flex items-center justify-between py-4 lg:w-[80%]">
+	<h1 class="text-3xl font-medium">CardanoThings</h1>
 	<section id="buttons">
 		<Button variant="secondary" size="icon" href="https://github.com/cardanothings" target="_top">
 			<Github class="h-[1.2rem] w-[1.2rem]" />
