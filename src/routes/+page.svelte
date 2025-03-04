@@ -1,23 +1,20 @@
 <script>
-	import Code from '$lib/Code.svelte';
+	import SyntaxHighlighter from '$lib/SyntaxHighlighter.svelte';
 </script>
 
-{#snippet code()}
-	<span>Hello World</span>
-	<span>Hello World</span>
-	<span>Hello World</span>
-	<section>
-		<h1>Heading</h1>
-		<p>Paragraph</p>
-	</section>
-{/snippet}
+<SyntaxHighlighter language="javascript">
+	<pre><code>
+	const a = 1;
+	const b = 2;
+</code></pre>
+</SyntaxHighlighter>
 
-<Code language="xml" {code}>
-	<span>Hello World</span>
-	<span>Hello World</span>
-	<span>Hello World</span>
+<br />
+
+<SyntaxHighlighter language="html">
+	<pre><code>
 	<section>
-		<h1>Heading</h1>
-		<p>Paragraph</p>
-	</section>
-</Code>
+		<h1>Hello World</h1>
+	</section>		
+</code></pre>
+</SyntaxHighlighter>
