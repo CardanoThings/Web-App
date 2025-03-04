@@ -2,35 +2,36 @@
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/atom-one-dark.css'; // or another style
 	import { onMount } from 'svelte';
-	import { on } from 'svelte/events';
 
 	export let language = 'xml';
+	export let code = '';
 	let highlightedCode;
 	let codeBlock;
-	onMount(() => {
-		// clean up the code block by removing leading and trailing white spaces
-		codeBlock.innerHTML = codeBlock.innerHTML.replace(/^\s+|\s+$/g, '');
 
+	onMount(() => {
+		// highlight the code
 		highlightedCode = hljs.highlight(codeBlock.innerHTML, {
-			language: 'xml'
+			language: language
 		}).value;
 	});
 </script>
 
-<pre class="hide">
-	<code bind:this={codeBlock}>
-		<slot></slot>
-	</code>
+<pre class="hide" bind:this={codeBlock}>
+		{@render code()}
 </pre>
 
 <pre class="hljs">
-	<code class={language}>
-	{@html highlightedCode}
-</code>
+	<code>
+		{@html highlightedCode}
+	</code>
 </pre>
 
 <style>
 	.hide {
-		display: none;
+		display: block;
+	}
+
+	code {
+		white-space: pre;
 	}
 </style>
