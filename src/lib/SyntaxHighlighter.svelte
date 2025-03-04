@@ -27,6 +27,10 @@
 		await tick();
 		hljs.highlightElement(codeBlock, { language });
 	}
+
+	function copyCode() {
+		navigator.clipboard.writeText(rawHtml);
+	}
 </script>
 
 <!-- Hidden slot container to extract raw HTML -->
@@ -35,15 +39,24 @@
 </div>
 
 <pre class="hljs">
+  <button onclick={copyCode}>Copy</button>
   <code bind:this={codeBlock} class={language}>
     {rawHtml}
   </code>
 </pre>
 
 <style>
-	pre code.hljs {
+	pre {
+		position: relative;
+	}
+	pre code {
 		padding: 0 !important;
 		margin: 0 !important;
-		display: block;
+	}
+
+	button {
+		position: absolute;
+		right: 0.25rem;
+		top: 0.25rem;
 	}
 </style>

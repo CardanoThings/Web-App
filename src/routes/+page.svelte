@@ -15,6 +15,7 @@
 	<pre><code>
 	<section>
 		<h1>Hello World</h1>
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia repellat earum quisquam perspiciatis numquam odit eius dolores nulla rem provident ipsam ducimus quam, magni maxime facilis amet quos hic distinctio.</p>
 	</section>		
 </code></pre>
 </SyntaxHighlighter>
