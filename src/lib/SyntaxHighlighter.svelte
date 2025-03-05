@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Copy } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
-
+	import { mode } from 'mode-watcher';
 	import hljs from 'highlight.js/lib/core';
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import xml from 'highlight.js/lib/languages/xml';
@@ -17,7 +17,7 @@
 	let rawHtml = '';
 	let el = null;
 
-	onMount(() => {
+	onMount(async () => {
 		extractSlotContent();
 	});
 
@@ -42,7 +42,7 @@
 	<slot />
 </div>
 
-<section class="relative overflow-hidden rounded-lg">
+<section class={$$props.class + ' rounded-lg bg-slate-200 dark:bg-slate-900'}>
 	<div class="context">
 		<Button class="text-xs" variant="ghost" size="icon" onclick={copyCode}>
 			<Copy />
@@ -50,17 +50,16 @@
 		</Button>
 	</div>
 
-	<pre class="absolute rounded-lg text-sm">
+	<pre class="absolute text-sm">
 <code bind:this={codeBlock} class={language}>
 	{rawHtml}
-</code>
-</pre>
+
+</code></pre>
 </section>
 
 <style>
 	section {
 		position: relative;
-		background: #1a1b26;
 	}
 
 	.context {
@@ -80,5 +79,6 @@
 	pre code {
 		padding: 0 !important;
 		margin: 0 !important;
+		background: none;
 	}
 </style>

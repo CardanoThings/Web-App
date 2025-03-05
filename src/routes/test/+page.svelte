@@ -12,14 +12,12 @@
 </GlossaryParser>
 <br />
 
-<SyntaxHighlighter language="c">
+<SyntaxHighlighter language="javascript" class="mb-4">
 	<pre><code>
 	const a = 1;
 	const b = 2;
 </code></pre>
 </SyntaxHighlighter>
-
-<br />
 
 <SyntaxHighlighter language="xml">
 	<pre><code>
