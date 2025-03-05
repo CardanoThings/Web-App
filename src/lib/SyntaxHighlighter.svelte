@@ -1,7 +1,17 @@
 <script>
 	import { onMount, tick } from 'svelte';
-	import hljs from 'highlight.js';
-	import 'highlight.js/styles/atom-one-dark.css';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Copy } from 'lucide-svelte';
+	import { toast } from 'svelte-sonner';
+
+	import hljs from 'highlight.js/lib/core';
+	import javascript from 'highlight.js/lib/languages/javascript';
+	import xml from 'highlight.js/lib/languages/xml';
+	import json from 'highlight.js/lib/languages/json';
+	hljs.registerLanguage('javascript', javascript);
+	hljs.registerLanguage('xml', xml);
+	hljs.registerLanguage('json', json);
+	import 'highlight.js/styles/tokyo-night-dark.min.css';
 	export let language = 'javascript';
 	let codeBlock;
 	let rawHtml = '';
@@ -14,15 +24,8 @@
 	async function extractSlotContent() {
 		await tick();
 		const slot = el.querySelector('pre code');
-		rawHtml = slot.innerHTML.replace('<!---->', '');
-		// replace first and last line break
-		rawHtml = rawHtml.replace(/^\n/, '').replace(/\n$/, '');
-		// replace first tab
-		rawHtml = rawHtml.replace(/^\t/, '');
-
-		// replace first and last line if empty or tab
-		rawHtml = rawHtml.replace(/^\n/, '').replace(/\n$/, '');
-		rawHtml = rawHtml.replace(/^\t/, '');
+		rawHtml = slot.innerHTML.trim().replace(/^\n|\n$/g, '');
+		// remove first and last line break
 
 		await tick();
 		hljs.highlightElement(codeBlock, { language });
@@ -30,6 +33,7 @@
 
 	function copyCode() {
 		navigator.clipboard.writeText(rawHtml);
+		toast.success('Code copied to clipboard');
 	}
 </script>
 
@@ -38,25 +42,43 @@
 	<slot />
 </div>
 
-<pre class="hljs">
-  <button onclick={copyCode}>Copy</button>
-  <code bind:this={codeBlock} class={language}>
-    {rawHtml}
-  </code>
+<section class="relative overflow-hidden rounded-lg">
+	<div class="context">
+		<Button class="text-xs" variant="ghost" size="icon" onclick={copyCode}>
+			<Copy />
+			<!-- {language} -->
+		</Button>
+	</div>
+
+	<pre class="absolute rounded-lg text-sm">
+<code bind:this={codeBlock} class={language}>
+	{rawHtml}
+</code>
 </pre>
+</section>
 
 <style>
+	section {
+		position: relative;
+		background: #1a1b26;
+	}
+
+	.context {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 1;
+		opacity: 0.5;
+	}
+
 	pre {
 		position: relative;
+		margin: 0 !important;
+		padding: 0 !important;
 	}
+
 	pre code {
 		padding: 0 !important;
 		margin: 0 !important;
-	}
-
-	button {
-		position: absolute;
-		right: 0.25rem;
-		top: 0.25rem;
 	}
 </style>
