@@ -17,6 +17,8 @@
 	let rawHtml = '';
 	let el = null;
 
+	// !! missing await or reload problem
+
 	onMount(async () => {
 		extractSlotContent();
 	});
@@ -44,16 +46,23 @@
 
 <section class={$$props.class + ' rounded-lg bg-slate-900'}>
 	<div class="context">
-		<Button class="text-xs" variant="ghost" size="icon" onclick={copyCode}>
+		<span
+			class="inline-flex h-7 items-center rounded-md bg-muted p-2 align-middle text-[0.6rem] font-medium uppercase"
+			>{language}</span
+		>
+		<Button
+			class="h-7 w-7 bg-muted align-middle text-xs text-slate-900 hover:bg-muted dark:text-white"
+			onclick={copyCode}
+			title="Copy to Clipboard"
+		>
 			<Copy />
-			<!-- {language} -->
 		</Button>
 	</div>
 
 	<pre class="absolute text-sm">
 <code bind:this={codeBlock} class={language}>
 	{rawHtml}
-
+	<!-- important for line break - dont remove -->
 </code></pre>
 </section>
 
@@ -64,10 +73,10 @@
 
 	.context {
 		position: absolute;
-		top: 4px;
-		right: 4px;
+		top: 6px;
+		right: 6px;
 		z-index: 1;
-		opacity: 0.5;
+		opacity: 1;
 	}
 
 	pre {

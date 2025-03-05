@@ -2,19 +2,11 @@
 	// !! open state not working
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { onMount } from 'svelte';
+	import { glossary } from '$stores/glossary.js';
 	let { children } = $props();
 	let open = $state(false);
 	let section;
-	let content = '';
-
-	let glossary = [
-		{
-			id: 1,
-			word: 'Cardano',
-			definition:
-				'Cardano is a decentralized public blockchain and cryptocurrency project and is fully open source. Cardano is developing a smart contract platform which seeks to deliver more advanced features than any protocol previously developed.'
-		}
-	];
+	let content = $state(undefined);
 
 	onMount(() => {
 		section.querySelectorAll('p').forEach((p) => {
