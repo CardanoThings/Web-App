@@ -65,8 +65,8 @@
 
 	.context {
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: 4px;
+		right: 4px;
 		z-index: 1;
 		opacity: 0.5;
 	}
