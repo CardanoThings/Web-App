@@ -7,8 +7,8 @@
 <header
 	class="m-auto mt-4 flex items-center justify-between px-4 py-4 sm:w-[95%] sm:px-4 md:w-[90%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%]"
 >
-	<h1 class="text-3xl font-semibold">
-		Cardano<span class="font-normal">Things</span><span style="color:rgb(239, 97, 85);">.io</span>
+	<h1 class="text-3xl font-medium">
+		Cardano<span class="font-light">Things</span><span style="color:rgb(239, 97, 85);">/</span>
 	</h1>
 	<section id="buttons">
 		<Button variant="secondary" size="icon" href="https://github.com/cardanothings" target="_top">
