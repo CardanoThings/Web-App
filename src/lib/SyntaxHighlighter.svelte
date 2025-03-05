@@ -42,7 +42,7 @@
 	<slot />
 </div>
 
-<section class={$$props.class + ' rounded-lg bg-slate-200 dark:bg-slate-900'}>
+<section class={$$props.class + ' rounded-lg bg-slate-900'}>
 	<div class="context">
 		<Button class="text-xs" variant="ghost" size="icon" onclick={copyCode}>
 			<Copy />
