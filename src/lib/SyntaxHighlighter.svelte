@@ -11,7 +11,7 @@
 	hljs.registerLanguage('javascript', javascript);
 	hljs.registerLanguage('xml', xml);
 	hljs.registerLanguage('json', json);
-	import 'highlight.js/styles/tokyo-night-dark.min.css';
+	import 'highlight.js/styles/paraiso-dark.css';
 	export let language = 'javascript';
 	let codeBlock;
 	let rawHtml = '';
