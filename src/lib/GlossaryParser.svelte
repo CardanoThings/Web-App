@@ -17,8 +17,6 @@
 	];
 
 	onMount(() => {
-		console.log(section);
-
 		section.querySelectorAll('p').forEach((p) => {
 			let words = p.innerText.split(' ');
 			let newWords = words.map((word) => {
