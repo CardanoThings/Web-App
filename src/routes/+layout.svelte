@@ -3,6 +3,7 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	import VersionCheck from '$lib/base/VersionCheck.svelte';
+	import PWAManager from '$lib/components/PWAManager.svelte';
 	let { children } = $props();
 
 	import Header from '$lib/base/Header.svelte';
@@ -12,6 +13,7 @@
 <ModeWatcher defaultMode={'dark'} />
 <Toaster />
 <VersionCheck />
+<PWAManager />
 
 <Header />
 <main
