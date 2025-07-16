@@ -13,7 +13,7 @@
 	</h1>
 	<section id="buttons" class="flex items-center gap-2">
 		<InstallButton variant="outline" size="sm" />
-		
+
 		<Button variant="secondary" size="icon" href="https://github.com/cardanothings" target="_top">
 			<Github class="h-[1.2rem] w-[1.2rem]" />
 		</Button>
