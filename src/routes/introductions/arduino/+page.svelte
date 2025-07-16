@@ -1,67 +1,136 @@
-<h1>Introduction to Arduino</h1>
+<script>
+	import * as Card from '$lib/components/ui/card/index.js';
+</script>
 
-<div class="section">
-	<h2>1. What is Arduino?</h2>
-	<p>
-		<strong>Arduino</strong> is an open-source electronics platform based on easy-to-use hardware and
-		software. It’s designed for artists, designers, hobbyists, and anyone interested in creating interactive
-		projects.
-	</p>
-	<p>
-		The core of Arduino is the microcontroller board, which can read inputs (like sensors) and
-		control outputs (like motors and LEDs).
-	</p>
-</div>
+<h1 class="mb-4">Introduction to the Arduino Platform</h1>
 
-<div class="section">
-	<h2>2. A Brief History</h2>
+<p class="mb-4">
+	The Arduino platform is a popular open-source electronics platform based on microcontrollers
+	(MCUs) that allows users to create interactive projects with ease. It has become one of the most
+	widely-used and accessible platforms for prototyping, learning, and developing IoT, robotics, and
+	other embedded systems.
+</p>
+
+<section class="mb-4">
+	<h2>What is Arduino?</h2>
+
 	<p>
-		Arduino originated in 2005 at the Interaction Design Institute Ivrea in Italy. It was developed
-		to make electronics more accessible to people without an engineering background.
+		Arduino is not just a single microcontroller, but rather a family of boards and software tools
+		designed to make it easy to develop interactive projects. The platform consists of:
 	</p>
+
 	<ul>
-		<li><strong>2005</strong> – Arduino project begins</li>
-		<li><strong>2008</strong> – Grows rapidly in popularity</li>
 		<li>
-			<strong>2010s–present</strong> – Widespread adoption in education, prototyping, and DIY electronics
+			<strong>Microcontrollers:</strong> Arduino boards are based on Atmel AVR or ARM Cortex-M microcontrollers.
+		</li>
+		<li>
+			<strong>IDE (Integrated Development Environment):</strong> A user-friendly software environment
+			for writing, compiling, and uploading code to the board.
+		</li>
+		<li>
+			<strong>Libraries:</strong> Pre-built libraries that provide functionality for various sensors,
+			actuators, and communication protocols.
 		</li>
 	</ul>
-</div>
+</section>
 
-<div class="section">
-	<h2>3. How Arduino Works</h2>
-	<p>
-		Each Arduino board contains a microcontroller that can be programmed using the Arduino language
-		(based on C/C++). It connects to your computer via USB and is powered either through USB or an
-		external battery.
-	</p>
-</div>
+<section class="mb-4">
+	<h2>What is Arduino used for?</h2>
 
-<div class="section">
-	<h2>4. The Arduino IDE</h2>
-	<p>
-		The <strong>Arduino IDE</strong> is the official programming environment for Arduino boards. It provides
-		a simple interface to write, compile, and upload code to your board. Key features include:
-	</p>
+	<p>The Arduino platform has a wide range of applications:</p>
+
 	<ul>
-		<li>Syntax highlighting and code autocompletion</li>
-		<li>Serial monitor for debugging</li>
-		<li>Support for multiple board types</li>
-	</ul>
-</div>
-
-<div class="section">
-	<h2>5. Getting Started</h2>
-	<p>To start building with Arduino, all you need is:</p>
-	<ul>
-		<li>An Arduino board (e.g., Uno, Nano)</li>
-		<li>A USB cable</li>
+		<li>Prototyping and development: Quickly test and refine ideas before moving to production.</li>
 		<li>
-			The Arduino IDE (download from <a href="https://www.arduino.cc/en/software" target="_blank"
-				>arduino.cc</a
-			>)
+			Education and learning: Introduce programming concepts, electronics, and robotics to students
+			and hobbyists.
 		</li>
-		<li>Basic components like LEDs, resistors, and sensors</li>
+		<li>
+			IoT (Internet of Things): Connect devices to the internet for data collection, monitoring, and
+			control.
+		</li>
 	</ul>
-	<p>Upload your first sketch (e.g., "Blink") to see an LED blink on your board!</p>
-</div>
+</section>
+
+<section class="mb-4">
+	<h2>Key Features</h2>
+
+	<p>Arduino's key features include:</p>
+
+	<ul>
+		<li>
+			Easy programming: Write code using a simple, intuitive syntax in languages like C++, Python,
+			or JavaScript.
+		</li>
+		<li>
+			Open-source: The Arduino platform is open-source, allowing developers to modify and extend the
+			software and hardware.
+		</li>
+		<li>
+			Large community: A vast online community provides extensive resources, documentation, and
+			support.
+		</li>
+		<li>
+			Wide range of boards: Choose from various boards with different microcontrollers, memory
+			sizes, and features.
+		</li>
+		<li>
+			Extensive libraries: Access a wide range of libraries for sensors, actuators, and
+			communication protocols.
+		</li>
+		<li>
+			Expansibility: Use a wide variety of shields (expansion boards) to add functionality and
+			extend the capabilities of your project.
+		</li>
+	</ul>
+
+	<p class="mt-4">
+		The Arduino IDE is available for Windows, macOS, and Linux platforms. It includes:
+	</p>
+
+	<ul>
+		<li>Code editor: Write and edit code using a simple syntax.</li>
+		<li>Compiler: Compile and upload code to the board.</li>
+		<li>Debugger: Debug and test your code in real-time.</li>
+	</ul>
+</section>
+
+<section class="mb-4">
+	<Card.Root>
+		<Card.Header class="p-4 pb-0">
+			<Card.Title class="text-lg">Getting started</Card.Title>
+			<Card.Description class="mb-0 p-0">
+				To get started with Arduino, follow these steps:
+			</Card.Description>
+		</Card.Header>
+		<Card.Content class="p-4">
+			<ul>
+				<li>Download and install the Arduino IDE from the official website.</li>
+				<li>Connect your Arduino board to your computer using a USB cable.</li>
+				<li>Open the Arduino IDE and select the appropriate board and port from the Tools menu.</li>
+				<li>Write your code in the IDE and click the Upload button to upload it to the board.</li>
+			</ul>
+		</Card.Content>
+	</Card.Root>
+</section>
+
+<section class="mt-8">
+	<h2 class="text-lg">Further Resources</h2>
+	<ul>
+		<li>
+			<a href="https://www.arduino.cc" target="_blank" rel="noopener noreferrer"
+				>Arduino Official Website</a
+			>
+		</li>
+		<li>
+			<a
+				href="https://www.arduino.cc/en/Tutorial/HomePage"
+				target="_blank"
+				rel="noopener noreferrer">Arduino Tutorials</a
+			>
+		</li>
+		<li>
+			<a href="https://forum.arduino.cc" target="_blank" rel="noopener noreferrer">Arduino Forum</a>
+		</li>
+	</ul>
+</section>

@@ -4,15 +4,28 @@
 	let { data } = $props();
 </script>
 
-{#each data as item}
-	<Card.Root class="mb-4">
-		<Card.Header>
-			<Card.Title>{item.title}</Card.Title>
-			<Card.Description>{item.description}</Card.Description>
-		</Card.Header>
-		<Card.Content>
-			<p>{item.content}</p>
-			<Button href={item.link} target="_blank" variant="primary">Learn More</Button>
-		</Card.Content>
-	</Card.Root>
-{/each}
+<h1>Introductions</h1>
+<p class="mt-2">Quick introductions to all the tech needed for projects on CardanoThings.io</p>
+
+<div class="mt-4 grid">
+	{#each data.workshops as item}
+		<Card.Root>
+			<Card.Header class="p-4 pb-0">
+				<Card.Title class="text-lg">{item.title}</Card.Title>
+				<Card.Description class="mb-0 p-0">{item.description}</Card.Description>
+			</Card.Header>
+			<Card.Content class="p-4">
+				<p>{item.content}</p>
+				<Button href={item.link} size="sm">Learn More</Button>
+			</Card.Content>
+		</Card.Root>
+	{/each}
+</div>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 1rem;
+	}
+</style>

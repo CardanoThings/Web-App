@@ -1,103 +1,142 @@
-<h1>🔌 ESP32 Microcontrollers – A Quick Overview</h1>
+<script>
+	import * as Card from '$lib/components/ui/card/index.js';
+</script>
 
-<h2>🧠 What is the ESP32?</h2>
-<p>
-	The <strong>ESP32</strong> is a powerful, low-cost microcontroller developed by
-	<strong>Espressif Systems</strong>. It’s widely used in IoT (Internet of Things) and embedded
-	systems due to its combination of performance, connectivity, and affordability.
-</p>
+<h1 class="mb-4">Introduction to ESP32-C3 Microcontrollers</h1>
 
-<h2>⚙️ Key Features:</h2>
-<ul>
-	<li><strong>Dual-core Tensilica CPU</strong> (up to 240 MHz)</li>
-	<li><strong>Built-in Wi-Fi and Bluetooth (BLE)</strong></li>
-	<li><strong>Multiple GPIO pins</strong> for sensors, motors, LEDs, etc.</li>
-	<li><strong>Analog and digital I/O</strong>, PWM, I²C, SPI, UART</li>
-	<li><strong>Built-in ADC and DAC</strong> (analog to digital & digital to analog)</li>
-	<li><strong>Ultra-low power mode</strong> for battery-powered projects</li>
-</ul>
+<section class="mb-4">
+	<p>
+		The ESP32-C3 is a highly integrated, low-power, and energy-efficient microcontroller (MCU)
+		developed by Espressif Systems. It is based on the RISC-V processor architecture and features a
+		range of innovative technologies that make it an attractive choice for IoT, robotics, and other
+		embedded applications.
+	</p>
+</section>
 
-<h2>📦 Popular ESP32 Boards:</h2>
-<ul>
-	<li>ESP32 DevKit v1</li>
-	<li>ESP32-WROOM & ESP32-WROVER modules</li>
-	<li>TTGO T-Display / T-Beam</li>
-	<li>LilyGO, D-duino, and other variants with screens or LoRa</li>
-</ul>
+<section class="mb-4">
+	<p>
+		The ESP32-C3 is a highly integrated, low-power, and energy-efficient microcontroller (MCU)
+		developed by Espressif Systems. It's based on the RISC-V processor architecture and features a
+		range of innovative technologies that make it an attractive choice for IoT, robotics, and other
+		embedded applications.
+	</p>
+</section>
 
-<h2>🛠️ How to Use ESP32 with the Arduino IDE</h2>
+<section class="mb-4">
+	<h2>What can ESP32-C3 Microcontrollers do?</h2>
 
-<h3>✅ Step 1: Install the ESP32 Board Support</h3>
-<ol>
-	<li>Open <strong>Arduino IDE</strong></li>
-	<li>Go to <strong>File > Preferences</strong></li>
-	<li>
-		In "Additional Boards Manager URLs", add:<br />
-		<code
-			>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code
-		>
-	</li>
-	<li>Go to <strong>Tools > Board > Boards Manager</strong></li>
-	<li>
-		Search for <strong>ESP32</strong> and install the <strong>esp32 by Espressif Systems</strong> package
-	</li>
-</ol>
+	<p>The ESP32-C3 is a versatile MCU that can perform a wide range of tasks:</p>
 
-<h3>🔌 Step 2: Select Your Board and Port</h3>
-<ul>
-	<li>
-		Go to <strong>Tools > Board</strong> and choose your ESP32 model (e.g.
-		<code>ESP32 Dev Module</code>)
-	</li>
-	<li>
-		Plug in your ESP32 via USB and select the correct <strong>COM port</strong> under
-		<strong>Tools > Port</strong>
-	</li>
-</ul>
+	<ul>
+		<li>
+			Control and monitor devices: The ESP32-C3 can be used to control and monitor various devices,
+			such as sensors, actuators, and motors.
+		</li>
+		<li>
+			Connectivity: It features built-in Wi-Fi (2.4 GHz) and Bluetooth 5.0 connectivity, making it
+			suitable for IoT projects, home automation, and smart devices.
+		</li>
+		<li>
+			Sensing: It has multiple analog-to-digital converters (ADCs), digital signal processors, and a
+			touch controller, allowing it to read various sensors like temperature, humidity, light,
+			pressure, and more.
+		</li>
+		<li>
+			Actuation: The ESP32-C3 can control motors, LEDs, relays, and other actuators using its
+			digital output pins.
+		</li>
+		<li>
+			Data processing: It features a single-core processor with a clock speed of up to 240 MHz,
+			enabling fast data processing and efficient execution of complex tasks.
+		</li>
+	</ul>
+</section>
+<section class="mb-4">
+	<h2>Key Features</h2>
 
-<!-- <h3>💡 Step 3: Upload Your First Sketch</h3>
-    <pre><code>void setup() {
-  pinMode(2, OUTPUT); // Onboard LED is usually on pin 2
-}
+	<ul>
+		<li>RISC-V processor: A single-core RISC-V processor with a clock speed of up to 240 MHz.</li>
+		<li>Wi-Fi: Built-in Wi-Fi (2.4 GHz) connectivity.</li>
+		<li>Bluetooth: Built-in Bluetooth 5.0 connectivity.</li>
+		<li>Memory: 384 KB SRAM, 16 MB SPI Flash memory, and 1 GB PSRAM options.</li>
+		<li>Input/Output: 19 GPIO pins, 12 ADCs, and a touch controller.</li>
+		<li>Power consumption: Low power consumption, typically around 10-20 mA in idle mode.</li>
+		<li>
+			Low cost: The ESP32-C3 is competitively priced, making it an attractive option for various
+			projects.
+		</li>
+	</ul>
+</section>
 
-void loop() {
-  digitalWrite(2, HIGH);
-  delay(1000);
-  digitalWrite(2, LOW);
-  delay(1000);
-}</code></pre>
+<section class="mb-4">
+	<h2>Software Development</h2>
+	<p>
+		The ESP32-C3 is supported by the popular Arduino IDE, as well as the Espressif's official SDK.
+		Developers can use a range of software frameworks and libraries to simplify development and
+		deployment of their projects.
+	</p>
+</section>
 
-    <p>Click <strong>Upload</strong>, and your ESP32 will start blinking!</p> -->
+<section class="mb-4">
+	<Card.Root>
+		<Card.Header class="p-4 pb-0">
+			<Card.Title class="text-lg">Getting started</Card.Title>
+			<Card.Description class="mb-0 p-0">
+				To get started with development with the ESP32-C3, follow these steps:
+			</Card.Description>
+		</Card.Header>
+		<Card.Content class="p-4">
+			<ol>
+				<li class="mb-2">Download and install the Arduino IDE or Espressif's official SDK.</li>
+				<li>
+					Install the ESP32 board package in the Arduino IDE or set up the Espressif SDK
+					environment.
+				</li>
+				<li>Connect your ESP32-C3 board to your computer using a USB cable.</li>
+				<li>
+					Write your code using the Arduino IDE or Espressif SDK, and upload it to the ESP32-C3
+					board.
+				</li>
+				<li>Test your project and iterate as needed.</li>
+			</ol>
+		</Card.Content>
+	</Card.Root>
+</section>
 
-<h2>🌐 Why Use the ESP32?</h2>
-<table>
-	<thead>
-		<tr><th>Feature</th><th>ESP32 Benefits</th></tr>
-	</thead>
-	<tbody>
-		<tr><td>Wi-Fi & BLE</td><td>Great for IoT, home automation, sensors</td></tr>
-		<tr><td>Dual-core CPU</td><td>Fast for multitasking and real-time use</td></tr>
-		<tr><td>Affordable</td><td>Low cost compared to similar platforms</td></tr>
-		<tr><td>Flexible</td><td>Works with Arduino, MicroPython, PlatformIO</td></tr>
-	</tbody>
-</table>
-
-<h2>📚 Further Resources</h2>
-<ul>
-	<li>
-		<a href="https://github.com/espressif/arduino-esp32" target="_blank"
-			>ESP32 Arduino Core GitHub</a
-		>
-	</li>
-	<li><a href="https://randomnerdtutorials.com" target="_blank">Random Nerd Tutorials</a></li>
-	<li>
-		<a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" target="_blank"
-			>Espressif Documentation</a
-		>
-	</li>
-	<li>
-		<a href="https://docs.platformio.org/en/latest/boards/espressif32/" target="_blank"
-			>PlatformIO ESP32 Guide</a
-		>
-	</li>
-</ul>
+<section class="mt-8">
+	<h2 class="text-lg">Further Resources</h2>
+	<ul>
+		<li>
+			<a
+				href="https://www.espressif.com/en/products/socs/esp32-c3"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">ESP32-C3 Product Page</a
+			>
+		</li>
+		<li>
+			<a
+				href="https://aliexpress.com/w/wholesale-esp32%2525252dc3.html?spm=a2g0o.home.search.0"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">ESP32-C3 on Aliexpress</a
+			>
+		</li>
+		<li>
+			<a
+				href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/index.html"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">ESP-IDF Documentation</a
+			>
+		</li>
+		<li>
+			<a
+				href="https://docs.espressif.com/projects/arduino-esp32/en/latest/index.html"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">Arduino ESP32-C3 Documentation</a
+			>
+		</li>
+	</ul>
+</section>

@@ -1,61 +1,133 @@
-<h1>Introduction to Node.js</h1>
+<script>
+	import * as Card from '$lib/components/ui/card/index.js';
+</script>
 
-<div class="section">
-	<h2>1. What is Node.js?</h2>
-	<p>
-		<strong>Node.js</strong> is an open-source, cross-platform runtime environment for executing JavaScript
-		code outside of a web browser. It enables developers to build scalable, fast, and efficient server-side
-		applications using JavaScript.
-	</p>
-</div>
+<h1 class="mb-4">Introduction to Node.js</h1>
 
-<div class="section">
-	<h2>2. A Brief History</h2>
+<p class="mb-4">
+	Node.js is an open-source, cross-platform JavaScript runtime environment that enables developers
+	to build scalable, high-performance server-side applications using JavaScript.
+</p>
+
+<section class="mb-4">
+	<h2>History of Node.js</h2>
+
 	<p>
-		Node.js was created by <strong>Ryan Dahl</strong> in 2009. It was built on the
-		<strong>V8 JavaScript engine</strong> developed by Google for Chrome, with a focus on non-blocking,
-		event-driven architecture.
+		Node.js was first released in 2009 by Ryan Dahl as a way to create network servers and tools.
+		Initially, it was designed for building real-time web applications, but over time its use cases
+		have expanded to include mobile app development, desktop apps, and even machine learning and
+		artificial intelligence.
 	</p>
+</section>
+
+<section class="mb-4">
+	<h2>What is Node.js?</h2>
+
+	<p>
+		Node.js is not just a programming language, but an entire platform that allows developers to:
+	</p>
+
 	<ul>
-		<li><strong>2009</strong> – Node.js released by Ryan Dahl</li>
-		<li><strong>2015</strong> – Node.js Foundation formed</li>
 		<li>
-			<strong>Today</strong> – Widely used in full-stack development, DevOps, and microservices
+			<strong>Run JavaScript on the server-side:</strong> Node.js enables you to run JavaScript on the
+			server-side, making it possible to create scalable web applications.
+		</li>
+		<li>
+			<strong>Build network servers and tools:</strong> Node.js provides a set of APIs and modules for
+			building network servers, tools, and other applications.
 		</li>
 	</ul>
-</div>
+</section>
 
-<div class="section">
-	<h2>3. Key Features</h2>
-	<ul>
-		<li>Uses JavaScript for server-side programming</li>
-		<li>Non-blocking I/O and event-driven model</li>
-		<li>Cross-platform and open-source</li>
-		<li>Rich package ecosystem via <strong>npm</strong></li>
-	</ul>
-</div>
+<section class="mb-4">
+	<h2>Key Features</h2>
 
-<div class="section">
-	<h2>4. Use Cases</h2>
-	<p>Node.js is used for a variety of applications, including:</p>
 	<ul>
-		<li>RESTful APIs and backend servers</li>
-		<li>Real-time applications (e.g., chat apps)</li>
-		<li>Microservices architecture</li>
-		<li>Command-line tools</li>
+		<li>
+			<strong>Event-driven I/O:</strong> Node.js uses an event-driven approach to handle input/output
+			operations, making it highly efficient.
+		</li>
+		<li>
+			<strong>Non-blocking I/O:</strong> Node.js supports non-blocking I/O operations, allowing for high
+			concurrency and scalability.
+		</li>
+		<li>
+			<strong>Large ecosystem:</strong> Node.js has a vast collection of packages (npm) that make it
+			easy to build and integrate various features into your application.
+		</li>
+		<li>
+			<strong>Cross-platform compatibility:</strong> Node.js can run on multiple platforms, including
+			Windows, macOS, Linux, and even mobile devices.
+		</li>
+		<li>
+			<strong>Built-in support for JSON:</strong> Node.js has built-in support for JSON, making it easy
+			to work with data in a structured format.
+		</li>
+		<li>
+			<strong>Microservices architecture:</strong> Node.js is often used in microservices architectures,
+			allowing developers to build small, independent services that can be easily deployed and scaled.
+		</li>
 	</ul>
-</div>
+</section>
 
-<div class="section">
-	<h2>5. Getting Started</h2>
-	<p>To start using Node.js:</p>
+<section class="mb-4">
+	<Card.Root>
+		<Card.Header class="p-4 pb-0">
+			<Card.Title class="text-lg">Getting started</Card.Title>
+			<Card.Description class="mb-0 p-0">
+				To get started with Node.js, follow these steps:
+			</Card.Description>
+		</Card.Header>
+		<Card.Content class="p-4">
+			<ol>
+				<li class="mb-2">
+					Install Node.js:
+					<ul>
+						<li>
+							<a
+								href="https://nodejs.org/en/download/"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link">Download Node.js</a
+							>
+						</li>
+					</ul>
+				</li>
+				<li class="mb-2">
+					Create a new project:
+					<pre class="rounded bg-gray-100 p-2">mkdir my-node-app &amp;&amp; cd my-node-app</pre>
+				</li>
+				<li class="mb-2">
+					Initialize npm:
+					<pre class="rounded bg-gray-100 p-2">npm init -y</pre>
+				</li>
+				<li class="mb-2">
+					Create an entry point file (e.g., <code>index.js</code>) and start coding!
+				</li>
+			</ol>
+		</Card.Content>
+	</Card.Root>
+</section>
+
+<section class="mt-8">
+	<h2 class="text-lg">Further Resources</h2>
 	<ul>
-		<li>Download from <a href="https://nodejs.org" target="_blank">nodejs.org</a></li>
-		<li>Use a code editor like Visual Studio Code</li>
-		<li>Create a file <code>app.js</code> and run it with <code>node app.js</code></li>
+		<li>
+			<a href="https://nodejs.org" target="_blank" rel="noopener noreferrer"
+				>Node.js Official Website</a
+			>
+		</li>
+		<li>
+			<a href="https://www.npmjs.com/" target="_blank" rel="noopener noreferrer"
+				>npm - Node Package Manager</a
+			>
+		</li>
+		<li>
+			<a
+				href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs"
+				target="_blank"
+				rel="noopener noreferrer">MDN Web Docs - Node.js</a
+			>
+		</li>
 	</ul>
-	<pre><code
-			>// app.js
-console.log('Hello from Node.js!');
-        </code></pre>
-</div>
+</section>
