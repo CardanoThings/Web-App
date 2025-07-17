@@ -8,7 +8,7 @@
 		class="m-auto scroll-pb-80 px-4 sm:w-[95%] sm:px-4 md:w-[90%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%]"
 	>
 		<div class="mb-4 text-sm font-medium">
-			<ul>
+			<ul class="leading-8">
 				{#each $pages as page}
 					<li>
 						<a href={page.path}> {page.title}</a>

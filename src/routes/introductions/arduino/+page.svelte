@@ -118,7 +118,7 @@
 	<h2 class="text-lg">Further Resources</h2>
 	<ul>
 		<li>
-			<a href="https://www.arduino.cc" target="_blank" rel="noopener noreferrer"
+			<a href="https://www.arduino.cc" target="_blank" rel="noopener noreferrer" class="link"
 				>Arduino Official Website</a
 			>
 		</li>
@@ -126,11 +126,14 @@
 			<a
 				href="https://www.arduino.cc/en/Tutorial/HomePage"
 				target="_blank"
-				rel="noopener noreferrer">Arduino Tutorials</a
+				rel="noopener noreferrer"
+				class="link">Arduino Tutorials</a
 			>
 		</li>
 		<li>
-			<a href="https://forum.arduino.cc" target="_blank" rel="noopener noreferrer">Arduino Forum</a>
+			<a href="https://forum.arduino.cc" target="_blank" rel="noopener noreferrer" class="link"
+				>Arduino Forum</a
+			>
 		</li>
 	</ul>
 </section>

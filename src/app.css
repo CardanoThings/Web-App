@@ -88,7 +88,7 @@
 	p,
 	section ul,
 	section ol {
-		@apply leading-6;
+		@apply leading-7;
 	}
 
 	section ol li {
@@ -100,6 +100,6 @@
 	}
 
 	a.link {
-		@apply border-b border-black pb-0.5 text-primary;
+		@apply border-b border-current pb-0.5 text-inherit;
 	}
 }

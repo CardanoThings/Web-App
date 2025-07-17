@@ -113,12 +113,12 @@
 	<h2 class="text-lg">Further Resources</h2>
 	<ul>
 		<li>
-			<a href="https://nodejs.org" target="_blank" rel="noopener noreferrer"
+			<a href="https://nodejs.org" target="_blank" rel="noopener noreferrer" class="link"
 				>Node.js Official Website</a
 			>
 		</li>
 		<li>
-			<a href="https://www.npmjs.com/" target="_blank" rel="noopener noreferrer"
+			<a href="https://www.npmjs.com/" target="_blank" rel="noopener noreferrer" class="link"
 				>npm - Node Package Manager</a
 			>
 		</li>
@@ -126,7 +126,8 @@
 			<a
 				href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs"
 				target="_blank"
-				rel="noopener noreferrer">MDN Web Docs - Node.js</a
+				rel="noopener noreferrer"
+				class="link">MDN Web Docs - Node.js</a
 			>
 		</li>
 	</ul>
