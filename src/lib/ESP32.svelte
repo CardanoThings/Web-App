@@ -57,7 +57,7 @@
 		dirLight1.shadow.mapSize.width = 1024;
 		dirLight1.shadow.mapSize.height = 1024;
 		dirLight1.shadow.camera.near = 0.5;
-		dirLight1.shadow.camera.far = 500;
+		dirLight1.shadow.camera.far = 0;
 		scene.add(dirLight1);
 
 		const dirLight2 = new THREE.DirectionalLight(0xffffff, 2.0);
