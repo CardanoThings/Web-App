@@ -1,11 +1,19 @@
 <script>
   import * as Card from "$lib/components/ui/card/index.js";
+  import { Button } from "$lib/components/ui/button/index.js";
+
   let { data } = $props();
   let workshops = $derived(data.workshops);
 </script>
 
 <section id="workshops" class="mb-8">
-  <h1 class="mb-0">Workshops</h1>
+  <div>
+    <h1 class="mb-0">Workshops</h1>
+    <p class="mt-2 mb-4">
+      Step-by-step workshops to build your first Cardano IoT project with
+      ESP32-based Microcontrollers
+    </p>
+  </div>
   {#each workshops as workshop}
     <Card.Root>
       <Card.Header>
@@ -26,14 +34,17 @@
           {/each}
         </ol>
       </Card.Content>
+      <Card.Footer>
+        <Button href={workshop.link} size="sm">Start Workshop</Button>
+      </Card.Footer>
     </Card.Root>
   {/each}
 </section>
 
 <style>
   section {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1rem;
   }
 

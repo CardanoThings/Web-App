@@ -29,7 +29,7 @@ export function load() {
 
     const workshops = [
         {
-            title: "Workshop 01",
+            title: "Workshop 01: Basics",
             description: "This workshop starts with the very basics to set you up for the coming workshops.",
             steps: [
                 {
@@ -44,10 +44,11 @@ export function load() {
                     title: "API Setup & First Call",
                     description: "You will learn how to fetch data like the current Epoch Number with your Microcontroller from an API like Koios and how to output it to the Arduino console."
                 }
-            ]
+            ],
+            link: "/workshops/01-basics"
         },
         {
-            title: "Workshop 02",
+            title: "Workshop 02: Read and Output",
             description: "Based on what you have learned in Workshop 1, this workshop will teach you how to read data from the blockchain in intervals and use this data to trigger an action on your Microcontroller. You will learn about two other Cardano APIs called Maestro and Blockfrost and how to set them up and get a short introduction into connecting external hardware to your microcontroller.",
             steps: [
                 {
@@ -66,7 +67,8 @@ export function load() {
                     title: "Epoch Clock",
                     description: "Based on what you have learned in former steps and workshops, you will learn how to build a physical Epoch Clock with a D1 Microcontroller and LED Matrix."
                 }
-            ]
+            ],
+            link: "/workshops/02-read-and-output"
         },
         {
             title: "Workshop 03: Input and Write",
@@ -84,7 +86,8 @@ export function load() {
                     title: "Mint on NMKR",
                     description: "If building your own API to mint NFTs seems to complex for you, no worries. You will get a short introduction into NMKR and how to set it up to use their API to mint an NFT with data from your Microcontroller."
                 }
-            ]
+            ],
+            link: "/workshops/03-input-and-write"
         },
         {
             title: "Workshop 04: Cardano Ticker",
@@ -98,7 +101,8 @@ export function load() {
                     title: "Building the Ticker",
                     description: "With most of the building blocks already in place from former workshops, you will learn more about the Arduino TFT_eSPI Library, how to work with fonts, images and sprites and how to animate text, to make your ticker interesting and visually beautiful."
                 }
-            ]
+            ],
+            link: "/workshops/04-cardano-ticker"
         },
         {
             title: "Workshop 05: QR-Code Payments",
@@ -120,7 +124,8 @@ export function load() {
                     title: "Confirming the payment",
                     description: "In this last step you will implement a simple listener for the created transaction and display a confirmation, once the transaction has arrived in your wallet."
                 }
-            ]
+            ],
+            link: "/workshops/qr-code-payments"
         }
     ];
 
