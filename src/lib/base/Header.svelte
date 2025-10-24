@@ -8,12 +8,14 @@
 <header
   class="m-auto mt-4 flex items-center justify-between px-4 py-4 sm:w-[95%] sm:px-4 md:w-[90%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%]"
 >
-  <h1 class="text-4xl font-medium">
-    <div class="flex">
-      Cardano
-      <span class="font-light">Things</span>
-    </div>
-  </h1>
+  <a href="/">
+    <h1 class="text-4xl font-medium">
+      <div class="flex">
+        Cardano
+        <span class="font-light">Things</span>
+      </div>
+    </h1>
+  </a>
   <section id="buttons" class="flex items-center gap-2">
     <Button
       size="icon"
