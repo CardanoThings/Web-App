@@ -1,7 +1,7 @@
 <script>
   import { Button } from "$lib/components/ui/button/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
-  let { data } = $props();
+  import { blocks } from "$lib/data/blocks.js";
 </script>
 
 <section id="blocks" class="mb-16">
@@ -13,7 +13,7 @@
     </p>
   </div>
 
-  {#each data.blocks as item}
+  {#each blocks as item}
     <Card.Root>
       <Card.Header class="p-4 pb-0">
         <Card.Title class="text-lg">{item.title}</Card.Title>

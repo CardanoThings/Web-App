@@ -1,7 +1,6 @@
 <script>
   import { Github } from "lucide-svelte";
-  import { page } from "$app/stores";
-  const links = $page.data.links;
+  import { links } from "$lib/data/links.js";
 </script>
 
 <footer

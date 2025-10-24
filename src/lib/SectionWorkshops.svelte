@@ -1,9 +1,7 @@
 <script>
   import * as Card from "$lib/components/ui/card/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
-
-  let { data } = $props();
-  let workshops = $derived(data.workshops);
+  import { workshops } from "$lib/data/workshops.js";
 </script>
 
 <section id="workshops" class="mb-16">

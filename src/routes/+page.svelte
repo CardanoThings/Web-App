@@ -1,6 +1,5 @@
 <script>
   import ESP32 from "$lib/ESP32.svelte";
-  import * as Card from "$lib/components/ui/card/index.js";
   import SectionWorkshops from "$lib/SectionWorkshops.svelte";
   import SectionIntroductions from "$lib/SectionIntroductions.svelte";
   import SectionBlocks from "$lib/SectionBlocks.svelte";
@@ -11,8 +10,8 @@
   <ESP32 modelUrl="/models/esp32c6.gltf" />
 </section>
 
-<SectionWorkshops {data} />
+<SectionWorkshops />
 
-<SectionIntroductions {data} />
+<SectionIntroductions />
 
-<SectionBlocks {data} />
+<SectionBlocks />
