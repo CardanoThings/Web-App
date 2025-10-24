@@ -1,4 +1,5 @@
 export const blocks = [
+    { title: "Hello World", description: "Get started with your ESP32 by displaying 'Hello World!'", link: "/blocks/hello-world" },
     {
         title: "WiFi Connection",
         description: "Easily connect your ESP32 to WiFi networks with this block.",
