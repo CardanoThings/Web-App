@@ -1,5 +1,5 @@
 export function load() {
-    const workshops = [
+    const introductions = [
         {
             title: "Cardano",
             description: "Learn about the Cardano blockchain and its ecosystem.",
@@ -26,5 +26,5 @@ export function load() {
             link: "/introductions/rest-api"
         },
     ];
-    return { workshops };
+    return { introductions };
 }
