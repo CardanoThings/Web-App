@@ -4,16 +4,16 @@
   let { data } = $props();
 </script>
 
-<section id="introductions" class="mb-16">
+<section id="blocks" class="mb-16">
   <div>
-    <h1>Introductions</h1>
+    <h1>Building Blocks</h1>
     <p class="mt-2">
-      Quick introductions to all the tech needed for projects on
-      CardanoThings.io
+      Easy to use building blocks for your ESP32 that will get you going with
+      your own projects.
     </p>
   </div>
 
-  {#each data.introductions as item}
+  {#each data.blocks as item}
     <Card.Root>
       <Card.Header class="p-4 pb-0">
         <Card.Title class="text-lg">{item.title}</Card.Title>

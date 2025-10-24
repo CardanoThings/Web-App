@@ -3,6 +3,7 @@
   import * as Card from "$lib/components/ui/card/index.js";
   import SectionWorkshops from "$lib/SectionWorkshops.svelte";
   import SectionIntroductions from "$lib/SectionIntroductions.svelte";
+  import SectionBlocks from "$lib/SectionBlocks.svelte";
   let { data } = $props();
 </script>
 
@@ -13,3 +14,5 @@
 <SectionWorkshops {data} />
 
 <SectionIntroductions {data} />
+
+<SectionBlocks {data} />

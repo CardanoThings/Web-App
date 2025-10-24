@@ -6,7 +6,7 @@
   let workshops = $derived(data.workshops);
 </script>
 
-<section id="workshops" class="mb-8">
+<section id="workshops" class="mb-16">
   <div>
     <h1 class="mb-0">Workshops</h1>
     <p class="mt-2 mb-4">
