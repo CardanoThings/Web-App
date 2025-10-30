@@ -107,6 +107,10 @@
     @apply pb-6 border-white border-b border-dashed pt-6;
   }
 
+  main .sectionWrapper:last-child {
+    @apply border-0 pb-0;
+  }
+
   main section {
     @apply m-auto mt-4 px-4 py-4 sm:w-[95%] sm:px-4 md:w-[90%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%];
   }
