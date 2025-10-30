@@ -136,3 +136,10 @@ section ol li p {
   color: var(--color-text-secondary);
   font-weight: 400;
 }
+
+.glossary-term:hover {
+  border-bottom: 1px dotted rgba(255, 255, 255, 1);
+  padding-bottom: 1px;
+  cursor: help;
+  position: relative;
+}

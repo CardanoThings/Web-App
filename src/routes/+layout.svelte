@@ -1,10 +1,10 @@
 <script>
   import "../app.css";
-  // import { Toaster } from "$lib/components/ui/sonner/index.js";
   import VersionCheck from "$lib/base/VersionCheck.svelte";
   import PWAManager from "$lib/components/PWAManager.svelte";
   import Background from "$lib/base/Background.svelte";
   import PageTransition from "$lib/components/PageTransition.svelte";
+  import GlossaryTracker from "$lib/components/GlossaryTracker.svelte";
   import { page } from "$app/stores";
   let { data, children } = $props();
 
@@ -13,7 +13,6 @@
 </script>
 
 <Background />
-<!-- <Toaster /> -->
 <VersionCheck />
 <PWAManager />
 
@@ -24,3 +23,5 @@
   </main>
   <Footer {data} />
 </PageTransition>
+
+<GlossaryTracker />

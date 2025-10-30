@@ -1,18 +1,16 @@
 <script>
+	import { Drawer as DrawerPrimitive } from "vaul-svelte";
 	import { cn } from "$lib/utils.js";
 
 	let {
 		ref = $bindable(null),
 		class: className,
-		children,
 		...restProps
 	} = $props();
 </script>
 
-<div
-	bind:this={ref}
-	class={cn("bg-card text-card-foreground rounded-xl border shadow", className)}
+<DrawerPrimitive.Overlay
+	bind:ref
+	class={cn("fixed inset-0 z-50 bg-black/80", className)}
 	{...restProps}
->
-	{@render children?.()}
-</div>
+/>

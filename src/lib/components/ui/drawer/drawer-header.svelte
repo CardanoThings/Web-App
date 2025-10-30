@@ -9,6 +9,10 @@
 	} = $props();
 </script>
 
-<div bind:this={ref} class={cn("flex items-center p-6 pt-0", className)} {...restProps}>
+<div
+	bind:this={ref}
+	class={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+	{...restProps}
+>
 	{@render children?.()}
 </div>
