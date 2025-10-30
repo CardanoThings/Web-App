@@ -5,8 +5,6 @@
   // Key to trigger transitions. When `transitionKey` changes, the outgoing content will
   // fly out to the right and the incoming content will fly in from the right.
   export let transitionKey;
-  export let duration = 0;
-  export let easing = undefined; // optional easing function
 
   // We'll measure the viewport width on the client and use that as the fly distance
   let widthPx = 300;
