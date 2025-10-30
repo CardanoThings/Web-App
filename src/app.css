@@ -104,7 +104,7 @@
   }
 
   main .sectionWrapper {
-    @apply pb-0 border-white border-b border-dashed;
+    @apply pb-6 border-white border-b border-dashed pt-6;
   }
 
   main section {
@@ -112,7 +112,7 @@
   }
 }
 
-section {
+.sectionWrapper section {
   position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

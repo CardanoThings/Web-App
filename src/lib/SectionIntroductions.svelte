@@ -7,8 +7,8 @@
 <div class="sectionWrapper">
   <section id="introductions" class="mb-6">
     <div class="text-white">
-      <h1>Introductions</h1>
-      <p class="mt-2 max-w-[90%]">
+      <h1 class="text-4xl">Introductions</h1>
+      <p class="mt-2 max-w-[90%] font-thin text-lg">
         Quick introductions to all the tech needed for projects on
         CardanoThings.io
       </p>

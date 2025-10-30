@@ -7,8 +7,8 @@
 <div class="sectionWrapper">
   <section id="workshops" class="mb-6">
     <div class="text-white">
-      <h1 class="mb-0">Workshops</h1>
-      <p class="mt-2 mb-4 max-w-[90%]">
+      <h1 class="text-4xl">Workshops</h1>
+      <p class="mt-2 max-w-[90%] font-thin text-lg">
         Step-by-step workshops to build your first Cardano IoT project with
         ESP32-based Microcontrollers
       </p>
