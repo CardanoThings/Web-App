@@ -3,6 +3,7 @@
   import SectionWorkshops from "$lib/SectionWorkshops.svelte";
   import SectionIntroductions from "$lib/SectionIntroductions.svelte";
   import SectionBlocks from "$lib/SectionBlocks.svelte";
+  import SectionGlossary from "$lib/SectionGlossary.svelte";
   let { data } = $props();
 </script>
 
@@ -21,3 +22,5 @@
 <SectionIntroductions />
 
 <SectionBlocks />
+
+<SectionGlossary />

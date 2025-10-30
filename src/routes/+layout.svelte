@@ -14,7 +14,11 @@
 
 <Background />
 <VersionCheck />
-<PWAManager />
+<!-- <PWAManager /> -->
+
+<!-- <main class="overflow-x-hidden relative">
+  {@render children()}
+</main> -->
 
 <PageTransition transitionKey={page.url.pathname}>
   <Header />
@@ -24,4 +28,4 @@
   <Footer {data} />
 </PageTransition>
 
-<GlossaryTracker />
+<!-- <GlossaryTracker /> -->
