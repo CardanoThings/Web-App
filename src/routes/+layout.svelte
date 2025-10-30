@@ -5,7 +5,7 @@
   import Background from "$lib/base/Background.svelte";
   import PageTransition from "$lib/components/PageTransition.svelte";
   import GlossaryTracker from "$lib/components/GlossaryTracker.svelte";
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
   let { data, children } = $props();
 
   import Header from "$lib/base/Header.svelte";
@@ -16,7 +16,7 @@
 <VersionCheck />
 <PWAManager />
 
-<PageTransition transitionKey={$page.url.pathname}>
+<PageTransition transitionKey={page.url.pathname}>
   <Header />
   <main class="overflow-x-hidden relative">
     {@render children()}

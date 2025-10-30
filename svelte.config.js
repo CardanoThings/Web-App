@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-static';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 

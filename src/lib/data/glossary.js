@@ -27,5 +27,7 @@ export let glossary = [
     { term: "Arduino", definition: "An open-source electronics platform based on easy-to-use hardware and software." },
     { term: "IoT", definition: "Internet of Things, a network of physical devices that are connected to the internet and can collect and exchange data." },
     { term: "ESP32", definition: "A low-cost, low-power system on a chip microcontroller with integrated Wi-Fi and dual-mode Bluetooth." },
-    { term: "relais", definition: "A programmable hardware device used to control electrical circuits by opening and closing contacts in another circuit." }
+    { term: "Relais", definition: "A programmable hardware device used to control electrical circuits by opening and closing contacts in another circuit." },
+    { term: "LED", definition: "Light Emitting Diode, a semiconductor light source that emits light when current flows through it." },
+    { term: "REST API", definition: "Representational State Transfer Application Programming Interface, a set of rules for building web services that allow communication between client and server." }
 ]

@@ -1,12 +1,12 @@
 <script>
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
 </script>
 
 <div class="error-container">
   <div>
     <h1>Something went wrong</h1>
-    <p>Status: {$page.status}</p>
-    <p>Error: {$page.error?.message}</p>
+    <p>Status: {page.status}</p>
+    <p>Error: {page.error?.message}</p>
   </div>
 </div>
 
