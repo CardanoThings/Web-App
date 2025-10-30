@@ -5,7 +5,7 @@
 </script>
 
 <section id="introductions" class="mb-16">
-  <div>
+  <div class="text-white">
     <h1>Introductions</h1>
     <p class="mt-2">
       Quick introductions to all the tech needed for projects on

@@ -5,7 +5,7 @@
 </script>
 
 <section id="blocks" class="mb-16">
-  <div>
+  <div class="text-white">
     <h1>Building Blocks</h1>
     <p class="mt-2">
       Easy to use building blocks for your ESP32 that will get you going with

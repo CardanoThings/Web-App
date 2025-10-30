@@ -6,9 +6,9 @@
   let { data } = $props();
 </script>
 
-<section id="esp32" class="mb-8">
+<!-- <section id="esp32" class="mb-8">
   <ESP32 modelUrl="/models/esp32c6.gltf" />
-</section>
+</section> -->
 
 <SectionWorkshops />
 

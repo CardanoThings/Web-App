@@ -4,40 +4,42 @@
   import { workshops } from "$lib/data/workshops.js";
 </script>
 
-<section id="workshops" class="mb-16">
-  <div>
-    <h1 class="mb-0">Workshops</h1>
-    <p class="mt-2 mb-4">
-      Step-by-step workshops to build your first Cardano IoT project with
-      ESP32-based Microcontrollers
-    </p>
-  </div>
-  {#each workshops as workshop}
-    <Card.Root>
-      <Card.Header>
-        <Card.Title class="text-xl">{workshop.title}</Card.Title>
-        <Card.Description>
-          {workshop.description}
-        </Card.Description>
-      </Card.Header>
-      <Card.Content>
-        <ol>
-          {#each workshop.steps as step}
-            <li>
-              {step.title}
-              <p>
-                {step.description}
-              </p>
-            </li>
-          {/each}
-        </ol>
-      </Card.Content>
-      <Card.Footer>
-        <Button href={workshop.link} size="sm">Start Workshop</Button>
-      </Card.Footer>
-    </Card.Root>
-  {/each}
-</section>
+<div>
+  <section id="workshops" class="mb-16">
+    <div class="text-white">
+      <h1 class="mb-0">Workshops</h1>
+      <p class="mt-2 mb-4">
+        Step-by-step workshops to build your first Cardano IoT project with
+        ESP32-based Microcontrollers
+      </p>
+    </div>
+    {#each workshops as workshop}
+      <Card.Root>
+        <Card.Header>
+          <Card.Title class="text-xl">{workshop.title}</Card.Title>
+          <Card.Description>
+            {workshop.description}
+          </Card.Description>
+        </Card.Header>
+        <Card.Content>
+          <ol>
+            {#each workshop.steps as step}
+              <li>
+                {step.title}
+                <p>
+                  {step.description}
+                </p>
+              </li>
+            {/each}
+          </ol>
+        </Card.Content>
+        <Card.Footer>
+          <Button href={workshop.link} size="sm">Start Workshop</Button>
+        </Card.Footer>
+      </Card.Root>
+    {/each}
+  </section>
+</div>
 
 <style>
   section {

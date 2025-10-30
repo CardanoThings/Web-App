@@ -96,6 +96,6 @@ export const workshops = [
                 description: "In this last step you will implement a simple listener for the created transaction and display a confirmation, once the transaction has arrived in your wallet."
             }
         ],
-        link: "/workshops/qr-code-payments"
+        link: "/workshops/05-qr-code-payments"
     }
 ];
