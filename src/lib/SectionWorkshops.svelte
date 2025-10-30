@@ -14,15 +14,15 @@
       </p>
     </div>
     {#each workshops as workshop}
-      <Card.Root>
+      <Card.Root class="relative">
         <Card.Header>
           <Card.Title class="text-xl">{workshop.title}</Card.Title>
           <Card.Description>
             {workshop.description}
           </Card.Description>
         </Card.Header>
-        <Card.Content>
-          <ol>
+        <Card.Content class="pb-12">
+          <!-- <ol>
             {#each workshop.steps as step}
               <li>
                 {step.title}
@@ -31,9 +31,9 @@
                 </p>
               </li>
             {/each}
-          </ol>
+          </ol> -->
         </Card.Content>
-        <Card.Footer>
+        <Card.Footer class="absolute bottom-0">
           <Button href={workshop.link} size="sm">Start Workshop</Button>
         </Card.Footer>
       </Card.Root>

@@ -40,7 +40,7 @@
     window.addEventListener("resize", resizeRenderer);
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf4f4f4); // Light gray background
+    // scene.background = new THREE.Color(0x000000); // transparent background
 
     // camera is now created above
 

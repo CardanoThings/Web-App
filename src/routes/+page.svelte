@@ -6,9 +6,15 @@
   let { data } = $props();
 </script>
 
-<!-- <section id="esp32" class="mb-8">
+<!-- <div id="esp32" class="relative w-full h-[600px] mb-16">
   <ESP32 modelUrl="/models/esp32c6.gltf" />
-</section> -->
+</div> -->
+
+<section class="flex">
+  <h1 class="text-white font-thin text-8xl">
+    Cardano meets the Internet of Things.
+  </h1>
+</section>
 
 <SectionWorkshops />
 
