@@ -4,11 +4,11 @@
   import { workshops } from "$lib/data/workshops.js";
 </script>
 
-<div>
-  <section id="workshops" class="mb-16">
+<div class="sectionWrapper">
+  <section id="workshops" class="mb-6">
     <div class="text-white">
       <h1 class="mb-0">Workshops</h1>
-      <p class="mt-2 mb-4">
+      <p class="mt-2 mb-4 max-w-[90%]">
         Step-by-step workshops to build your first Cardano IoT project with
         ESP32-based Microcontrollers
       </p>
@@ -40,25 +40,3 @@
     {/each}
   </section>
 </div>
-
-<style>
-  section {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-  }
-
-  ol {
-    font-size: 0.875rem;
-  }
-  ol li {
-    font-weight: 600;
-  }
-
-  ol li p {
-    line-height: 1.4rem;
-    margin-bottom: 0.25rem;
-    color: var(--color-text-secondary);
-    font-weight: 400;
-  }
-</style>

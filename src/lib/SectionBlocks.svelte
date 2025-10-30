@@ -7,7 +7,7 @@
 <section id="blocks" class="mb-16">
   <div class="text-white">
     <h1>Building Blocks</h1>
-    <p class="mt-2">
+    <p class="mt-2 max-w-[90%]">
       Easy to use building blocks for your ESP32 that will get you going with
       your own projects.
     </p>
@@ -28,11 +28,3 @@
     </Card.Root>
   {/each}
 </section>
-
-<style>
-  section {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-  }
-</style>

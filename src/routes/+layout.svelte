@@ -19,9 +19,7 @@
 
 <div class="wrapper">
   <Header />
-  <main
-    class="r m-auto mt-4 px-4 py-4 sm:w-[95%] sm:px-4 md:w-[90%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%]"
-  >
+  <main>
     {@render children()}
   </main>
   <Footer {data} />
@@ -32,6 +30,5 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    width: 100vw;
   }
 </style>
