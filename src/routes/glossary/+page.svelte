@@ -3,10 +3,10 @@
   import { glossary } from "$lib/data/glossary.js";
   import { fade } from "svelte/transition";
   import sort from "fast-sort";
+  import * as Item from "$lib/components/ui/item/index.js";
 
   let searchTerm = $state("");
   let filteredEntries = $derived.by(() => {
-    console.log("Filtering glossary with searchTerm:", searchTerm);
     const entries = [...glossary];
     if (!searchTerm.trim())
       return sort(entries).asc((e) => e.term.toLowerCase());
@@ -32,9 +32,6 @@
 
     <Input
       bind:value={searchTerm}
-      oninput={() => {
-        console.log("Filtering glossary with searchTerm:", searchTerm);
-      }}
       type="text"
       placeholder="Search glossary..."
       class="mb-8 w-full"
@@ -42,7 +39,11 @@
 
     <ul>
       {#each filteredEntries as entry}
-        <li class="mb-4" out:fade={{ duration: 500 }}>
+        <li
+          class="mb-4"
+          out:fade={{ duration: 500 }}
+          in:fade={{ duration: 500 }}
+        >
           {entry.term}
           <p class="font-thin">{entry.definition}</p>
         </li>
