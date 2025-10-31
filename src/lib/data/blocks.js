@@ -2,6 +2,7 @@ export const blocks = [
     {
         slug: "hello-world",
         title: "Hello World",
+        tags: ["Arduino"],
         description: "Get started with your ESP32 by displaying 'Hello World!'",
         link: "/blocks/hello-world",
         overview: "This is the most basic block to get you started with ESP32 programming. It demonstrates how to output text to the serial monitor, which is essential for debugging and monitoring your ESP32 applications.",
@@ -69,6 +70,7 @@ void loop() {
     {
         slug: "wifi-connection",
         title: "WiFi Connection",
+        tags: ["Arduino"],
         description: "Easily connect your ESP32 to WiFi networks with this block.",
         link: "/blocks/wifi-connection",
         overview: "This block handles WiFi connectivity for your ESP32, including connection management, status monitoring, and reconnection logic. Essential for any IoT project that needs internet connectivity.",
@@ -182,6 +184,7 @@ void loop() {
     {
         slug: "http-requests",
         title: "HTTP Requests",
+        tags: ["Arduino"],
         description: "Fetch data from REST APIs with this simple block.",
         link: "/blocks/http-requests",
         overview: "This block enables your ESP32 to make HTTP requests to web APIs, allowing you to fetch data from the internet, send data to servers, or integrate with web services. Essential for IoT applications that need to communicate with cloud services.",
@@ -329,6 +332,7 @@ void loop() {
     {
         slug: "display-output",
         title: "Display Output",
+        tags: ["Arduino"],
         description: "Output data to various displays using this block.",
         link: "/blocks/display-output",
         overview: "This block provides functionality to display data on various types of screens connected to your ESP32, including TFT displays, OLED screens, and LCD displays. Perfect for creating visual interfaces for your IoT projects.",
@@ -477,7 +481,8 @@ void loop() {
     {
         slug: "handle-json-data",
         title: "Handle JSON Data",
-        description: "Parse and handle JSON data with this block.",
+        tags: ["Arduino"],
+        description: "Parse and handle JSON data on your microcontroller with this block.",
         link: "/blocks/handle-json-data",
         overview: "This block provides comprehensive JSON handling capabilities for your ESP32 projects. Parse incoming JSON from APIs, create JSON payloads for sending data, and manipulate JSON structures efficiently.",
         features: [
@@ -675,6 +680,7 @@ void loop() {
     {
         slug: "sensor-input",
         title: "Sensor Input",
+        tags: ["Arduino"],
         description: "Read data from different sensors with this block.",
         link: "/blocks/sensor-input",
         overview: "This block provides functionality to read data from various sensors connected to your ESP32, including temperature, humidity, light, motion, and other environmental sensors. Essential for creating responsive IoT applications.",
