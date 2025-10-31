@@ -9,7 +9,8 @@
 		<div class="text-white">
 			<h1 class="text-4xl">Hardware</h1>
 			<p class="mt-2 max-w-[90%] text-lg font-thin">
-				Essential hardware components and development boards for building IoT projects on CardanoThings.io
+				Essential hardware components and development boards for building IoT projects on
+				CardanoThings.io
 			</p>
 		</div>
 
