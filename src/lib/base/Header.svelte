@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { links } from '$lib/data/links.js';
+	import SearchBox from '$lib/components/SearchBox.svelte';
 </script>
 
 <header
@@ -20,17 +21,23 @@
 		<span class="font-thin text-white">Beta</span>
 	</div>
 
-	<div class="flex items-center gap-4 text-sm text-white">
-		{#each links as link}
-			<a
-				href={link.link}
-				rel="noopener noreferrer"
-				class={$page.url.pathname === link.link
-					? 'border-b-2 border-white pb-1 font-medium'
-					: 'border-b-2 border-transparent pb-1 font-thin'}
-			>
-				{link.title}
-			</a>
-		{/each}
+	<div class="flex items-center gap-8">
+		<nav class="flex items-center gap-4 text-sm text-white">
+			{#each links.filter((link) => link.headerNav) as link}
+				<a
+					href={link.link}
+					rel="noopener noreferrer"
+					class={$page.url.pathname === link.link
+						? 'border-b-2 border-white pb-1 font-medium'
+						: 'border-b-2 border-transparent pb-1 font-thin transition-colors hover:border-white/50'}
+				>
+					{link.title}
+				</a>
+			{/each}
+		</nav>
+
+		<div class="flex flex-1 justify-end">
+			<SearchBox />
+		</div>
 	</div>
 </header>

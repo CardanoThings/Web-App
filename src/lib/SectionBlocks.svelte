@@ -17,7 +17,7 @@
 			<Card.Root>
 				<Card.Header>
 					<Card.Title class="mt-0 pt-0 text-xl">{item.title}</Card.Title>
-					<Card.Description>
+					<Card.Description class="leading-6">
 						{item.description}
 					</Card.Description>
 				</Card.Header>

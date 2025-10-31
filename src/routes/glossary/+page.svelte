@@ -1,19 +1,29 @@
 <script>
-	import Input from '$lib/components/ui/input/Input.svelte';
+	import { Input } from '$lib/components/ui/input/index.js';
 	import { glossary } from '$lib/data/glossary.js';
 	import { sort } from 'fast-sort';
 
-	let searchTerm = $state('');
+	const { data } = $props();
+	let searchTerm = $state(data?.searchTerm || '');
+
+	// Watch for URL param changes and update searchTerm
+	$effect(() => {
+		if (data?.searchTerm !== undefined) {
+			searchTerm = data.searchTerm;
+		}
+	});
+
+	// Create a derived store for filtered entries
 	let filteredEntries = $derived.by(() => {
-		const entries = [...glossary];
-		if (!searchTerm.trim()) return sort(entries).asc((e) => e.term.toLowerCase());
-		const q = searchTerm.toLowerCase();
-		return sort(
-			entries.filter(
-				(e) =>
-					(e.term ?? '').toLowerCase().includes(q) || (e.definition ?? '').toLowerCase().includes(q)
-			)
-		).asc((e) => e.term.toLowerCase());
+		const q = searchTerm.trim().toLowerCase();
+		const entries = q
+			? glossary.filter(
+					(e) =>
+						(e.term ?? '').toLowerCase().includes(q) ||
+						(e.definition ?? '').toLowerCase().includes(q)
+				)
+			: glossary;
+		return sort([...entries]).asc((e) => e.term.toLowerCase());
 	});
 </script>
 

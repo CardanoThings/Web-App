@@ -15,13 +15,6 @@
 	});
 </script>
 
-<!--
-Usage:
-Wrap page content in <PageTransition key={$page.url}> ... </PageTransition>
-When `key` changes the old child will fly out to the right and new child will fly in
-from the right.
--->
-
 {#if !mounted}
 	<!-- Render directly on server/initial load to avoid hydration mismatch -->
 	<div class="pt-page">

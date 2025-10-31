@@ -1,5 +1,8 @@
 node_modules
 
+# llms
+llms*
+
 # Output
 .output
 .vercel

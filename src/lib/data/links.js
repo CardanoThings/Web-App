@@ -1,22 +1,27 @@
 export const links = [
     {
         title: "Workshops",
-        link: "/workshops"
+        link: "/workshops",
+        headerNav: true
     },
     {
         title: "Introductions",
-        link: "/introductions"
+        link: "/introductions",
+        headerNav: true
     },
     {
         title: "Building Blocks",
-        link: "/blocks"
+        link: "/blocks",
+        headerNav: true
     },
     {
         title: "Glossary",
-        link: "/glossary"
+        link: "/glossary",
+        headerNav: true
     },
     {
         title: "About",
-        link: "/about"
+        link: "/about",
+        headerNav: false
     }
 ]

@@ -29,5 +29,7 @@ export let glossary = [
     { term: "ESP32", definition: "A low-cost, low-power system on a chip microcontroller with integrated Wi-Fi and dual-mode Bluetooth." },
     { term: "Relais", definition: "A programmable hardware device used to control electrical circuits by opening and closing contacts in another circuit." },
     { term: "LED", definition: "Light Emitting Diode, a semiconductor light source that emits light when current flows through it." },
-    { term: "REST API", definition: "Representational State Transfer Application Programming Interface, a set of rules for building web services that allow communication between client and server." }
+    { term: "REST API", definition: "Representational State Transfer Application Programming Interface, a set of rules for building web services that allow communication between client and server." },
+    { term: "Preprod", definition: "A testnet of the Cardano blockchain used for testing and development before deployment to the mainnet. The currency used is tADA, which can be obtained through the Cardano faucet." },
+    { term: "tADA", definition: "Test ADA, the cryptocurrency used on the Cardano preprod testnet for testing purposes." }
 ]
