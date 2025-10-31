@@ -16,12 +16,22 @@
 	<h1 class="mb-12 text-8xl font-thin text-white">Cardano meets the Internet of Things.</h1>
 </section>
 
-<SectionWorkshops />
+<div class="mb-16 w-full border-b border-dashed border-white">
+	<SectionWorkshops />
+</div>
 
-<SectionIntroductions />
+<div class="mb-16 w-full border-b border-dashed border-white">
+	<SectionIntroductions />
+</div>
 
-<SectionHardware />
+<div class="mb-16 w-full border-b border-dashed border-white">
+	<SectionHardware />
+</div>
 
-<SectionBlocks />
+<div class="mb-16 w-full border-b border-dashed border-white">
+	<SectionBlocks />
+</div>
 
-<SectionGlossary />
+<div class="mb-16 w-full border-b border-dashed border-white">
+	<SectionGlossary />
+</div>
