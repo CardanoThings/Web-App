@@ -27,7 +27,7 @@
 				rel="noopener noreferrer"
 				class={$page.url.pathname === link.link
 					? 'border-b-2 border-white pb-1 font-medium'
-					: 'border-0 font-thin'}
+					: 'border-b-2 border-transparent pb-1 font-thin'}
 			>
 				{link.title}
 			</a>
