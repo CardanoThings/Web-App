@@ -1,5 +1,7 @@
 <script>
+	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { links } from '$lib/data/links.js';
 </script>
 
 <header
@@ -16,5 +18,19 @@
 		</a>
 		<span class="font-thin text-white">|</span>
 		<span class="font-thin text-white">Beta</span>
+	</div>
+
+	<div class="flex items-center gap-4 text-white">
+		{#each links as link}
+			<a
+				href={link.link}
+				rel="noopener noreferrer"
+				class={$page.url.pathname === link.link
+					? 'border-b-2 border-white pb-1 font-medium'
+					: 'border-0 font-normal'}
+			>
+				{link.title}
+			</a>
+		{/each}
 	</div>
 </header>

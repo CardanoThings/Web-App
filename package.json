@@ -43,6 +43,7 @@
 		"vite": "^7.1.10"
 	},
 	"dependencies": {
+		"fast-sort": "^3.4.1",
 		"highlight.js": "^11.11.1",
 		"three": "^0.180.0"
 	}

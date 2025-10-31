@@ -20,11 +20,13 @@
 </main> -->
 
 <PageTransition transitionKey={page.url.pathname}>
-	<Header />
-	<main class="relative overflow-x-hidden">
-		{@render children()}
-	</main>
-	<Footer {data} />
+	<div class="relative flex h-full flex-col">
+		<Header />
+		<main class="flex-1">
+			{@render children()}
+		</main>
+		<Footer {data} />
+	</div>
 </PageTransition>
 
 <!-- <GlossaryTracker /> -->

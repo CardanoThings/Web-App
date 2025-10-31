@@ -2,7 +2,7 @@
 	import { links } from '$lib/data/links.js';
 </script>
 
-<footer class="mt-0 w-full bg-white p-4 pt-8">
+<footer class="mt-8 w-full bg-white p-4 pt-8">
 	<div
 		class="m-auto scroll-pb-80 px-4 sm:w-[95%] sm:px-4 md:w-[90%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%]"
 	>
