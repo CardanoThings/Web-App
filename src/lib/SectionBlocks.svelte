@@ -5,7 +5,7 @@
 </script>
 
 <div class="sectionWrapper">
-	<section id="blocks" class="mb-16">
+	<section id="blocks" class="mb-6">
 		<div class="text-white">
 			<h1 class="text-4xl">Building Blocks</h1>
 			<p class="mt-2 max-w-[90%] text-lg font-thin">
@@ -15,16 +15,16 @@
 
 		{#each blocks as item}
 			<Card.Root>
-				<Card.Header class="p-4 pb-0">
-					<Card.Title class="text-lg">{item.title}</Card.Title>
-					<Card.Description class="mb-0 p-0">
+				<Card.Header>
+					<Card.Title class="mt-0 pt-0 text-xl">{item.title}</Card.Title>
+					<Card.Description>
 						{item.description}
 					</Card.Description>
 				</Card.Header>
-				<Card.Content class="p-4">
-					<p>{item.content}</p>
+				<Card.Content class="flex-1"></Card.Content>
+				<Card.Footer>
 					<Button href={item.link} size="sm">Learn More</Button>
-				</Card.Content>
+				</Card.Footer>
 			</Card.Root>
 		{/each}
 	</section>

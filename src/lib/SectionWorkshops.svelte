@@ -14,9 +14,9 @@
 			</p>
 		</div>
 		{#each workshops as workshop}
-			<Card.Root class="relative">
+			<Card.Root>
 				<Card.Header>
-					<Card.Title class="text-xl">{workshop.title}</Card.Title>
+					<Card.Title class="mt-0 pt-0 text-xl">{workshop.title}</Card.Title>
 					<Card.Description>
 						{workshop.description}
 					</Card.Description>
