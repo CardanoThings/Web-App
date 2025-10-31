@@ -3,7 +3,6 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	// import { Copy } from "lucide-svelte";
 	import { toast } from 'svelte-sonner';
-	import { mode } from 'mode-watcher';
 	import hljs from 'highlight.js/lib/core';
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import xml from 'highlight.js/lib/languages/xml';
@@ -33,22 +32,13 @@
 		highlightCode();
 	}
 
-	$: if ($mode && container) {
-		updateTheme();
-	}
-
 	function updateTheme() {
 		if (!container) return;
 
 		// Remove existing theme classes
 		container.classList.remove('hljs-light', 'hljs-dark');
 
-		// Add appropriate theme class
-		if ($mode === 'dark') {
-			container.classList.add('hljs-dark');
-		} else {
-			container.classList.add('hljs-light');
-		}
+		container.classList.add('hljs-dark');
 	}
 
 	async function highlightCode() {
@@ -84,9 +74,7 @@
 <section bind:this={container} class={$$props.class + ' code-container'}>
 	<div class="context">
 		<span class="language-badge">{language}</span>
-		<Button class="copy-button" onclick={copyCode} title="Copy to Clipboard">
-			<Copy />
-		</Button>
+		<Button class="copy-button" onclick={copyCode} title="Copy to Clipboard"></Button>
 	</div>
 
 	<pre class="code-pre text-sm"><code bind:this={codeBlock} class={language}
@@ -97,10 +85,8 @@
 <style>
 	.code-container {
 		position: relative;
-		border-radius: 0.5rem;
-		overflow: hidden;
-		border: 1px solid var(--border);
-		background: var(--background);
+		width: 100%;
+		padding: 0;
 	}
 
 	.context {
