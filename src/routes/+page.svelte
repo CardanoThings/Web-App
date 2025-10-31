@@ -2,6 +2,7 @@
   import ESP32 from "$lib/ESP32.svelte";
   import SectionWorkshops from "$lib/SectionWorkshops.svelte";
   import SectionIntroductions from "$lib/SectionIntroductions.svelte";
+  import SectionHardware from "$lib/SectionHardware.svelte";
   import SectionBlocks from "$lib/SectionBlocks.svelte";
   import SectionGlossary from "$lib/SectionGlossary.svelte";
   let { data } = $props();
@@ -20,6 +21,8 @@
 <SectionWorkshops />
 
 <SectionIntroductions />
+
+<SectionHardware />
 
 <SectionBlocks />
 
