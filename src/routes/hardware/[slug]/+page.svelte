@@ -8,14 +8,14 @@
 
 <section class="mb-16 flex flex-col gap-8 text-white">
 	<div>
-		<h1 class="text-6xl font-medium">{hardware.name}</h1>
-		<p class="mt-4 text-lg font-thin">{hardware.intro}</p>
+		<h1 class="w-1/2 text-6xl font-medium">{hardware.name}</h1>
+		<p class="mt-4 w-1/2 text-lg leading-relaxed font-thin">{hardware.intro}</p>
 	</div>
 
 	<!-- Features Section -->
 	<Card.Root>
 		<Card.Header>
-			<Card.Title>Features</Card.Title>
+			<Card.Title class="text-lg">Features</Card.Title>
 		</Card.Header>
 		<Card.Content>
 			<ul class="list-inside list-disc space-y-2">
@@ -23,16 +23,6 @@
 					<li>{feature}</li>
 				{/each}
 			</ul>
-		</Card.Content>
-	</Card.Root>
-
-	<!-- How to Use Section -->
-	<Card.Root>
-		<Card.Header>
-			<Card.Title>How to Use</Card.Title>
-		</Card.Header>
-		<Card.Content>
-			<p>{hardware.howToUse}</p>
 		</Card.Content>
 	</Card.Root>
 
@@ -65,6 +55,16 @@
 					</Button>
 				{/each}
 			</div>
+		</Card.Content>
+	</Card.Root>
+
+	<!-- How to Use Section -->
+	<Card.Root>
+		<Card.Header>
+			<Card.Title>How to Use</Card.Title>
+		</Card.Header>
+		<Card.Content>
+			<p>{hardware.howToUse}</p>
 		</Card.Content>
 	</Card.Root>
 </section>
