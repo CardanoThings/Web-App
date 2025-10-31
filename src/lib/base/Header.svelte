@@ -22,7 +22,11 @@
 				<a
 					href={link.link}
 					rel="noopener noreferrer"
-					class={$page.url.pathname === link.link ? 'nav-link active' : 'nav-link'}
+					class={$page.url.pathname.startsWith(link.link) && link.link !== '/'
+						? 'nav-link active'
+						: $page.url.pathname === link.link
+							? 'nav-link active'
+							: 'nav-link'}
 				>
 					{link.title}
 				</a>
