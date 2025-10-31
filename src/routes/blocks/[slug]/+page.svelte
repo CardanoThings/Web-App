@@ -96,12 +96,6 @@
 </div>
 
 <style>
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 2rem;
-	}
-
 	.block-header {
 		margin-bottom: 2rem;
 	}
@@ -111,11 +105,6 @@
 		font-weight: 600;
 		margin-bottom: 0.5rem;
 		color: white;
-	}
-
-	.description {
-		font-size: 1.25rem;
-		color: rgba(255, 255, 255, 0.8);
 	}
 
 	.block-content {
