@@ -30,11 +30,6 @@
 
 <style>
 	.pt-page {
-		position: absolute;
-		top: 128px;
-		left: 0;
-		width: 100%;
-		height: calc(100% - 128px);
-		will-change: transform, opacity;
+		will-change: opacity;
 	}
 </style>

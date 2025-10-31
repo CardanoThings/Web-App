@@ -4,11 +4,11 @@
 	import { introductions } from '$lib/data/introductions.js';
 </script>
 
-<div class="sectionWrapper">
-	<section id="introductions" class="mb-6">
+<section id="introductions" class="mb-12">
+	<div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
 		<div class="text-white">
 			<h1 class="text-4xl">Introductions</h1>
-			<p class="mt-2 max-w-[90%] text-lg font-thin">
+			<p class="mt-2 max-w-[90%] text-lg leading-relaxed font-thin">
 				Quick introductions to all the tech needed for projects on CardanoThings.io
 			</p>
 		</div>
@@ -27,5 +27,5 @@
 				</Card.Footer>
 			</Card.Root>
 		{/each}
-	</section>
-</div>
+	</div>
+</section>

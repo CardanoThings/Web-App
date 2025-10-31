@@ -24,16 +24,16 @@
 
 	<!-- History -->
 	{#if data.history}
-		<section class="mb-8 w-1/2 text-white">
-			<h2 class="text-3xl">History</h2>
+		<section class="m-auto mt-12 mb-12 w-1/2 text-white">
+			<h2 class="inline-block text-3xl font-medium">History</h2>
 			<p class="text-lg leading-relaxed font-thin">{data.history}</p>
 		</section>
 	{/if}
 
 	<!-- Key Features -->
-	<div class="m-auto flex max-w-4xl gap-1">
+	<div class="mt-12 flex w-full gap-6">
 		{#if data.keyFeatures && data.keyFeatures.length > 0}
-			<section class="" id="key-features">
+			<section class="w-3/4" id="key-features">
 				<Card.Root>
 					<Card.Header>
 						<Card.Title class="pb-0 text-lg">Key Features</Card.Title>
@@ -43,7 +43,7 @@
 							{#each data.keyFeatures as feature}
 								<li class="ml-0 flex items-start">
 									<div>
-										<ChevronRight size="18" class="relative top-0.5" strokeWidth="2" />
+										<ChevronRight size="18" class="relative top-1.5" strokeWidth="2" />
 									</div>
 									<div>
 										<span class="font-medium">{feature.split(':')[0]}</span>: {feature
@@ -61,22 +61,17 @@
 
 		<!-- Resources -->
 		{#if data.resources && data.resources.length > 0}
-			<section id="further-resources">
-				<Card.Root class="">
+			<section id="further-resources" class="w-1/4">
+				<Card.Root>
 					<Card.Header>
 						<Card.Title>Further Resources</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<ul class="space-y-2">
+						<ul class="list-none text-nowrap">
 							{#each data.resources as resource}
 								<li>
-									<a
-										href={resource.link}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="link text-primary hover:underline"
-									>
-										{resource.title} →
+									<a href={resource.link} target="_blank" rel="noopener noreferrer" class="link">
+										{resource.title}
 									</a>
 								</li>
 							{/each}
@@ -87,28 +82,3 @@
 		{/if}
 	</div>
 </div>
-
-<style>
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 2rem;
-	}
-
-	h1 {
-		line-height: 1.1;
-	}
-
-	.link {
-		transition: all 0.2s;
-	}
-
-	ul {
-		list-style: none;
-		padding: 0;
-	}
-
-	li {
-		line-height: 1.6;
-	}
-</style>

@@ -4,10 +4,10 @@
 	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 </script>
 
-<footer class="mt-8 bg-white p-4 pt-8">
-	<div class="mx-auto max-w-4xl">
+<footer class="mt-12 bg-white p-4 pt-8">
+	<div class="mx-auto w-full max-w-4xl">
 		<div class="mb-4 text-sm font-medium">
-			<ul class="leading-7">
+			<ul class="m-0 p-0 leading-7">
 				{#each links as page}
 					<li>
 						<ChevronRight class="mr-0 inline h-5 w-5" strokeWidth="2.5" />

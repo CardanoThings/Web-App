@@ -4,13 +4,13 @@
 	import { workshops } from '$lib/data/workshops.js';
 </script>
 
-<div class="sectionWrapper">
-	<section id="workshops" class="mb-6">
-		<div class="text-white">
-			<h1 class="text-4xl">Workshops</h1>
-			<p class="mt-2 max-w-[90%] text-lg font-thin">
+<section id="workshops" class="mb-12">
+	<div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+		<div class="mb-6 text-white">
+			<h1 class="mb-4 text-4xl">Workshops</h1>
+			<p class="mt-2 max-w-[90%] text-lg leading-relaxed font-thin">
 				Step-by-step workshops to build your first Cardano IoT project with ESP32-based
-				Microcontrollers
+				Microcontrollers and CardanoThings.io
 			</p>
 		</div>
 		{#each workshops as workshop}
@@ -21,22 +21,11 @@
 						{workshop.description}
 					</Card.Description>
 				</Card.Header>
-				<Card.Content class="flex-1">
-					<!-- <ol>
-            {#each workshop.steps as step}
-              <li>
-                {step.title}
-                <p>
-                  {step.description}
-                </p>
-              </li>
-            {/each}
-          </ol> -->
-				</Card.Content>
+				<Card.Content class="flex-1"></Card.Content>
 				<Card.Footer class="">
 					<Button href={workshop.link} size="sm">Start Workshop</Button>
 				</Card.Footer>
 			</Card.Root>
 		{/each}
-	</section>
-</div>
+	</div>
+</section>

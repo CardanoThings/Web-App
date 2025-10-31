@@ -15,15 +15,21 @@
 <!-- <PWAManager /> -->
 
 <Header />
-<PageTransition transitionKey={page.url.pathname}>
-	<div class="relative flex h-full flex-col">
-		<main class="flex-1">
+<div class="scaler">
+	<PageTransition transitionKey={page.url.pathname}>
+		<main class="m-auto max-w-4xl">
 			{@render children()}
 		</main>
-		<Footer />
-	</div>
-</PageTransition>
+	</PageTransition>
+</div>
+<Footer />
 
 <!-- 
 disable GlossaryTracker for now as it's causing hydration issues
 <GlossaryTracker /> -->
+
+<style>
+	.scaler {
+		min-height: calc(100vh - 416px);
+	}
+</style>

@@ -1,7 +1,7 @@
 <script>
 	import { onMount, tick } from 'svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
-	// import { Copy } from "lucide-svelte";
+	import { Copy } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import hljs from 'highlight.js/lib/core';
 	import javascript from 'highlight.js/lib/languages/javascript';
@@ -74,7 +74,7 @@
 <section bind:this={container} class={$$props.class + ' code-container'}>
 	<div class="context">
 		<span class="language-badge">{language}</span>
-		<Button class="copy-button" onclick={copyCode} title="Copy to Clipboard"></Button>
+		<Button class="copy-button" onclick={copyCode} title="Copy to Clipboard"><Copy /></Button>
 	</div>
 
 	<pre class="code-pre text-sm"><code bind:this={codeBlock} class={language}
@@ -131,6 +131,7 @@
 		color: var(--muted-foreground) !important;
 		backdrop-filter: blur(4px) !important;
 		border: none !important;
+		cursor: pointer !important;
 	}
 
 	:global(.copy-button:hover) {

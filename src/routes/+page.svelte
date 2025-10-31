@@ -13,7 +13,7 @@
 </div> -->
 
 <section class="flex">
-	<h1 class="text-8xl font-thin text-white">Cardano meets the Internet of Things.</h1>
+	<h1 class="mb-12 text-8xl font-thin text-white">Cardano meets the Internet of Things.</h1>
 </section>
 
 <SectionWorkshops />

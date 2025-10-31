@@ -10,10 +10,10 @@
 	<meta name="description" content={data.description} />
 </svelte:head>
 
-<div class="container">
-	<header class="block-header">
+<div class="w-max-4xl mx-auto w-full">
+	<header class="block-header w-1/2">
 		<h1>{data.title}</h1>
-		<p class="description">{data.description}</p>
+		<p class="text-lg leading-relaxed font-thin text-white">{data.description}</p>
 	</header>
 
 	<main class="block-content">
