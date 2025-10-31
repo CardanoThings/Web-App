@@ -1,24 +1,25 @@
 <script>
 	import { links } from '$lib/data/links.js';
+	import { version } from '$app/environment';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 </script>
 
-<footer class="mt-8 w-full bg-white p-4 pt-8">
-	<div
-		class="m-auto scroll-pb-80 px-4 sm:w-[95%] sm:px-4 md:w-[90%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%]"
-	>
+<footer class="mt-8 bg-white p-4 pt-8">
+	<div class="mx-auto max-w-4xl">
 		<div class="mb-4 text-sm font-medium">
-			<ul class="leading-8">
+			<ul class="leading-7">
 				{#each links as page}
 					<li>
+						<ChevronRight class="mr-0 inline h-5 w-5" strokeWidth="2.5" />
 						<a href={page.link}>{page.title}</a>
 					</li>
 				{/each}
 			</ul>
 		</div>
 
-		<section>
+		<section class="flex flex-row items-center justify-between gap-2 pb-4">
 			<p class="text-xs">&copy; 2025 CardanoThings. All rights reserved.</p>
-			<br />
+			<span class="text-xs text-zinc-400">Version: {version}</span>
 		</section>
 	</div>
 </footer>
