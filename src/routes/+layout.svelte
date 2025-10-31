@@ -29,4 +29,4 @@
 	</div>
 </PageTransition>
 
-<!-- <GlossaryTracker /> -->
+<GlossaryTracker />

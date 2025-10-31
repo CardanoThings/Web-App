@@ -61,17 +61,17 @@
 		onclick={() => (open = false)}
 		onkeydown={(e) => e.key === 'Escape' && (open = false)}
 	>
-		<Card.Root class="absolute right-8 bottom-8 z-50  w-80 transform">
-			<Card.Header>
-				<Card.Title class="flex items-center gap-2 pb-0 text-lg">
-					<MessageCircleQuestion size={24} />
+		<Card.Root class="absolute right-8 bottom-8 z-50  w-80 transform gap-2">
+			<Card.Header class="mb-0 pb-0">
+				<Card.Title class="text-lg">
+					<!-- <MessageCircleQuestion size={24} /> -->
 					{termText}
 				</Card.Title>
 			</Card.Header>
-			<Card.Content class="mt-3 pt-0">
+			<Card.Content class="mt-0 pt-0">
 				{termEntry?.definition}
 			</Card.Content>
-			<Card.Footer class="">
+			<Card.Footer class="mt-2">
 				<Button variant="outline" class="" on:click={() => (open = false)}>Close</Button>
 			</Card.Footer>
 		</Card.Root>
