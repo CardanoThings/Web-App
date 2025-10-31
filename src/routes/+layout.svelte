@@ -19,9 +19,9 @@
   {@render children()}
 </main> -->
 
+<Header />
 <PageTransition transitionKey={page.url.pathname}>
 	<div class="relative flex h-full flex-col">
-		<Header />
 		<main class="flex-1">
 			{@render children()}
 		</main>

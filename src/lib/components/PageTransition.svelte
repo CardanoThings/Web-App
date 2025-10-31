@@ -38,10 +38,10 @@ from the right.
 <style>
 	.pt-page {
 		position: absolute;
-		top: 0;
+		top: 128px;
 		left: 0;
 		width: 100%;
-		height: 100%;
+		height: calc(100% - 128px);
 		will-change: transform, opacity;
 	}
 </style>

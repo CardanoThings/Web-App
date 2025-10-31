@@ -20,14 +20,14 @@
 		<span class="font-thin text-white">Beta</span>
 	</div>
 
-	<div class="flex items-center gap-4 text-white">
+	<div class="flex items-center gap-4 text-sm text-white">
 		{#each links as link}
 			<a
 				href={link.link}
 				rel="noopener noreferrer"
 				class={$page.url.pathname === link.link
 					? 'border-b-2 border-white pb-1 font-medium'
-					: 'border-0 font-normal'}
+					: 'border-0 font-thin'}
 			>
 				{link.title}
 			</a>
