@@ -105,27 +105,50 @@
 
   .block-header {
     margin-bottom: 2rem;
-    text-align: center;
   }
 
   .block-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: white;
   }
 
   .description {
-    font-size: 1.2rem;
-    color: var(--color-text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .block-content {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem 0;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+  }
+
+  li {
+    margin: 0.25rem 0;
+  }
+
+  .usage-content :global(ol) {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .usage-content :global(li) {
+    margin: 0.5rem 0;
   }
 
   .parameters-table {
@@ -135,67 +158,42 @@
   }
 
   .parameter-row {
-    padding: 1rem;
-    border: 1px solid var(--color-border);
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 0.5rem;
-    background: var(--color-background-alt);
+  }
+
+  .parameter-row strong {
+    color: #60a5fa;
+    font-size: 1.1rem;
   }
 
   .parameter-type {
-    color: var(--color-text-secondary);
-    font-style: italic;
+    color: #34d399;
     margin-left: 0.5rem;
+    font-size: 0.9rem;
   }
 
   .parameter-row p {
     margin-top: 0.5rem;
-    margin-bottom: 0;
-    color: var(--color-text-secondary);
-  }
-
-  .usage-content :global(pre) {
-    background: var(--color-background-alt);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-  }
-
-  .usage-content :global(ol) {
-    padding-left: 1.5rem;
-  }
-
-  .usage-content :global(li) {
-    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .notes-content :global(p) {
-    margin-bottom: 1rem;
-  }
-
-  .notes-content :global(p:last-child) {
-    margin-bottom: 0;
+    margin: 0.5rem 0;
   }
 
   .notes-content :global(ul) {
-    margin-top: 0.5rem;
+    list-style-type: disc;
     padding-left: 1.5rem;
+    margin: 0.5rem 0;
   }
 
   .notes-content :global(li) {
-    margin-bottom: 0.25rem;
+    margin: 0.25rem 0;
   }
 
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-
-    .block-header h1 {
-      font-size: 2rem;
-    }
-
-    .description {
-      font-size: 1rem;
-    }
+  .notes-content :global(strong) {
+    color: #60a5fa;
   }
 </style>
