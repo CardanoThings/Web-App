@@ -5,7 +5,7 @@ export const workshops = [
         steps: [
             {
                 title: "Cardano Setup",
-                description: "You will learn how to install and setup a Cardano Wallet like Nami for Testnet use and request and receive tADA. If you don't know anything about Cadano, the Introductions-Section has a short intro on Cardano and Blockchain in general."
+                description: "You will learn how to install and setup a Cardano Wallet like Yoroi for the Preprod Testnet, request and receive tADA. If you don't know anything about Cadano, the Introductions-Section has a short intro on Cardano and Blockchain in general."
             },
             {
                 title: "Arduino Setup",
