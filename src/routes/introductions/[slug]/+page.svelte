@@ -13,11 +13,11 @@
 <div class="container mx-auto px-4">
 	<!-- Header -->
 	<section class="mb-8">
-		<h1 class="mb-4 w-full text-4xl md:text-6xl font-medium text-white md:w-1/2">
+		<h1 class="mb-4 w-full text-4xl font-medium text-white md:w-1/2 md:text-6xl">
 			Introduction to {data.title}
 		</h1>
 		<!-- Summary -->
-		<p class="w-full text-lg md:text-xl leading-relaxed font-thin text-white md:w-1/2">
+		<p class="w-full text-lg leading-relaxed font-thin text-white md:w-1/2 md:text-xl">
 			{data.summary}
 		</p>
 	</section>
@@ -25,8 +25,8 @@
 	<!-- History -->
 	{#if data.history}
 		<section class="m-auto mt-12 mb-12 w-full text-white md:w-1/2">
-			<h2 class="inline-block text-2xl md:text-3xl font-medium">History</h2>
-			<p class="text-base md:text-lg leading-relaxed font-thin">{data.history}</p>
+			<h2 class="inline-block text-2xl font-medium md:text-3xl">History</h2>
+			<p class="text-base leading-relaxed font-thin md:text-lg">{data.history}</p>
 		</section>
 	{/if}
 
