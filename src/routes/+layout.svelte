@@ -17,7 +17,7 @@
 <Header />
 <div class="scaler">
 	<PageTransition transitionKey={page.url.pathname}>
-		<main class="m-auto max-w-4xl">
+		<main class="m-auto max-w-4xl px-4">
 			{@render children()}
 		</main>
 	</PageTransition>

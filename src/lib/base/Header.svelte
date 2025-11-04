@@ -3,13 +3,13 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { links } from '$lib/data/links.js';
 	import SearchBox from '$lib/components/SearchBox.svelte';
-	import { Menu } from 'lucide-svelte';
+	import { Menu, X } from 'lucide-svelte';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
 
 	let drawerOpen = $state(false);
 </script>
 
-<header class="mx-auto mt-6 mb-12 flex w-full max-w-4xl justify-between p-4">
+<header class="mx-auto mt-6 mb-12 flex w-full max-w-4xl justify-between p-4 pt-0">
 	<div class="flex gap-1">
 		<a href="/" class="pointer">
 			<h1 class="flex font-medium text-white">
@@ -46,6 +46,13 @@
 					<Menu size={24} class="text-white" />
 				</Drawer.Trigger>
 				<Drawer.Content class="px-4 py-6">
+					<button
+						class="absolute top-4 right-4 text-black hover:text-black/80"
+						onclick={() => (drawerOpen = false)}
+						aria-label="Close menu"
+					>
+						<X size={24} />
+					</button>
 					<nav class="mt-4 flex flex-col gap-4">
 						{#each links.filter((link) => link.headerNav) as link}
 							<a
