@@ -3,9 +3,13 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { links } from '$lib/data/links.js';
 	import SearchBox from '$lib/components/SearchBox.svelte';
+	import { Menu } from 'lucide-svelte';
+	import * as Drawer from '$lib/components/ui/drawer/index.js';
+
+	let drawerOpen = $state(false);
 </script>
 
-<header class="mx-auto mt-6 mb-12 flex w-full max-w-4xl justify-between">
+<header class="mx-auto mt-6 mb-12 flex w-full max-w-4xl justify-between p-4">
 	<div class="flex gap-1">
 		<a href="/" class="pointer">
 			<h1 class="flex font-medium text-white">
@@ -17,7 +21,8 @@
 	</div>
 
 	<div class="flex items-center gap-6">
-		<nav class="flex items-center gap-3 text-sm text-white">
+		<!-- Desktop Navigation -->
+		<nav class="hidden items-center gap-3 text-sm text-white md:flex">
 			{#each links.filter((link) => link.headerNav) as link}
 				<a
 					href={link.link}
@@ -33,8 +38,34 @@
 			{/each}
 		</nav>
 
-		<div class="flex flex-1 justify-end">
+		<div class="flex flex-1 items-center justify-end gap-4">
 			<SearchBox />
+			<!-- Mobile Menu Button -->
+			<Drawer.Root bind:open={drawerOpen} direction="right">
+				<Drawer.Trigger class="md:hidden">
+					<Menu size={24} class="text-white" />
+				</Drawer.Trigger>
+				<Drawer.Content class="px-4 py-6">
+					<nav class="mt-4 flex flex-col gap-4">
+						{#each links.filter((link) => link.headerNav) as link}
+							<a
+								href={link.link}
+								rel="noopener noreferrer"
+								class="cursor-pointer text-lg text-black transition-colors hover:text-black/80 {$page.url.pathname.startsWith(
+									link.link
+								) && link.link !== '/'
+									? 'font-medium'
+									: $page.url.pathname === link.link
+										? 'font-medium'
+										: ''}"
+								onclick={() => (drawerOpen = false)}
+							>
+								{link.title}
+							</a>
+						{/each}
+					</nav>
+				</Drawer.Content>
+			</Drawer.Root>
 		</div>
 	</div>
 </header>
