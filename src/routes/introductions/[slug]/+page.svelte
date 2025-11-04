@@ -10,30 +10,30 @@
 	<meta name="description" content={data.description} />
 </svelte:head>
 
-<div class="">
+<div class="container mx-auto px-4">
 	<!-- Header -->
 	<section class="mb-8">
-		<h1 class="mb-4 w-1/2 text-6xl font-medium text-white">
+		<h1 class="mb-4 w-full text-4xl md:text-6xl font-medium text-white md:w-1/2">
 			Introduction to {data.title}
 		</h1>
 		<!-- Summary -->
-		<p class="w-1/2 text-xl leading-relaxed font-thin text-white">
+		<p class="w-full text-lg md:text-xl leading-relaxed font-thin text-white md:w-1/2">
 			{data.summary}
 		</p>
 	</section>
 
 	<!-- History -->
 	{#if data.history}
-		<section class="m-auto mt-12 mb-12 w-1/2 text-white">
-			<h2 class="inline-block text-3xl font-medium">History</h2>
-			<p class="text-lg leading-relaxed font-thin">{data.history}</p>
+		<section class="m-auto mt-12 mb-12 w-full text-white md:w-1/2">
+			<h2 class="inline-block text-2xl md:text-3xl font-medium">History</h2>
+			<p class="text-base md:text-lg leading-relaxed font-thin">{data.history}</p>
 		</section>
 	{/if}
 
 	<!-- Key Features -->
-	<div class="mt-12 flex w-full gap-6">
+	<div class="mt-12 flex w-full flex-col gap-6 md:flex-row">
 		{#if data.keyFeatures && data.keyFeatures.length > 0}
-			<section class="w-3/4" id="key-features">
+			<section class="w-full md:w-3/4" id="key-features">
 				<Card.Root>
 					<Card.Header>
 						<Card.Title class="pb-0 text-lg">Key Features</Card.Title>
@@ -61,7 +61,7 @@
 
 		<!-- Resources -->
 		{#if data.resources && data.resources.length > 0}
-			<section id="further-resources" class="w-1/4">
+			<section id="further-resources" class="w-full md:w-1/4">
 				<Card.Root>
 					<Card.Header>
 						<Card.Title>Further Resources</Card.Title>
