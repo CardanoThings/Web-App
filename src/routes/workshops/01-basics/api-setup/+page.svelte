@@ -13,38 +13,17 @@
 		<MoveLeft size="20" />
 		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 01: The Basics</h1>
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">Arduino Setup</h2>
+	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">API Setup</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		We will now install the Arduino IDE, connect your microcontroller to Wifi and install the
-		infamous blink sketch on it. Once this works, we'll continue to connect it to your
-		Wifi/Internet. In this workshop we will use the ESP32-C3 Microcontroller, the setup for other
-		microcontrollers might be slightly different.
+		Now that you're all set up for developing with your ESP32 microcontroller, we will make the
+		first call to Koios - a free and open source API on Cardano - get the current epoch number and
+		log it to the console of the Arduino IDE.
 	</p>
-	<div class="mt-4 sm:w-1/2">
-		<IntroContainer topic="Arduino" />
-	</div>
 </section>
 
 <SectionNavigator>
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Install Arduino IDE</h2>
-		<p class="text-lg font-thin text-white">
-			To keep things simple, we will use the <a
-				href="https://www.arduino.cc/en/software/#ide"
-				target="_blank"
-				class="link">Arduino IDE</a
-			>
-			as development environment for all workshops. It is free, easy to install, setup and use and will
-			get you started. If you're an experienced coder and want an integration into VS Code or Cursor,
-			you might wanna look into
-			<a href="https://platformio.org/" target="_blank" class="link">PlatformIO</a>
-			or the
-			<a
-				href="https://docs.espressif.com/projects/arduino-esp32/en/latest/getting_started.html"
-				target="_blank"
-				class="link">Espressif Arduino SDK</a
-			>.
-		</p>
+		<h2 class="text-4xl font-medium">What is Koios?</h2>
 
 		<p>
 			Go to the link below, choose your Operating System and click on download, then follow the

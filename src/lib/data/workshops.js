@@ -1,22 +1,32 @@
 export const workshops = [
     {
         title: "Workshop 01: The Basics",
-        description: "This workshop starts with the very basics to set you up for the coming workshops.",
+        description: "This workshop starts with the very basics to set you up for the coming workshops: You will install and fund a Cardano wallet on the Preprod Network, install the Arduino IDE, set up your Microcontroller and make your first API call. Lets get started!",
         steps: [
             {
                 title: "Cardano Setup",
                 description: "You will learn how to install and setup a Cardano Wallet like Yoroi for the Preprod Testnet, request and receive tADA. If you don't know anything about Cadano, the Introductions-Section has a short intro on Cardano and Blockchain in general.",
-                link: "/workshops/01-basics/cardano-setup"
+                link: "/workshops/01-basics/cardano-setup",
+                intros: [
+                    { title: "Cardano", link: "/introductions/cardano" },
+                    { title: "Blockchain", link: "/introductions/blockchain" }
+                ],
             },
             {
                 title: "Arduino Setup",
                 description: "You will learn the very basics of an Arduino Script, how to connect your Microcontroller to your PC and your WIFI and how to make it blink. If you don't know anything about Microcontrollers or Arduino yet, the Introductions-Section has short intros on both.",
-                link: "/workshops/01-basics/arduino-setup"
+                link: "/workshops/01-basics/arduino-setup",
+                intros: [
+                    { title: "Arduino", link: "/introductions/arduino" },
+                ],
             },
             {
                 title: "API Setup & First Call",
                 description: "You will learn how to fetch data like the current Epoch Number with your Microcontroller from an API like Koios and how to output it to the Arduino console.",
-                link: "/workshops/01-basics/api-setup"
+                link: "/workshops/01-basics/api-setup",
+                intros: [
+                    { title: "Rest APIs", link: "/introductions/rest-apis" },
+                ],
             }
         ],
         link: "/workshops/01-basics",
@@ -28,6 +38,7 @@ export const workshops = [
                 "WIFI Network with Internet Access"
             ],
             software: [
+                "Webbrowser",
                 "Yoroi Wallet (Preprod Testnet)",
                 "Arduino IDE",
                 "NodeJs and NPM"
@@ -36,7 +47,7 @@ export const workshops = [
     },
     {
         title: "Workshop 02: Read and Output",
-        description: "Based on what you have learned in Workshop 1, this workshop will teach you how to read data from the blockchain in intervals and use this data to trigger an action on your Microcontroller. You will learn about two other Cardano APIs called Maestro and Blockfrost and how to set them up and get a short introduction into connecting external hardware to your microcontroller.",
+        description: "This workshop will teach you how to read data from the blockchain in intervals and use this data to trigger an action on your Microcontroller. You will learn about two other Cardano APIs and how to set them up and get a short introduction into connecting external hardware to your microcontroller.",
         steps: [
             {
                 title: "Fetch your Wallet Balance",

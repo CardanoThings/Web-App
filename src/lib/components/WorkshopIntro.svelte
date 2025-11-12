@@ -23,8 +23,19 @@
 						<p class="font-thin">
 							{step.description}
 						</p>
-						<Button href={step.link} variant="secondary" class="mt-2 mb-4" size="sm"
-							>Read More</Button
+
+						{#if step.intros}
+							<div class="inline-flex gap-1">
+								{#each step.intros as intro}
+									<Button href={intro.link} variant="secondary" class="mt-2 mb-4 text-xs" size="sm"
+										>{intro.title}</Button
+									>
+								{/each}
+							</div>
+						{/if}
+
+						<Button href={step.link} variant="secondary" class="mt-2 mb-4 text-xs" size="sm"
+							>Lets begin!</Button
 						>
 					</li>
 				{/each}
