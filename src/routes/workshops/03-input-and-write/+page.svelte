@@ -1,5 +1,5 @@
 <script>
-	import WorkshopIntro from '$lib/components/WorkshopIntro.svelte';
+	import WorkshopIntro from '$lib/WorkshopIntro.svelte';
 	let { data } = $props();
 </script>
 

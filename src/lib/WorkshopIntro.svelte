@@ -1,7 +1,7 @@
 <script>
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import { ChevronRight } from 'lucide-svelte';
+	import { MessageCircleQuestion, ChevronRight } from 'lucide-svelte';
 	let { workshop } = $props();
 </script>
 
@@ -25,13 +25,16 @@
 						</p>
 
 						{#if step.intros}
-							<div class="inline-flex gap-1">
+							<ul class="m-0 mt-2 flex flex-col p-0">
 								{#each step.intros as intro}
-									<Button href={intro.link} variant="secondary" class="mt-2 mb-4 text-xs" size="sm"
-										>{intro.title}</Button
-									>
+									<li class="mb-2 flex items-center gap-2">
+										<MessageCircleQuestion size={20} strokeWidth={1.5} />
+										<a href={intro.link} target="_blank" class="text-sm">
+											{intro.title}
+										</a>
+									</li>
 								{/each}
-							</div>
+							</ul>
 						{/if}
 
 						<Button href={step.link} variant="secondary" class="mt-2 mb-4 text-xs" size="sm"

@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import IntroContainer from '$lib/base/IntroContainer.svelte';
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
-	import WorkshopNavigation from '$lib/components/WorkshopNavigation.svelte';
+	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
@@ -25,35 +25,26 @@
 	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">What is Koios?</h2>
 
-		<p>
-			Go to the link below, choose your Operating System and click on download, then follow the
-			installation process.
+		<p class="text-lg font-thin text-white">
+			<a href="https://koios.rest/" target="_blank" class="link">Koios</a> is a distributed & open-source
+			public API query layer for Cardano, that is elastic in nature and addresses ever-demanding requirements
+			from Cardano Blockchain. It provides a easy to query RESTful layer that has a lot of flexibility
+			to cater for different data consumption requirements from blockchain.
 		</p>
-
-		<div class="sm:w-1/2">
-			<Button
-				href="https://www.arduino.cc/en/software/#ide"
-				target="_blank"
-				rel="noopener noreferrer"
-				variant="secondary"
-				class="text-xs"
-				size="sm">Download Arduino IDE</Button
-			>
-		</div>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Setup your Microcontroller</h2>
+		<h2 class="text-4xl font-medium">API Endpoints</h2>
 		<p class="text-lg font-thin text-white"></p>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Your first sketch</h2>
+		<h2 class="text-4xl font-medium">Fetching Data</h2>
 		<p class="text-lg font-thin text-white"></p>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Connect to Wifi</h2>
+		<h2 class="text-4xl font-medium">Creating the sketch</h2>
 		<p class="text-lg font-thin text-white"></p>
 	</section>
 </SectionNavigator>

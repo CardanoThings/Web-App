@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import IntroContainer from '$lib/base/IntroContainer.svelte';
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
-	import WorkshopNavigation from '$lib/components/WorkshopNavigation.svelte';
+	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);

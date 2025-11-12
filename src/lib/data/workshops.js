@@ -17,7 +17,12 @@ export const workshops = [
                 description: "You will learn the very basics of an Arduino Script, how to connect your Microcontroller to your PC and your WIFI and how to make it blink. If you don't know anything about Microcontrollers or Arduino yet, the Introductions-Section has short intros on both.",
                 link: "/workshops/01-basics/arduino-setup",
                 intros: [
-                    { title: "Arduino", link: "/introductions/arduino" },
+                    {
+                        title: "Arduino", link: "/introductions/arduino",
+                    },
+                    {
+                        title: "Microcontrollers", link: "/introductions/esp32-d1-microcontrollers"
+                    }
                 ],
             },
             {
