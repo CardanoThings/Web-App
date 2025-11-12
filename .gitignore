@@ -15,6 +15,10 @@ llms*
 .DS_Store
 Thumbs.db
 
+# VITE & VS CODE
+/.vite
+/.vscode
+
 # Env
 .env
 .env.*
