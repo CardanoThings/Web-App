@@ -71,7 +71,8 @@ export const workshops = [
             },
             {
                 title: "Epoch Clock",
-                description: "Based on what you have learned in former steps and workshops, you will learn how to build a physical Epoch Clock with a D1 Microcontroller and LED Matrix."
+                description: "Based on what you have learned in former steps and workshops, you will learn how to build a physical Epoch Clock with a D1 Microcontroller and LED Matrix.",
+                link: "/workshops/02-read-and-output/epoch-clock"
             }
         ],
         link: "/workshops/02-read-and-output",
