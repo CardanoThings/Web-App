@@ -20,7 +20,7 @@
 		Testnet.
 	</p>
 	<div class="mt-4 sm:w-1/2">
-		<IntroContainer topic="Cardano" link="/introductions/cardano" />
+		<IntroContainer topic="Cardano" />
 	</div>
 </section>
 

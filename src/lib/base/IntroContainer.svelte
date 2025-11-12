@@ -10,8 +10,7 @@
 	<div class="flex flex-col gap-2">
 		<h1 class="text-lg font-normal">You know nothing about {topic}?</h1>
 		<p class="text-xs leading-relaxed font-thin">
-			If you don't know anything about {topic}, you can read more about it in the
-			Introductions-Section.
+			If you don't know anything about {topic} yet, you can read more about it in the Introductions-Section.
 		</p>
 		<Button
 			href={'/introductions/' + topic.toLowerCase()}
