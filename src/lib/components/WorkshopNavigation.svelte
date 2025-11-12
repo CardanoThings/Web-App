@@ -82,31 +82,15 @@
 </script>
 
 {#if navigationTarget}
-	<nav
-		class="mt-16 flex items-center justify-between border-t border-dashed border-white pt-8 text-white"
-	>
-		<div class="flex flex-col gap-2">
-			<span class="text-sm font-thin text-white/60">
-				{#if navigationTarget.type === 'step'}
-					Next Step
-				{:else}
-					Next Workshop
-				{/if}
-			</span>
-			<h3 class="text-2xl font-medium">{navigationTarget.title}</h3>
-		</div>
-		<Button
+	<nav class="mt-16 flex items-center justify-center pt-8 text-white">
+		<div class="w-full border-b border-dashed border-white"></div>
+		<a
 			href={navigationTarget.link}
-			variant="secondary"
-			size="lg"
-			class="flex items-center gap-2"
+			class="flex items-center gap-2 pl-3 text-sm text-nowrap"
+			title={'Continue with ' + navigationTarget.title}
 		>
-			Continue
-			{#if navigationTarget.type === 'step'}
-				<ChevronRight size={20} />
-			{:else}
-				<ArrowRight size={20} />
-			{/if}
-		</Button>
+			{navigationTarget.title}
+			<ArrowRight size={20} />
+		</a>
 	</nav>
 {/if}
