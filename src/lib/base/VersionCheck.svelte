@@ -1,12 +1,17 @@
 <script>
 	import { onMount } from 'svelte';
-	import { version } from '$app/environment';
+	import { version, dev } from '$app/environment';
 	import { fly } from 'svelte/transition';
 
 	let currentVersion = version;
 	let newVersionAvailable = false;
 
 	onMount(() => {
+		// Disable version check during development
+		if (dev) {
+			return;
+		}
+
 		const checkForUpdates = async () => {
 			try {
 				const response = await fetch('/version.json', { cache: 'no-cache' });

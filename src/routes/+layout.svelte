@@ -6,6 +6,7 @@
 	import Background from '$lib/base/Background.svelte';
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import GlossaryTracker from '$lib/components/GlossaryTracker.svelte';
+	import Banner from '$lib/base/Banner.svelte';
 	import { page } from '$app/state';
 	let { children } = $props();
 </script>
@@ -14,6 +15,7 @@
 <VersionCheck />
 <!-- <PWAManager /> -->
 
+<Banner />
 <Header />
 <div class="scaler">
 	<PageTransition transitionKey={page.url.pathname}>
