@@ -23,7 +23,7 @@
 				</Card.Header>
 				<Card.Content class="flex-1"></Card.Content>
 				<Card.Footer class="">
-					<Button href={workshop.link} size="sm">Start Workshop</Button>
+					<Button href={workshop.link} size="sm" class="text-xs">Start Workshop</Button>
 				</Card.Footer>
 			</Card.Root>
 		{/each}

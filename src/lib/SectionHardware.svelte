@@ -14,16 +14,16 @@
 	</div>
 
 	{#each hardware as item}
-		<Card.Root>
+		<Card.Root class="bg-transparent text-white">
 			<Card.Header>
-				<Card.Title class="mt-0 pt-0 text-xl">{item.name}</Card.Title>
-				<Card.Description class="leading-6">
-					{item.intro}
+				<Card.Title class="mt-0 pt-0 text-xl">{item.title}</Card.Title>
+				<Card.Description class="leading-6 text-slate-400">
+					{item.description}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="flex-1"></Card.Content>
 			<Card.Footer>
-				<Button href={item.link} size="sm">Learn More</Button>
+				<Button href={item.link} size="sm" variant="secondary" class="text-sm">Learn More</Button>
 			</Card.Footer>
 		</Card.Root>
 	{/each}
