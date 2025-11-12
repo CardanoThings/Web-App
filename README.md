@@ -1,38 +1,151 @@
-# sv
+# CardanoThings Web App
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+> **Cardano meets the Internet of Things**
 
-## Creating a project
+A comprehensive educational platform for building IoT projects with Cardano blockchain using ESP32-based microcontrollers. Funded by Project Catalyst Fund 11.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Overview
 
-```sh
-# create a new project in the current directory
-npx sv create
+CardanoThings.io is a step-by-step learning platform that teaches developers how to integrate Cardano blockchain technology with Internet of Things (IoT) devices. The platform provides workshops, introductions, hardware guides, and code blocks to help you build real-world Cardano IoT projects.
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Features
 
-## Developing
+- **5 Comprehensive Workshops** - From basics to advanced projects:
+  - Workshop 01: The Basics (Cardano Setup, Arduino Setup, API Setup)
+  - Workshop 02: Read and Output (Fetch Wallet Balance, Display Data, Hardware Control, Epoch Clock)
+  - Workshop 03: Input and Write (Sensor Data, Building APIs, Minting NFTs)
+  - Workshop 04: Cardano Ticker (Data Gathering, Building the Ticker)
+  - Workshop 05: QR-Code Payments (Interface Building, CIP13, QR Codes, Payment Confirmation)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- **Educational Content**:
+  - Introductions to key concepts (Cardano, Blockchain, Arduino, Microcontrollers, APIs, etc.)
+  - Hardware guides for ESP32-based devices
+  - Code blocks and examples
+  - Comprehensive glossary
 
-```sh
+- **Interactive Features**:
+  - Section navigation with sticky sidebar
+  - Workshop step navigation
+  - Search functionality
+  - Responsive design
+
+## Tech Stack
+
+- **Framework**: [SvelteKit](https://kit.svelte.dev/) with [Svelte 5](https://svelte.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) v4
+- **UI Components**: Custom components built with [bits-ui](https://www.bits-ui.com/)
+- **Icons**: [Lucide Svelte](https://lucide.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Deployment**: Static site generation with `@sveltejs/adapter-static`
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- npm, pnpm, or yarn package manager
+
+## Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone <repository-url>
+   cd Web-App
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   # or
+   pnpm install
+   # or
+   yarn install
+   ```
+
+## Development
+
+Start the development server:
+
+```bash
 npm run dev
 
-# or start the server and open the app in a new browser tab
+# or start with auto-open in browser
 npm run dev -- --open
 ```
 
-## Building
+The app will be available at `http://localhost:5173` (or the port shown in the terminal).
 
-To create a production version of your app:
+### Available Scripts
 
-```sh
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build locally
+- `npm run format` - Format code with Prettier
+- `npm run lint` - Lint and check code formatting
+
+## Building for Production
+
+Build the static site:
+
+```bash
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+The production build will be in the `build/` directory, ready to be deployed to any static hosting service.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```text
+src/
+├── lib/
+│   ├── base/              # Base components (Header, Footer, etc.)
+│   ├── components/        # Reusable components
+│   │   ├── ui/           # UI component library
+│   │   ├── SectionNavigator.svelte
+│   │   └── ...
+│   ├── data/             # Data files (workshops, introductions, etc.)
+│   └── ...
+├── routes/               # SvelteKit routes
+│   ├── workshops/        # Workshop pages
+│   ├── introductions/    # Introduction pages
+│   ├── hardware/         # Hardware pages
+│   ├── blocks/           # Code block pages
+│   └── glossary/         # Glossary page
+└── stores/               # Svelte stores
+```
+
+## Key Components
+
+- **SectionNavigator** - Provides sticky sidebar navigation for workshop steps
+- **WorkshopNavigation** - Bottom navigation between workshop steps
+- **IntroContainer** - Contextual introduction links
+- **SyntaxHighlighter** - Code syntax highlighting
+
+## Data Management
+
+Content is managed through data files in `src/lib/data/`:
+
+- `workshops.js` - Workshop definitions and steps
+- `introductions.js` - Introduction content
+- `hardware.js` - Hardware information
+- `blocks.js` - Code block definitions
+- `glossary.js` - Glossary terms
+
+## Contributing
+
+This project is part of the CardanoThings.io platform. For contributions, please follow the project's contribution guidelines.
+
+## Links
+
+- **Website**: [cardanothings.io](https://cardanothings.io)
+- **Project Catalyst**: Funded by Project Catalyst Fund 11
+
+---
+
+Built with ❤️ for the Cardano community
