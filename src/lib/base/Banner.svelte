@@ -3,7 +3,7 @@
 	import { MoveRight } from 'lucide-svelte';
 </script>
 
-{#if dev}
+{#if !dev}
 	<div class="w-full bg-sky-200 p-3 text-center text-sm font-medium">
 		<a
 			href="https://bsky.app/profile/cardanothings.io"
