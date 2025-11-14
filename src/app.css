@@ -152,4 +152,8 @@
 	li {
 		@apply mb-2 pl-0;
 	}
+
+	.overview-list {
+		@apply  list-outside leading-relaxed font-medium;
+	}
 }
