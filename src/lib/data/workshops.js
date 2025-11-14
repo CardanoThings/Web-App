@@ -37,7 +37,7 @@ export const workshops = [
         link: "/workshops/01-basics",
         requirements: {
             hardware: [
-                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
+                "ESP8266 or ESP32 based Microcontroller",
                 "Micro USB Cable to connect the Microcontroller to your PC",
                 "Computer with Arduino IDE installed",
                 "WIFI Network with Internet Access"
@@ -46,7 +46,6 @@ export const workshops = [
                 "Webbrowser",
                 "Yoroi Wallet (Preprod Testnet)",
                 "Arduino IDE",
-                "NodeJs and NPM"
             ]
         }
     },

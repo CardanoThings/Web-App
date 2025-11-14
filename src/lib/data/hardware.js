@@ -78,39 +78,35 @@ export const hardware = [
     "link": "/hardware/cheap-yellow-display-cyd"
   },
   {
-    "name": "Arduino Uno",
-    "slug": "arduino-uno",
-    "intro": "The Arduino Uno is a microcontroller board based on the ATmega328P, ideal for beginners in electronics and programming.",
-    "features": [
-      "ATmega328P microcontroller (16 MHz)",
-      "32 KB flash memory, 2 KB SRAM, 1 KB EEPROM",
-      "14 digital I/O pins (6 PWM), 6 analog inputs",
-      "USB connection for programming/power",
-      "ICSP header for advanced programming",
-      "Reset button, power LED"
+    name: "ESP8266 - D1 Mini",
+    slug: "esp8266-d1-mini",
+    intro: "The ESP8266 D1 Mini is a compact development board based on the ESP8266 microcontroller, offering Wi-Fi for IoT projects.",
+    features: [
+      "ESP8266 microcontroller (80 MHz)",
+      "4 MB flash memory",
+      "11 GPIOs, ADC",
+      "2.4 GHz Wi-Fi",
+      "Micro-USB for programming/power",
+      "Compatible with Arduino IDE"
     ],
-    "howToUse": "Connect via USB, install Arduino IDE, select Arduino Uno board, upload sketches. Use pins for digital/analog I/O, sensors, motors.",
-    "resources": [
+    howToUse: "Connect via USB, select WeMos D1 R2 & mini in Arduino IDE, upload sketches. Use for Wi-Fi connectivity and GPIO control.",
+    resources: [
       {
-        "name": "Official Site",
-        "url": "https://store.arduino.cc/products/arduino-uno-rev3"
-      },
-      {
-        "name": "Pinout Diagram",
-        "url": "https://www.arduino.cc/en/uploads/Main/Arduino_Uno_Rev3-schematic.pdf"
+        "name": "Pinout",
+        "url": "https://www.wemos.cc/en/latest/d1/d1_mini.html"
       }
     ],
-    "whereToBuy": [
+    whereToBuy: [
       {
         "name": "Amazon",
-        "url": "https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6"
+        "url": "https://www.amazon.com/HiLetgo-ESP8266-ESP-12E-Development-Board/dp/B081CSJV2V"
       },
       {
         "name": "AliExpress",
         "url": "https://www.aliexpress.com/item/1005001621294563.html"
       }
     ],
-    "link": "/hardware/arduino-uno"
+    "link": "/hardware/esp8266-d1-mini"
   },
   {
     "name": "DHT11 Sensor",
