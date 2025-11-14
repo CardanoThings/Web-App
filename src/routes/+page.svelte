@@ -4,6 +4,7 @@
 	import SectionWorkshops from '$lib/SectionWorkshops.svelte';
 	import SectionIntroductions from '$lib/SectionIntroductions.svelte';
 	import SectionBlocks from '$lib/SectionBlocks.svelte';
+	import FeaturedProjects from '$lib/FeaturedProjects.svelte';
 	let { data } = $props();
 </script>
 
@@ -52,4 +53,8 @@
 			>View Hardware List</Button
 		>
 	</section>
+</div>
+
+<div class="mb-8 w-full border-b border-dashed border-white pb-8">
+	<FeaturedProjects />
 </div>
