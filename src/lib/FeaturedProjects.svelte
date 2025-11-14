@@ -29,6 +29,9 @@
 		<Card.Header>
 			<Card.Title>Slide 2</Card.Title>
 		</Card.Header>
+		<Card.Content>
+			<p>This is the content of the slide.</p>
+		</Card.Content>
 	</Card.Root>
 	<Card.Root>
 		<Card.Header>
