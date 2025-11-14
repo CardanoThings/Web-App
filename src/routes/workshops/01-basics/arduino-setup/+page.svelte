@@ -97,7 +97,7 @@
 		</Card.Root>
 
 		<h3 class="mt-4 text-2xl font-medium">How it works</h3>
-		<ul class="list-inside">
+		<ul>
 			<li>The <i>setup</i> function is called once when the microcontroller starts up.</li>
 			<li>The <i>loop</i> function is called repeatedly.</li>
 			<li>The <i>setup</i> function is used to initialize the microcontroller.</li>
@@ -137,7 +137,7 @@
 		</Card.Root>
 
 		<h3 class="mt-4 text-2xl font-medium">How it works</h3>
-		<ul class="list-inside">
+		<ul>
 			<li>The include <i>WiFi.h</i> library is used to connect to your Wifi.</li>
 			<li>
 				The <i>ssid</i> and <i>password</i> variables are used to store your Wifi credentials.

@@ -56,7 +56,7 @@
 			for testing purposes. Follow the steps below to request tADA:
 		</p>
 
-		<ol class="font-normal">
+		<ol>
 			<li>
 				Switch to the Preprod Testnet in the Yoroi extension: Go to Settings and click on "Switch
 				Network" and select "Preprod Testnet". An orange banner at the top of the extension will
