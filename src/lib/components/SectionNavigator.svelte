@@ -87,14 +87,14 @@
 
 <div class="relative flex gap-16">
 	<!-- Main Content -->
-	<div bind:this={containerElement} class="flex-1">
+	<div bind:this={containerElement} class="min-w-0 flex-1">
 		{@render children?.()}
 	</div>
 
 	<!-- Sticky Sidebar -->
 	{#if sectionsList.length > 0}
 		<aside
-			class="sticky top-6 mt-5 hidden h-fit w-1/4 shrink-0 md:block"
+			class="sticky top-6 mt-5 hidden h-fit w-1/4 min-w-0 shrink-0 overflow-x-hidden md:block"
 			aria-label="Table of contents"
 		>
 			<nav class="flex flex-col gap-2">
@@ -106,7 +106,7 @@
 							e.preventDefault();
 							scrollToSection(section.id);
 						}}
-						class="flex items-center gap-1 text-sm whitespace-nowrap text-slate-500 transition-colors hover:text-white {activeSectionId ===
+						class="flex min-w-0 items-center gap-1 text-sm text-slate-500 transition-colors hover:text-white {activeSectionId ===
 						section.id
 							? 'font-medium text-white'
 							: ''}"

@@ -1,6 +1,6 @@
 <script>
 	import * as Card from '$lib/components/ui/card/index.js';
-	import SyntaxHighlighter from '$lib/SyntaxHighlighter.svelte';
+	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 
 	let { data } = $props();
 </script>

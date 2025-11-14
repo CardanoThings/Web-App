@@ -5,13 +5,13 @@
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import SyntaxHighlighter from '$lib/SyntaxHighlighter.svelte';
+	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
 </script>
 
-<section class="mb-16 flex flex-col gap-4 text-white">
+<section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
 		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 01: The Basics</h1>

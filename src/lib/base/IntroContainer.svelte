@@ -13,7 +13,7 @@
 			If you don't know anything about {topic} yet, you can read more about it in the Introductions-Section.
 		</p>
 		<Button
-			href={'/introductions/' + topic.toLowerCase()}
+			href={!link ? '/introductions/' + topic.toLowerCase() : link}
 			variant="secondary"
 			size="sm"
 			class="mt-2 mb-1 w-fit text-xs">Introduction to {topic}</Button
