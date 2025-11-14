@@ -7,6 +7,7 @@
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import GlossaryTracker from '$lib/components/GlossaryTracker.svelte';
 	import Banner from '$lib/base/Banner.svelte';
+	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	import { page } from '$app/state';
 	let { children } = $props();
 </script>
@@ -25,6 +26,7 @@
 	</PageTransition>
 </div>
 <Footer />
+<Toaster />
 
 <!-- 
 disable GlossaryTracker for now as it's causing hydration issues

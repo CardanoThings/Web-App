@@ -25,20 +25,10 @@
 
 	onMount(async () => {
 		await highlightCode();
-		updateTheme();
 	});
 
 	$: if (code || language) {
 		highlightCode();
-	}
-
-	function updateTheme() {
-		if (!container) return;
-
-		// Remove existing theme classes
-		container.classList.remove('hljs-light', 'hljs-dark');
-
-		container.classList.add('hljs-dark');
 	}
 
 	async function highlightCode() {
@@ -71,7 +61,7 @@
 	</div>
 {/if}
 
-<section bind:this={container} class={$$props.class + ' code-container'}>
+<section bind:this={container} class={$$props.class + ' code-container hljs-dark'}>
 	<div class="context">
 		<span class="language-badge">{language}</span>
 		<Button class="copy-button" onclick={copyCode} title="Copy to Clipboard"><Copy /></Button>
@@ -151,10 +141,10 @@
 	.code-pre {
 		position: relative;
 		margin: 0 !important;
-		padding: 1.5rem 1rem 1rem 1rem !important;
+		padding: 1.5rem 0rem 1.5rem 0rem !important;
 		overflow-x: auto;
 		border-radius: 0.5rem;
-		border: 1px solid var(--border);
+		/* border: 1px solid var(--border); */
 	}
 
 	.code-pre code {
@@ -162,8 +152,8 @@
 		margin: 0 !important;
 		background: none !important;
 		font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-		font-size: 0.875rem;
-		line-height: 1.6;
+		font-size: 0.75rem;
+		line-height: 1.75;
 		white-space: pre;
 		word-wrap: normal;
 		display: block;
