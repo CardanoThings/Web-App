@@ -41,6 +41,7 @@
 	let copyTimeout = null;
 	let previousCode = '';
 	let previousLanguage = '';
+	let previousShowComments = false;
 	let normalizedCodeForCopy = '';
 	let isExpanded = false;
 	let lineCount = 0;
@@ -51,10 +52,11 @@
 		await highlightCode();
 	});
 
-	// Optimize reactive statement to only re-highlight when code or language actually changes
-	$: if (code !== previousCode || language !== previousLanguage) {
+	// Optimize reactive statement to re-highlight when code, language, or comment visibility changes
+	$: if (code !== previousCode || language !== previousLanguage || showComments !== previousShowComments) {
 		previousCode = code;
 		previousLanguage = language;
+		previousShowComments = showComments;
 		highlightCode();
 	}
 
@@ -107,6 +109,124 @@
 		return normalized.replace(/^\n+|\n+$/g, '');
 	}
 
+	/**
+	 * Removes comment lines from code
+	 * Handles single-line comments (//) and multi-line comments
+	 * Preserves preprocessor directives (lines starting with #)
+	 * Preserves empty lines for code readability
+	 * Removes entire lines that start with comments
+	 */
+	function removeComments(text, showComments) {
+		if (!text || showComments) return text;
+
+		const lines = text.split('\n');
+		const filteredLines = [];
+		let inMultiLineComment = false;
+
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			const isOriginallyEmpty = line.trim().length === 0;
+			let processedLine = line;
+
+			// Handle multi-line comments
+			if (inMultiLineComment) {
+				// Check if this line ends the multi-line comment
+				const endIndex = processedLine.indexOf('*/');
+				if (endIndex !== -1) {
+					// Multi-line comment ends on this line
+					inMultiLineComment = false;
+					// Keep only the part after the comment
+					processedLine = processedLine.substring(endIndex + 2).trimStart();
+					// If nothing remains after the comment, check if line was originally empty
+					if (processedLine.trim().length === 0) {
+						// If line was originally empty, preserve it; otherwise remove it (it was a comment-only line)
+						if (isOriginallyEmpty) {
+							filteredLines.push('');
+						}
+						continue;
+					}
+				} else {
+					// Still inside multi-line comment
+					// If line starts with comment (only whitespace before comment), remove entire line
+					// Otherwise preserve empty lines
+					if (isOriginallyEmpty) {
+						filteredLines.push('');
+					}
+					// Skip comment-only lines inside multi-line comments
+					continue;
+				}
+			}
+
+			// Check for start of multi-line comment
+			const multiLineStart = processedLine.indexOf('/*');
+			if (multiLineStart !== -1) {
+				const multiLineEnd = processedLine.indexOf('*/', multiLineStart + 2);
+				if (multiLineEnd !== -1) {
+					// Multi-line comment on same line
+					processedLine =
+						processedLine.substring(0, multiLineStart) +
+						processedLine.substring(multiLineEnd + 2);
+					processedLine = processedLine.trim();
+				} else {
+					// Multi-line comment starts but doesn't end on this line
+					// Check if comment starts at the beginning of the line (after whitespace)
+					const trimmedBeforeComment = processedLine.substring(0, multiLineStart).trim();
+					if (trimmedBeforeComment.length === 0) {
+						// Comment starts at beginning of line, remove entire line
+						inMultiLineComment = true;
+						continue;
+					}
+					// Multi-line comment starts but doesn't end on this line
+					inMultiLineComment = true;
+					// Keep only the part before the comment
+					processedLine = processedLine.substring(0, multiLineStart).trimEnd();
+					// If nothing remains before the comment, check if line was originally empty
+					if (processedLine.trim().length === 0) {
+						if (isOriginallyEmpty) {
+							filteredLines.push('');
+						}
+						continue;
+					}
+				}
+			}
+
+			// Check if line starts with a single-line comment (// after optional whitespace)
+			const trimmedLine = processedLine.trim();
+			if (trimmedLine.startsWith('//')) {
+				// Entire line is a comment, remove it completely
+				continue;
+			}
+
+			// Remove single-line comments (// only, not #)
+			// Only remove if // is not inside a string
+			const singleLineComment = processedLine.match(/\/\/(?=(?:[^"']|"[^"]*"|'[^']*')*$)/);
+			if (singleLineComment) {
+				const commentIndex = singleLineComment.index;
+				// Check if comment starts at the beginning (after whitespace)
+				const beforeComment = processedLine.substring(0, commentIndex).trim();
+				if (beforeComment.length === 0) {
+					// Comment starts at beginning of line, remove entire line
+					continue;
+				}
+				// Comment is after code, just remove the comment part
+				processedLine = processedLine.substring(0, commentIndex).trimEnd();
+			}
+
+			// Preserve empty lines and add non-empty lines
+			if (isOriginallyEmpty) {
+				filteredLines.push('');
+			} else if (processedLine.trim().length > 0) {
+				filteredLines.push(processedLine);
+			} else {
+				// Line became empty after comment removal
+				// This means it was a comment-only line, so don't preserve it
+				continue;
+			}
+		}
+
+		return filteredLines.join('\n');
+	}
+
 	async function highlightCode() {
 		if (!code) {
 			highlightedCode = '';
@@ -118,12 +238,17 @@
 
 		await tick();
 		try {
-			// Normalize indentation first, then trim leading/trailing empty lines
-			const normalizedCode = normalizeIndentation(code);
+			// Normalize indentation first
+			let normalizedCode = normalizeIndentation(code);
+			
+			// Remove comments if they're toggled off
+			const codeForHighlighting = removeComments(normalizedCode, showComments);
+			
+			// Store the version with comments for copying (always copy full code with comments)
 			normalizedCodeForCopy = normalizedCode;
-			lineCount = normalizedCode.split('\n').length;
+			lineCount = codeForHighlighting.split('\n').length;
 
-			const result = hljs.highlight(normalizedCode, {
+			const result = hljs.highlight(codeForHighlighting, {
 				language: language === 'arduino' ? 'cpp' : language,
 				ignoreIllegals: true
 			});
@@ -139,10 +264,11 @@
 		} catch (error) {
 			// Fallback to plain text if highlighting fails
 			console.warn(`Syntax highlighting failed for language "${language}":`, error);
-			const normalizedCode = normalizeIndentation(code);
+			let normalizedCode = normalizeIndentation(code);
+			const codeForHighlighting = removeComments(normalizedCode, showComments);
 			normalizedCodeForCopy = normalizedCode;
-			lineCount = normalizedCode.split('\n').length;
-			const escapedCode = normalizedCode.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			lineCount = codeForHighlighting.split('\n').length;
+			const escapedCode = codeForHighlighting.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 			fullHighlightedCode = escapedCode;
 
 			// If code is longer than MAX_LINES_COLLAPSED, show only first 25 lines initially
@@ -167,6 +293,7 @@
 
 	function toggleComments() {
 		showComments = !showComments;
+		// Reactive statement will trigger highlightCode() automatically
 	}
 
 	async function copyCode() {
@@ -248,7 +375,7 @@
 			class:collapsed={lineCount > MAX_LINES_COLLAPSED && !isExpanded}
 			class:expanded={lineCount > MAX_LINES_COLLAPSED && isExpanded}
 			class:short-code={lineCount <= MAX_LINES_COLLAPSED}>
-			<code class={`hljs ${language}`} class:comments-hidden={!showComments}>{@html highlightedCode}</code
+			<code class={`hljs ${language}`}>{@html highlightedCode}</code
 			>
 		</pre>
 	</section>
@@ -505,11 +632,7 @@
 		opacity: 0.6;
 	}
 
-	/* Hide comments when toggled off */
-	.code-pre code.comments-hidden :global(.hljs-comment),
-	.code-pre code.comments-hidden :global(.hljs-quote) {
-		display: none !important;
-	}
+	/* Comments are now removed from the code, not just hidden */
 
 	/* Scrollbar styling - horizontal and vertical */
 	.code-container::-webkit-scrollbar {
