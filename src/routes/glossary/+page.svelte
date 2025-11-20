@@ -47,9 +47,28 @@
 		{:else}
 			<ul>
 				{#each filteredEntries as entry}
-					<li class="mb-4">
-						{entry.term}
-						<p class="font-thin">{entry.definition}</p>
+					<li class="mb-6">
+						<h3 class="mb-2 text-xl font-medium">{entry.term}</h3>
+						<p class="mb-2 font-thin">{entry.definition}</p>
+						{#if entry.links && entry.links.length > 0}
+							<div class="mt-2">
+								<p class="mb-1 text-sm font-medium">Learn more:</p>
+								<ul class="ml-4 list-disc space-y-1">
+									{#each entry.links as link}
+										<li>
+											<a
+												href={link.url}
+												target={link.url.startsWith('http') ? '_blank' : undefined}
+												rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+												class="link text-sm"
+											>
+												{link.title}
+											</a>
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
 					</li>
 				{/each}
 			</ul>

@@ -106,7 +106,27 @@
 				</Card.Title>
 			</Card.Header>
 			<Card.Content class="mt-0 pt-0">
-				{termEntry?.definition}
+				<p class="mb-2">{termEntry?.definition}</p>
+				{#if termEntry?.links && termEntry.links.length > 0}
+					<div class="mt-3 border-t border-gray-700 pt-2">
+						<p class="mb-1 text-xs font-medium text-gray-400">Learn more:</p>
+						<ul class="space-y-1">
+							{#each termEntry.links as link}
+								<li>
+									<a
+										href={link.url}
+										target={link.url.startsWith('http') ? '_blank' : undefined}
+										rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+										class="link text-xs"
+										onclick={(e) => e.stopPropagation()}
+									>
+										{link.title}
+									</a>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
 			</Card.Content>
 			<Card.Footer class="mt-2">
 				<Button variant="outline" on:click={() => (open = false)}>Close</Button>
