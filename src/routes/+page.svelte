@@ -20,7 +20,7 @@
 	<SectionWorkshops />
 </div>
 
-<div class="mb-12 w-full border-b border-dashed border-white">
+<div class="mb-8 w-full border-b border-dashed border-white">
 	<SectionIntroductions />
 </div>
 
@@ -28,7 +28,7 @@
 	<SectionBlocks />
 </div> -->
 
-<div class="mb-12 flex border-b border-dashed border-white">
+<div class="mb-8 flex border-b border-dashed border-white">
 	<section id="blocks" class="mb-8 w-1/2">
 		<div class="mb-4 text-white">
 			<h1 class="text-3xl">Glossary</h1>
