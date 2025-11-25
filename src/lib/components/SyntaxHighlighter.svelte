@@ -64,6 +64,7 @@
 	 * Normalizes indentation by detecting the minimum indentation and removing it from all lines
 	 * This ensures consistent indentation regardless of how the code is formatted in the source
 	 * Handles both spaces and tabs, converting tabs to spaces for consistent normalization
+	 * Only removes indentation if ALL non-empty lines have at least some indentation
 	 */
 	function normalizeIndentation(text) {
 		if (!text) return text;
@@ -85,23 +86,33 @@
 			.map((line) => {
 				const match = line.match(/^(\s*)/);
 				return match ? match[1].length : 0;
-			})
-			.filter((length) => length > 0);
+			});
 
-		if (indentLengths.length === 0) {
-			// No indentation to remove
+		// Only normalize if ALL non-empty lines have some indentation
+		// If any line starts at column 0, don't remove any indentation
+		const hasZeroIndent = indentLengths.some((length) => length === 0);
+		
+		if (hasZeroIndent || indentLengths.length === 0) {
+			// Some lines start at column 0, so don't remove indentation
+			// Just trim leading/trailing empty lines
 			return text.replace(/^\n+|\n+$/g, '');
 		}
 
 		const minIndent = Math.min(...indentLengths);
+		
+		// Safety check: don't remove more than the minimum
+		if (minIndent <= 0) {
+			return text.replace(/^\n+|\n+$/g, '');
+		}
 
 		// Remove the minimum indentation from all lines
 		const normalized = linesWithSpaces
 			.map((line) => {
 				// For empty lines, keep them as is
 				if (line.trim().length === 0) return line;
-				// Remove the minimum indentation
-				return line.slice(minIndent);
+				// Remove the minimum indentation, but ensure we don't go beyond the line length
+				const indentToRemove = Math.min(minIndent, line.length);
+				return line.slice(indentToRemove);
 			})
 			.join('\n');
 
@@ -422,6 +433,8 @@
 		flex-direction: column;
 		border-radius: 0.5rem;
 		background: #0b1c2c;
+		/* Ensure content is not clipped */
+		overflow-clip-margin: 0;
 	}
 
 	.context {
@@ -505,7 +518,7 @@
 		position: static;
 		margin: 0 !important;
 		padding: 1.5rem 0 calc(1.5rem + 2.5rem) 0 !important;
-		overflow-x: visible;
+		overflow-x: auto;
 		overflow-y: auto;
 		border-radius: 0;
 		transition: max-height 0.3s ease;
@@ -516,6 +529,8 @@
 		min-width: 0; /* Allow pre to shrink below content size */
 		background: transparent !important;
 		flex-shrink: 0;
+		/* Ensure content is not clipped */
+		overflow-clip-margin: 0;
 	}
 
 	/* Remove max-height for code blocks with 25 lines or less */
@@ -617,6 +632,9 @@
 		tab-size: 2;
 		overflow-x: visible;
 		overflow-y: visible;
+		/* Ensure text is not clipped */
+		text-overflow: clip;
+		min-width: max-content;
 	}
 
 	/* Ensure highlight.js themes apply properly */
