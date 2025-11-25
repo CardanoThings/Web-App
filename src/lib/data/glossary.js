@@ -98,7 +98,9 @@ export let glossary = [
         definition: "A software application or hardware device that stores your cryptocurrency and allows you to send and receive transactions. A wallet contains your private keys (which prove ownership) and your public addresses (where others can send you funds). Popular Cardano wallets include Yoroi, Vespr, Eternl, and Begin.",
         links: [
             { title: "Yoroi Wallet", url: "https://yoroi-wallet.com/" },
-            { title: "Vespr Wallet", url: "https://vespr.xyz/" }
+            { title: "Vespr Wallet", url: "https://vespr.xyz/" },
+            { title: "Eternl Wallet", url: "https://eternl.io/" },
+            { title: "Begin Wallet", url: "https://begin.is/" }
         ]
     },
     {

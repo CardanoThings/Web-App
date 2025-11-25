@@ -13,22 +13,22 @@
 </div> -->
 
 <section class="flex w-3/4">
-	<h1 class="mb-12 text-8xl font-thin text-white">Cardano meets the Internet of Things.</h1>
+	<h1 class="mb-16 text-8xl font-thin text-white">Cardano meets the Internet of Things.</h1>
 </section>
 
-<div class="mb-16 w-full border-b border-dashed border-white">
+<div class="mb-12 w-full border-b border-dashed border-white">
 	<SectionWorkshops />
 </div>
 
-<div class="mb-16 w-full border-b border-dashed border-white">
+<div class="mb-12 w-full border-b border-dashed border-white">
 	<SectionIntroductions />
 </div>
 
-<div class="mb-8 w-full border-b border-dashed border-white">
+<!-- <div class="mb-8 w-full border-b border-dashed border-white">
 	<SectionBlocks />
-</div>
+</div> -->
 
-<div class="mb-8 flex border-b border-dashed border-white">
+<div class="mb-12 flex border-b border-dashed border-white">
 	<section id="blocks" class="mb-8 w-1/2">
 		<div class="mb-4 text-white">
 			<h1 class="text-3xl">Glossary</h1>
