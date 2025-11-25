@@ -51,33 +51,51 @@ export const hardware = [
       "TFT_eSPI (by Bodmer)",
       "XPT2046_Touchscreen (by Paul Stoffregen)"
     ],
-    code: `#include <TFT_eSPI.h>
-#include <XPT2046_Touchscreen.h>
-#include <SPI.h>
+    code: `// Cheap Yellow Display (CYD) - TFT Display and Touchscreen Example
+// This example demonstrates how to use the integrated TFT display and touchscreen
 
-TFT_eSPI tft = TFT_eSPI();
-XPT2046_Touchscreen ts(15); // CS pin
+// Include required libraries
+#include <TFT_eSPI.h>              // TFT display library for ILI9341
+#include <XPT2046_Touchscreen.h>   // Touchscreen controller library
+#include <SPI.h>                   // SPI communication library
+
+// Initialize display and touchscreen objects
+TFT_eSPI tft = TFT_eSPI();                    // Create TFT display object
+XPT2046_Touchscreen ts(15);                    // Create touchscreen object (CS pin on GPIO 15)
 
 void setup() {
+  // Initialize serial communication for debugging
   Serial.begin(115200);
-  tft.init();
-  tft.setRotation(0);
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setTextSize(2);
   
-  ts.begin();
-  ts.setRotation(0);
+  // Initialize and configure the TFT display
+  tft.init();                      // Initialize the display
+  tft.setRotation(0);              // Set display rotation (0-3 for 0°, 90°, 180°, 270°)
+  tft.fillScreen(TFT_BLACK);       // Fill screen with black color
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);  // Set text color (foreground, background)
+  tft.setTextSize(2);              // Set text size (1-8)
   
-  tft.drawString("CYD Test", 50, 100);
+  // Initialize and configure the touchscreen
+  ts.begin();                      // Initialize touchscreen
+  ts.setRotation(0);               // Set touchscreen rotation to match display
+  
+  // Draw initial text on the display
+  tft.drawString("CYD Test", 50, 100);  // Draw string at coordinates (x, y)
 }
 
 void loop() {
+  // Check if the touchscreen is being touched
   if (ts.touched()) {
+    // Get the touch point coordinates
     TS_Point p = ts.getPoint();
-    tft.fillCircle(p.x, p.y, 5, TFT_RED);
+    
+    // Draw a red circle at the touch point
+    tft.fillCircle(p.x, p.y, 5, TFT_RED);  // Draw filled circle (x, y, radius, color)
+    
+    // Print touch coordinates to serial monitor
     Serial.printf("Touch: x=%d, y=%d\\n", p.x, p.y);
   }
+  
+  // Small delay to prevent excessive processing
   delay(10);
 }`,
     link: "/hardware/cheap-yellow-display-cyd"
@@ -131,37 +149,51 @@ void loop() {
       "BluetoothSerial (built-in)",
       "ArduinoJson (by Benoit Blanchon)"
     ],
-    code: `#include <WiFi.h>
+    code: `// ESP32-C3 WiFi Connection Example
+// This example demonstrates how to connect to WiFi and blink the built-in LED
 
-const char* ssid = "YOUR_WIFI_SSID";
-const char* password = "YOUR_WIFI_PASSWORD";
+// Include WiFi library (built-in)
+#include <WiFi.h>
+
+// WiFi network credentials - replace with your network details
+const char* ssid = "YOUR_WIFI_SSID";        // Your WiFi network name
+const char* password = "YOUR_WIFI_PASSWORD"; // Your WiFi password
 
 void setup() {
+  // Initialize serial communication for debugging
   Serial.begin(115200);
-  delay(1000);
+  delay(1000);  // Wait for serial monitor to open
   
-  // Initialize WiFi
+  // Configure WiFi mode as Station (client mode)
   WiFi.mode(WIFI_STA);
+  
+  // Begin WiFi connection with credentials
   WiFi.begin(ssid, password);
   
+  // Wait for WiFi connection to be established
   Serial.print("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    Serial.print(".");  // Print dots while connecting
   }
   
+  // Connection successful - print IP address
   Serial.println();
   Serial.print("Connected! IP address: ");
-  Serial.println(WiFi.localIP());
+  Serial.println(WiFi.localIP());  // Print the assigned IP address
   
-  pinMode(8, OUTPUT); // Built-in LED on GPIO 8
+  // Configure built-in LED pin (GPIO 8 on ESP32-C3)
+  pinMode(8, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(8, HIGH);
-  delay(500);
-  digitalWrite(8, LOW);
-  delay(500);
+  // Blink the built-in LED
+  digitalWrite(8, HIGH);  // Turn LED on
+  delay(500);              // Wait 500ms
+  digitalWrite(8, LOW);    // Turn LED off
+  delay(500);              // Wait 500ms
+  
+  // Print status message
   Serial.println("ESP32-C3 running...");
 }`,
     link: "/hardware/esp32-c3"
@@ -208,28 +240,45 @@ void loop() {
     libraries: [
       "No external library required (uses digitalWrite)"
     ],
-    code: `// 3V Relay Module Control
-// Connect: VCC -> 3.3V, GND -> GND, IN -> GPIO 12
+    code: `// 3V Relay Module Control Example
+// This example demonstrates how to control a 3V single-channel relay module
+// 
+// Wiring:
+//   VCC -> 3.3V
+//   GND -> GND
+//   IN  -> GPIO 12
+//
+// Note: This relay module is active LOW (LOW = ON, HIGH = OFF)
 
-const int relayPin = 12; // GPIO pin connected to relay IN
+// Define the GPIO pin connected to the relay IN pin
+const int relayPin = 12;  // Change this to match your wiring
 
 void setup() {
+  // Initialize serial communication for debugging
   Serial.begin(115200);
+  
+  // Configure relay pin as output
   pinMode(relayPin, OUTPUT);
-  digitalWrite(relayPin, HIGH); // Start with relay OFF (active LOW)
+  
+  // Set relay to OFF state initially (HIGH = OFF for active LOW relay)
+  digitalWrite(relayPin, HIGH);
+  
+  // Confirm initialization
   Serial.println("Relay module initialized");
 }
 
 void loop() {
-  // Turn relay ON (active LOW)
+  // Turn relay ON (set pin LOW for active LOW relay)
   Serial.println("Relay ON");
-  digitalWrite(relayPin, LOW);
-  delay(2000);
+  digitalWrite(relayPin, LOW);  // LOW activates the relay
+  delay(2000);                  // Keep relay ON for 2 seconds
   
-  // Turn relay OFF
+  // Turn relay OFF (set pin HIGH for active LOW relay)
   Serial.println("Relay OFF");
-  digitalWrite(relayPin, HIGH);
-  delay(2000);
+  digitalWrite(relayPin, HIGH); // HIGH deactivates the relay
+  delay(2000);                   // Keep relay OFF for 2 seconds
+  
+  // This creates a 2-second ON/OFF cycle
 }`,
     link: "/hardware/relay-module-3v-1channel"
   },
@@ -280,40 +329,65 @@ void loop() {
       "FastLED (by FastLED)",
       "Adafruit NeoPixel (alternative)"
     ],
-    code: `#include <FastLED.h>
+    code: `// WS2812B 8x8 LED Matrix Example
+// This example demonstrates how to control a WS2812B LED matrix with rainbow animation
+//
+// Wiring:
+//   VCC -> 5V
+//   GND -> GND
+//   DIN -> GPIO 2 (or any digital pin)
 
-#define LED_PIN     2    // GPIO pin connected to DIN
-#define NUM_LEDS    64   // 8x8 = 64 LEDs
-#define BRIGHTNESS  50   // 0-255
-#define LED_TYPE    WS2812B
-#define COLOR_ORDER GRB
+// Include FastLED library
+#include <FastLED.h>
 
+// Configuration defines
+#define LED_PIN     2    // GPIO pin connected to matrix DIN pin
+#define NUM_LEDS    64   // Total number of LEDs (8x8 matrix = 64 LEDs)
+#define BRIGHTNESS  50   // Brightness level (0-255, lower = dimmer)
+#define LED_TYPE    WS2812B  // LED chip type
+#define COLOR_ORDER GRB       // Color order (Green, Red, Blue)
+
+// Create array to store LED color data
 CRGB leds[NUM_LEDS];
 
 void setup() {
+  // Initialize serial communication for debugging
   Serial.begin(115200);
+  
+  // Configure FastLED with our settings
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+  
+  // Set overall brightness (reduces power consumption and heat)
   FastLED.setBrightness(BRIGHTNESS);
+  
+  // Confirm initialization
   Serial.println("WS2812B Matrix initialized");
 }
 
 void loop() {
-  // Fill with rainbow colors
+  // Create rainbow animation effect
+  // This loops through all LEDs and assigns colors based on position and time
   for (int i = 0; i < NUM_LEDS; i++) {
+    // Calculate hue: position-based + time-based animation
+    // CHSV: Hue (0-255), Saturation (255 = full color), Value (255 = full brightness)
     leds[i] = CHSV((i * 256 / NUM_LEDS + millis() / 10) % 256, 255, 255);
   }
-  FastLED.show();
-  delay(10);
   
-  // Example: Draw a pattern
-  // fill_solid(leds, NUM_LEDS, CRGB::Black);
-  // leds[XY(3, 3)] = CRGB::Red;  // Center pixel
+  // Update the LED matrix with new colors
+  FastLED.show();
+  delay(10);  // Small delay for smooth animation
+  
+  // Alternative example: Draw a static pattern
+  // Uncomment the lines below to draw a red dot at the center
+  // fill_solid(leds, NUM_LEDS, CRGB::Black);  // Clear all LEDs (black)
+  // leds[XY(3, 3)] = CRGB::Red;              // Set center pixel (3,3) to red
   // FastLED.show();
 }
 
-// Helper function to convert X,Y to linear index (if needed)
+// Helper function to convert 2D coordinates (x, y) to linear array index
+// Useful when thinking of the matrix as an 8x8 grid instead of a linear array
 uint8_t XY(uint8_t x, uint8_t y) {
-  return y * 8 + x;
+  return y * 8 + x;  // Convert row (y) and column (x) to index
 }`,
     link: "/hardware/ws2812b-led-matrix-8x8"
   },
@@ -366,53 +440,79 @@ uint8_t XY(uint8_t x, uint8_t y) {
       "Adafruit GFX Library (dependency)",
       "Wire (built-in I2C)"
     ],
-    code: `#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SH110X.h>
+    code: `// SH1106 1.3" OLED Display Example
+// This example demonstrates how to use a SH1106 OLED display via I2C
+//
+// Wiring:
+//   VCC -> 3.3V or 5V
+//   GND -> GND
+//   SDA -> GPIO 21 (ESP32) or SDA pin
+//   SCL -> GPIO 22 (ESP32) or SCL pin
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-#define OLED_RESET -1
-#define SCREEN_ADDRESS 0x3C // or 0x3D
+// Include required libraries
+#include <Wire.h>              // I2C communication library (built-in)
+#include <Adafruit_GFX.h>      // Graphics library for drawing functions
+#include <Adafruit_SH110X.h>   // SH1106 display driver library
 
+// Display configuration
+#define SCREEN_WIDTH 128      // Display width in pixels
+#define SCREEN_HEIGHT 64      // Display height in pixels
+#define OLED_RESET -1         // Reset pin (not used, set to -1)
+#define SCREEN_ADDRESS 0x3C   // I2C address (try 0x3D if 0x3C doesn't work)
+
+// Create display object
 Adafruit_SH1106G display = Adafruit_SH1106G(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void setup() {
+  // Initialize serial communication for debugging
   Serial.begin(115200);
   
-  // Initialize I2C and display
+  // Initialize I2C bus and display
+  // If initialization fails, print error and stop execution
   if (!display.begin(SCREEN_ADDRESS)) {
     Serial.println(F("SH1106 allocation failed"));
-    for (;;); // Don't proceed
+    for (;;);  // Infinite loop - don't proceed if display fails
   }
   
+  // Display splash screen (shows Adafruit logo by default)
   display.display();
-  delay(2000);
+  delay(2000);  // Show splash for 2 seconds
+  
+  // Clear the display
   display.clearDisplay();
   
-  // Display text
-  display.setTextSize(1);
-  display.setTextColor(SH110X_WHITE);
-  display.setCursor(0, 0);
-  display.println("Hello, World!");
+  // Configure text settings
+  display.setTextSize(1);                    // Set text size (1 = smallest)
+  display.setTextColor(SH110X_WHITE);        // Set text color (white on black)
+  display.setCursor(0, 0);                   // Set cursor to top-left (x, y)
+  
+  // Display initial text
+  display.println("Hello, World!");          // Print text and move to next line
   display.println("SH1106 OLED");
   display.println("128x64 pixels");
+  
+  // Update display to show the text
   display.display();
 }
 
 void loop() {
-  // Draw a simple animation
+  // Clear display before drawing new content
   display.clearDisplay();
-  display.setCursor(0, 0);
-  display.print("Time: ");
-  display.print(millis() / 1000);
-  display.println(" sec");
   
-  // Draw a rectangle
-  display.drawRect(10, 20, 50, 30, SH110X_WHITE);
-  display.fillRect(70, 20, 30, 30, SH110X_WHITE);
+  // Display running time
+  display.setCursor(0, 0);                   // Set cursor to top-left
+  display.print("Time: ");                   // Print label
+  display.print(millis() / 1000);            // Print seconds since startup
+  display.println(" sec");                   // Print unit and newline
   
+  // Draw shapes to demonstrate graphics capabilities
+  display.drawRect(10, 20, 50, 30, SH110X_WHITE);   // Draw outline rectangle (x, y, width, height, color)
+  display.fillRect(70, 20, 30, 30, SH110X_WHITE);   // Draw filled rectangle (x, y, width, height, color)
+  
+  // Update display to show all changes
   display.display();
+  
+  // Small delay for animation smoothness
   delay(100);
 }`,
     link: "/hardware/oled-display-sh1106-13inch-i2c"
@@ -466,41 +566,62 @@ void loop() {
       "SparkFun SHT21 Arduino Library (by SparkFun)",
       "Wire (built-in I2C)"
     ],
-    code: `#include <Wire.h>
-#include <SparkFun_SHT21.h>
+    code: `// SHT21 Temperature and Humidity Sensor Example
+// This example demonstrates how to read temperature and humidity from SHT21 sensor
+//
+// Wiring:
+//   VCC -> 3.3V
+//   GND -> GND
+//   SDA -> GPIO 21 (ESP32) or SDA pin
+//   SCL -> GPIO 22 (ESP32) or SCL pin
+//
+// Note: I2C pull-up resistors are usually included on the sensor module
 
+// Include required libraries
+#include <Wire.h>                // I2C communication library (built-in)
+#include <SparkFun_SHT21.h>     // SHT21 sensor library
+
+// Create sensor object
 SHT21 sht21;
 
 void setup() {
+  // Initialize serial communication for debugging
   Serial.begin(115200);
+  
+  // Initialize I2C bus
   Wire.begin();
   
-  // Initialize SHT21
+  // Initialize SHT21 sensor
   sht21.begin();
   
+  // Print header information
   Serial.println("SHT21 Temperature & Humidity Sensor");
   Serial.println("-----------------------------------");
 }
 
 void loop() {
-  // Read temperature
+  // Read temperature from sensor (returns value in Celsius)
   float temperature = sht21.getTemperature();
   
-  // Read humidity
+  // Read relative humidity from sensor (returns value as percentage)
   float humidity = sht21.getHumidity();
   
-  // Print readings
+  // Print temperature reading with 2 decimal places
   Serial.print("Temperature: ");
-  Serial.print(temperature, 2);
+  Serial.print(temperature, 2);  // Print with 2 decimal places
   Serial.println(" °C");
   
+  // Print humidity reading with 2 decimal places
   Serial.print("Humidity: ");
-  Serial.print(humidity, 2);
-  Serial.println(" %RH");
+  Serial.print(humidity, 2);      // Print with 2 decimal places
+  Serial.println(" %RH");        // %RH = Percentage Relative Humidity
   
+  // Print separator line
   Serial.println("-----------------------------------");
   
-  delay(2000); // Wait 2 seconds between readings
+  // Wait 2 seconds before next reading
+  // This prevents excessive sensor queries and reduces power consumption
+  delay(2000);
 }`,
     link: "/hardware/sht21-temperature-sensor-i2c"
   }
