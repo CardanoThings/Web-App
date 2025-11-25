@@ -159,13 +159,7 @@ export const load = async () => {
 			// - Supports CIP-13
 			// - Website: https://begin.is/
 			
-			// 4. Nami Wallet (Browser Extension)
-			// - Browser extension (Chrome, Firefox, Edge)
-			// - Also has mobile app
-			// - Supports CIP-13
-			// - Website: https://namiwallet.io/
-			
-			// 5. Eternl Wallet (formerly CCVault)
+			// 4. Eternl Wallet (formerly CCVault)
 			// - Available on iOS, Android, and browser
 			// - Advanced features
 			// - Supports CIP-13

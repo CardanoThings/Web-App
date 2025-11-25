@@ -104,7 +104,7 @@ export const workshops = [
     },
     {
         title: "Workshop 05: QR-Code Payments",
-        description: "In this workshop you will build a simple payment system right on your microcontroller utilising everything you have learned in former workshops. You will also learn about Cardano mobile wallets like Yoroi, Vespr or BeginWallet.",
+        description: "In this workshop you will build a simple payment system right on your microcontroller utilising everything you have learned in former workshops. You will also learn about Cardano mobile wallets like Yoroi, Vespr, Eternl, or Begin.",
         steps: [
             {
                 title: "Building the Interface",

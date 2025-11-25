@@ -3,9 +3,6 @@ export let glossary = [
     {
         term: "Blockchain",
         definition: "A decentralized digital ledger that records transactions across many computers. Think of it as a shared database that everyone can see and verify, but no single person controls. Each block contains a list of transactions, and blocks are linked together in a chain, making it very difficult to alter past records.",
-        links: [
-            { title: "Cardano Blockchain Introduction", url: "/introductions/blockchain" }
-        ]
     },
     {
         term: "Cardano",
@@ -68,7 +65,10 @@ export let glossary = [
     },
     {
         term: "tADA",
-        definition: "Test ADA, the cryptocurrency used on the Cardano preprod testnet for testing purposes. tADA has no real-world value and is used exclusively for development and testing. You can get tADA for free from the Cardano faucet to test your applications."
+        definition: "Test ADA, the cryptocurrency used on the Cardano preprod testnet for testing purposes. tADA has no real-world value and is used exclusively for development and testing. You can get tADA for free from the Cardano faucet to test your applications.",
+        links: [
+            { title: "Cardano Faucet", url: "https://docs.cardano.org/cardano-testnets/tools/faucet" }
+        ]
     },
     {
         term: "Mainnet",
@@ -80,7 +80,10 @@ export let glossary = [
     },
     {
         term: "Faucet",
-        definition: "A service that gives away free test cryptocurrency (like tADA) for use on testnets. Faucets allow developers to test their applications without spending real money. Cardano has official faucets for its testnets."
+        definition: "A service that gives away free test cryptocurrency (like tADA) for use on testnets. Faucets allow developers to test their applications without spending real money. Cardano has official faucets for its testnets.",
+        links: [
+            { title: "Cardano Faucet", url: "https://docs.cardano.org/cardano-testnets/tools/faucet" }
+        ]
     },
     {
         term: "UTXO",
@@ -92,7 +95,7 @@ export let glossary = [
     },
     {
         term: "Wallet",
-        definition: "A software application or hardware device that stores your cryptocurrency and allows you to send and receive transactions. A wallet contains your private keys (which prove ownership) and your public addresses (where others can send you funds). Popular Cardano wallets include Yoroi, Vespr, and Nami.",
+        definition: "A software application or hardware device that stores your cryptocurrency and allows you to send and receive transactions. A wallet contains your private keys (which prove ownership) and your public addresses (where others can send you funds). Popular Cardano wallets include Yoroi, Vespr, Eternl, and Begin.",
         links: [
             { title: "Yoroi Wallet", url: "https://yoroi-wallet.com/" },
             { title: "Vespr Wallet", url: "https://vespr.xyz/" }
@@ -187,23 +190,17 @@ export let glossary = [
         term: "ESP32",
         definition: "A low-cost, low-power system on a chip (SoC) microcontroller with integrated Wi-Fi and dual-mode Bluetooth. ESP32 is popular for IoT projects because it's affordable, powerful, and has built-in wireless connectivity. It can be programmed using the Arduino IDE.",
         links: [
-            { title: "ESP32 Introduction", url: "/introductions/esp32-d1-microcontrollers" },
-            { title: "ESP32 Hardware Guide", url: "/hardware/esp32-devkit" }
+            { title: "ESP32 Introduction", url: "/introductions/esp32-d1-microcontrollers" }
         ]
     },
     {
         term: "ESP8266",
         definition: "A low-cost Wi-Fi enabled microcontroller, predecessor to ESP32. ESP8266 boards like the D1 Mini are popular for simple IoT projects that need Wi-Fi connectivity. While less powerful than ESP32, ESP8266 is still widely used and very affordable.",
-        links: [
-            { title: "D1 Mini Hardware Guide", url: "/hardware/d1-mini" }
-        ]
+
     },
     {
         term: "D1 Mini",
-        definition: "A compact development board based on the ESP8266 microcontroller. The D1 Mini is small, affordable, and perfect for IoT projects. It has built-in Wi-Fi, multiple GPIO pins, and can be programmed using the Arduino IDE. It's commonly used in the CardanoThings workshops.",
-        links: [
-            { title: "D1 Mini Hardware Guide", url: "/hardware/d1-mini" }
-        ]
+        definition: "A compact development board based on the ESP8266 microcontroller. The D1 Mini is small, affordable, and perfect for IoT projects. It has built-in Wi-Fi, multiple GPIO pins, and can be programmed using the Arduino IDE. It's commonly used in the CardanoThings workshops."
     },
     {
         term: "GPIO",
@@ -217,7 +214,7 @@ export let glossary = [
         term: "Relay",
         definition: "A programmable hardware device used to control electrical circuits by opening and closing contacts in another circuit. Relays allow low-voltage microcontrollers to safely control high-voltage devices like lights, motors, or appliances. Think of it as an electrically operated switch that your microcontroller can turn on or off.",
         links: [
-            { title: "Relay Hardware Guide", url: "/hardware/relay-module" },
+            { title: "Relay Hardware Guide", url: "/hardware/relay-module-3v-1channel" },
             { title: "Light Up the Tree Workshop", url: "/workshops/02-read-and-output/light-up-the-tree" }
         ]
     },
@@ -229,22 +226,28 @@ export let glossary = [
         term: "TFT Display",
         definition: "Thin-Film Transistor display, a type of LCD screen commonly used in embedded projects. TFT displays can show text, graphics, and images. They're often touch-sensitive, allowing for interactive user interfaces. In CardanoThings projects, TFT displays are used to show wallet balances, sensor data, and payment information.",
         links: [
-            { title: "Display Data Workshop", url: "/workshops/02-read-and-output/display-data" },
-            { title: "ILI9341 TFT Hardware Guide", url: "/hardware/ili9341-tft-display" }
+            { title: "Display Data Workshop", url: "/workshops/02-read-and-output/display-data" }
         ]
     },
     {
         term: "Sensor",
         definition: "A device that detects and measures physical properties like temperature, humidity, light, motion, or pressure. Sensors convert physical phenomena into electrical signals that microcontrollers can read. Common sensors include DHT-22 (temperature/humidity), motion sensors, and light sensors.",
         links: [
-            { title: "Sensor Data Workshop", url: "/workshops/03-input-and-write/connect-and-read-sensor-data" },
-            { title: "DHT11 Sensor Guide", url: "/hardware/dht11-sensor" }
+            { title: "Sensor Data Workshop", url: "/workshops/03-input-and-write/connect-and-read-sensor-data" }
         ]
     },
     {
         term: "DHT-22",
         definition: "A digital temperature and humidity sensor commonly used in IoT projects. The DHT-22 is more accurate than the DHT-11 and can measure temperatures from -40°C to 80°C and humidity from 0% to 100%. It communicates with microcontrollers using a single-wire interface.",
         links: [
+            { title: "Sensor Data Workshop", url: "/workshops/03-input-and-write/connect-and-read-sensor-data" }
+        ]
+    },
+    {
+        term: "SHT21",
+        definition: "A high-precision digital temperature and humidity sensor from Sensirion with I2C interface. The SHT21 features excellent accuracy (±0.3°C for temperature, ±2% RH for humidity), low power consumption, and factory-calibrated measurements. It operates from -40°C to +125°C for temperature and 0% to 100% RH for humidity. The sensor communicates via I2C protocol, making it easy to connect to microcontrollers like ESP32.",
+        links: [
+            { title: "SHT21 Hardware Guide", url: "/hardware/sht21-temperature-sensor-i2c" },
             { title: "Sensor Data Workshop", url: "/workshops/03-input-and-write/connect-and-read-sensor-data" }
         ]
     },
@@ -366,9 +369,16 @@ export let glossary = [
     },
     {
         term: "Begin Wallet",
-        definition: "A user-friendly Cardano wallet designed for beginners. Begin Wallet is available on iOS and Android and supports CIP-13 payment URIs. It features a simple, beginner-friendly interface for managing Cardano assets.",
+        definition: "A self-custodial, open-source Cardano and Bitcoin wallet designed for beginners and advanced users alike. Begin Wallet is available on iOS, Android, and as a Chrome extension. It supports CIP-13 payment URIs, ADA staking, lending with Liqwid, governance participation (DRep delegation), dApp discovery with on-chain ratings, and manages both Cardano and Bitcoin under one seed phrase. It's open-source, audited, and puts users in full control of their keys.",
         links: [
             { title: "Begin Wallet", url: "https://begin.is/" }
+        ]
+    },
+    {
+        term: "Eternl",
+        definition: "A comprehensive Cardano wallet (formerly CCVault) available on iOS, Android, and as a browser extension. Eternl offers advanced features including ADA staking, NFT management, token handling, dApp connectivity, and supports CIP-13 payment URIs. It provides a powerful interface for both beginners and advanced users managing Cardano assets.",
+        links: [
+            { title: "Eternl Wallet", url: "https://eternl.io/" }
         ]
     },
     {

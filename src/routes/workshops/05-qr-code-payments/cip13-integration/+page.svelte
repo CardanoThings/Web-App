@@ -145,8 +145,7 @@
 
 		<h3 class="mt-4 text-2xl font-medium">Other Wallets</h3>
 		<p class="text-lg font-thin text-white">
-			Other wallets that support CIP-13 include Nami (browser extension and mobile), Eternl (formerly
-			CCVault), and others. Check each wallet's documentation to confirm CIP-13 support.
+			Other wallets that support CIP-13 include Eternl (formerly CCVault), Begin, and others. Check each wallet's documentation to confirm CIP-13 support.
 		</p>
 	</section>
 

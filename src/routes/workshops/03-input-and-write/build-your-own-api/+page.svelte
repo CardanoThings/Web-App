@@ -233,7 +233,7 @@
 				to build and submit transactions
 			</li>
 			<li>
-				<strong>Use a Wallet SDK:</strong> Libraries like Nami or Eternl provide JavaScript SDKs for
+				<strong>Use a Wallet SDK:</strong> Libraries like Eternl or Begin provide JavaScript SDKs for
 				building transactions
 			</li>
 		</ul>
