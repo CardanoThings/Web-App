@@ -47,6 +47,10 @@ export const hardware = [
         url: "https://www.amazon.com/s?k=esp32+cheap+yellow+display"
       }
     ],
+    images: [
+      "/images/hardware/cyd-01.webp",
+      "/images/hardware/cyd-02.webp"
+    ],
     libraries: [
       "TFT_eSPI (by Bodmer)",
       "XPT2046_Touchscreen (by Paul Stoffregen)"
@@ -144,6 +148,10 @@ void loop() {
         url: "https://www.amazon.com/s?k=esp32-c3+devkit"
       }
     ],
+    images: [
+      "/images/hardware/esp32c3-01.webp",
+      "/images/hardware/esp32c3-02.webp"
+    ],
     libraries: [
       "WiFi (built-in)",
       "BluetoothSerial (built-in)",
@@ -237,6 +245,10 @@ void loop() {
         url: "https://www.amazon.com/s?k=3v+relay+module+1+channel"
       }
     ],
+    images: [
+      "/images/hardware/relais-01.webp",
+      "/images/hardware/relais-02.webp"
+    ],
     libraries: [
       "No external library required (uses digitalWrite)"
     ],
@@ -324,6 +336,10 @@ void loop() {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=ws2812b+8x8+matrix"
       }
+    ],
+    images: [
+      "/images/hardware/led-matrix-01.webp",
+      "/images/hardware/led-matrix-02.webp"
     ],
     libraries: [
       "FastLED (by FastLED)",
@@ -434,6 +450,10 @@ uint8_t XY(uint8_t x, uint8_t y) {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=sh1106+1.3+inch+oled"
       }
+    ],
+    images: [
+      "/images/hardware/oled-display-01.webp",
+      "/images/hardware/oled-display-02.webp"
     ],
     libraries: [
       "Adafruit SH110X (by Adafruit)",
@@ -561,6 +581,10 @@ void loop() {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=sht21+temperature+sensor"
       }
+    ],
+    images: [
+      "/images/hardware/sht21-01.webp",
+      "/images/hardware/sht21-02.webp"
     ],
     libraries: [
       "SparkFun SHT21 Arduino Library (by SparkFun)",

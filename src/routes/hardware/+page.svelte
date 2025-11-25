@@ -14,7 +14,17 @@
 
 	<div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each data.hardware as item}
-			<Card.Root class="gap-2">
+			<Card.Root class="mt-0 pt-0">
+				{#if item.images && item.images.length > 0}
+					<div class="relative w-full overflow-hidden rounded-t-lg">
+						<img
+							src={item.images[0]}
+							alt={item.name}
+							class="h-48 w-full object-cover"
+							loading="lazy"
+						/>
+					</div>
+				{/if}
 				<Card.Header>
 					<Card.Title class="mt-0 pt-0 text-xl">{item.name}</Card.Title>
 					<Card.Description class="leading-6">

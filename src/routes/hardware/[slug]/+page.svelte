@@ -13,6 +13,27 @@
 		<p class="mt-4 w-1/2 text-lg leading-relaxed font-thin">{hardware.intro}</p>
 	</div>
 
+	<!-- Images Section -->
+	{#if hardware.images && hardware.images.length > 0}
+		<Card.Root>
+			<Card.Header>
+				<Card.Title>Images</Card.Title>
+			</Card.Header>
+			<Card.Content>
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+					{#each hardware.images as image}
+						<img
+							src={image}
+							alt="{hardware.name}"
+							class="w-full rounded-lg object-cover"
+							loading="lazy"
+						/>
+					{/each}
+				</div>
+			</Card.Content>
+		</Card.Root>
+	{/if}
+
 	<!-- Features Section -->
 	<Card.Root>
 		<Card.Header>
