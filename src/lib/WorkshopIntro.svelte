@@ -44,43 +44,5 @@
 				{/each}
 			</ol>
 		</div>
-
-		{#if workshop.requirements}
-			<div class="w-full lg:max-w-[320px]">
-				<Card.Root class="border border-white bg-transparent text-white">
-					<Card.Header>
-						<Card.Title class="text-white">Requirements</Card.Title>
-					</Card.Header>
-					<Card.Content>
-						{#if workshop.requirements.hardware && workshop.requirements.hardware.length > 0}
-							<div class="mb-4">
-								<h4 class="mb-2 font-medium text-white">Hardware</h4>
-								<ul class="list-outside list-none space-y-1 pl-0">
-									{#each workshop.requirements.hardware as requirement}
-										<li class="flex gap-1 text-xs leading-relaxed">
-											<ChevronRight size="18" class="relative top-0.25 shrink-0" strokeWidth="2" />
-											<span>{requirement}</span>
-										</li>
-									{/each}
-								</ul>
-							</div>
-						{/if}
-						{#if workshop.requirements.software && workshop.requirements.software.length > 0}
-							<div>
-								<h4 class="mb-2 font-medium text-white">Software</h4>
-								<ul class="list-outside list-none space-y-1 pl-0">
-									{#each workshop.requirements.software as requirement}
-										<li class="flex gap-1 text-xs leading-relaxed">
-											<ChevronRight size="18" class="relative top-0.5 shrink-0" strokeWidth="2" />
-											<span>{requirement}</span>
-										</li>
-									{/each}
-								</ul>
-							</div>
-						{/if}
-					</Card.Content>
-				</Card.Root>
-			</div>
-		{/if}
 	</div>
 </section>
