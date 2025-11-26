@@ -18,8 +18,8 @@
 </svelte:head>
 
 <div class="w-max-4xl mx-auto w-full">
-	<header class="block-header w-full lg:w-1/2">
-		<h1>{data.title}</h1>
+	<header class="mb-8 w-full lg:w-1/2">
+		<h1 class="mb-2 text-5xl font-semibold text-white">{data.title}</h1>
 		{#if data.tags && data.tags.length > 0}
 			<div class="mb-3 flex flex-wrap gap-2">
 				{#each data.tags as tag}
@@ -37,9 +37,9 @@
 
 			{#if data.features && data.features.length > 0}
 				<h3 class="mt-2 mb-2 text-xl font-semibold text-white">Features</h3>
-				<ul class="features-list">
+				<ul class="my-2 list-disc pl-6 text-white/90">
 					{#each data.features as feature}
-						<li>{feature}</li>
+						<li class="my-2">{feature}</li>
 					{/each}
 				</ul>
 			{/if}
@@ -69,7 +69,7 @@
 		</div>
 	</header>
 
-	<main class="block-content">
+	<main class="flex flex-col gap-6">
 		{#if data.code}
 			<Card.Root class="code-card">
 				<Card.Header class="mb-0 flex flex-row items-center justify-between pb-0">
@@ -136,33 +136,28 @@
 						defaultShowComments={true}
 						defaultExpanded={true}
 					/>
-				</Card.Content>
-			</Card.Root>
-		{/if}
-
-		{#if data.parameters && data.parameters.length > 0}
-			<Card.Root class="parameters-card">
-				<Card.Header>
-					<Card.Title>Parameters</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<div class="parameters-table">
-						{#each data.parameters as param}
-							<div class="parameter-row">
-								<strong>{param.name}</strong>
-								<span class="parameter-type">({param.type})</span>
-								<p>{param.description}</p>
+					{#if data.parameters && data.parameters.length > 0}
+						<div class="mt-6">
+							<h3 class="mb-3 text-lg font-semibold text-black">Parameters</h3>
+							<div class="flex flex-col gap-2">
+								{#each data.parameters as param}
+									<div>
+										<strong class="text-[1.1rem] text-purple-800">{param.name}</strong>
+										<span class="ml-2 text-sm text-emerald-400">({param.type})</span>
+										<p class="mt-1 text-black">{param.description}</p>
+									</div>
+								{/each}
 							</div>
-						{/each}
-					</div>
+						</div>
+					{/if}
 				</Card.Content>
 			</Card.Root>
 		{/if}
 
 		{#if data.notes}
-			<Card.Root class="notes-card">
-				<Card.Header>
-					<Card.Title>Notes</Card.Title>
+			<Card.Root class="gap-2 border-white bg-transparent">
+				<Card.Header class="mb-0 pb-0">
+					<Card.Title class=" text-lg text-white">Notes</Card.Title>
 				</Card.Header>
 				<Card.Content>
 					<div class="notes-content">
@@ -208,94 +203,25 @@
 {/if}
 
 <style>
-	.block-header {
-		margin-bottom: 2rem;
-	}
-
-	.block-header h1 {
-		font-size: 3rem;
-		font-weight: 600;
-		margin-bottom: 0.5rem;
-		color: white;
-	}
-
-	.features-list {
-		list-style-type: disc;
-		padding-left: 1.5rem;
-		margin: 0.5rem 0;
-		color: rgba(255, 255, 255, 0.9);
-	}
-
-	.features-list li {
-		margin: 0.5rem 0;
-	}
-
-	.block-content {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
-
-	h3 {
-		font-size: 1.25rem;
-		font-weight: 600;
-		margin: 1rem 0 0.5rem 0;
-	}
-
-	ul {
-		list-style-type: disc;
-		padding-left: 1.5rem;
-		margin: 0.5rem 0;
-	}
-
-	li {
-		margin: 0.25rem 0;
-	}
-
-	.parameters-table {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	.parameter-row {
-		padding: 0.75rem;
-		background: rgba(255, 255, 255, 0.05);
-		border-radius: 0.5rem;
-	}
-
-	.parameter-row strong {
-		color: #5b21b6;
-		font-size: 1.1rem;
-	}
-
-	.parameter-type {
-		color: #34d399;
-		margin-left: 0.5rem;
-		font-size: 0.9rem;
-	}
-
-	.parameter-row p {
-		margin-top: 0.5rem;
-		color: rgba(255, 255, 255, 0.8);
-	}
-
 	.notes-content :global(p) {
 		margin: 0.5rem 0;
+		color: white;
 	}
 
 	.notes-content :global(ul) {
 		list-style-type: disc;
 		padding-left: 1.5rem;
 		margin: 0.5rem 0;
+		color: white;
 	}
 
 	.notes-content :global(li) {
 		margin: 0.25rem 0;
+		color: white;
 	}
 
 	.notes-content :global(strong) {
-		color: #5b21b6;
+		color: white;
 	}
 
 	.prerequisites-content :global(h3) {
