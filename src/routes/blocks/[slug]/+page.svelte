@@ -3,6 +3,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { X, Info } from 'lucide-svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import TagBadge from '$lib/components/TagBadge.svelte';
@@ -141,11 +142,11 @@
 					{#if data.parameters && data.parameters.length > 0}
 						<div class="mt-6">
 							<h3 class="mb-3 text-lg font-semibold text-black">Parameters</h3>
-							<div class="flex flex-col gap-2">
+							<div class="flex flex-col gap-3">
 								{#each data.parameters as param}
 									<div>
-										<strong class="text-[1.1rem] text-purple-800">{param.name}</strong>
-										<span class="ml-2 text-sm text-emerald-400">({param.type})</span>
+										<strong class="text-purple-800">{param.name}</strong>
+										<span class="text-sm text-emerald-400">({param.type})</span>
 										<p class="mt-1 text-black">{param.description}</p>
 									</div>
 								{/each}
@@ -156,17 +157,47 @@
 			</Card.Root>
 		{/if}
 
-		{#if data.notes}
-			<Card.Root class="gap-2 border-white bg-transparent">
-				<Card.Header class="mb-0 pb-0">
-					<Card.Title class=" text-lg text-white">Notes</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<div class="notes-content">
-						{@html data.notes}
-					</div>
-				</Card.Content>
-			</Card.Root>
+		{#if data.notes || data.troubleshooting || data.nextSteps}
+			<Accordion.Root class="accordion-custom w-full" value="notes">
+				{#if data.notes}
+					<Accordion.Item value="notes" class="border-dashed border-white">
+						<Accordion.Trigger class="text-lg text-white hover:no-underline">
+							Notes
+						</Accordion.Trigger>
+						<Accordion.Content>
+							<div class="notes-content pt-2">
+								{@html data.notes}
+							</div>
+						</Accordion.Content>
+					</Accordion.Item>
+				{/if}
+
+				{#if data.troubleshooting}
+					<Accordion.Item value="troubleshooting" class="border-dashed border-white">
+						<Accordion.Trigger class="text-lg text-white hover:no-underline">
+							Troubleshooting
+						</Accordion.Trigger>
+						<Accordion.Content>
+							<div class="notes-content pt-2">
+								{@html data.troubleshooting}
+							</div>
+						</Accordion.Content>
+					</Accordion.Item>
+				{/if}
+
+				{#if data.nextSteps}
+					<Accordion.Item value="nextSteps" class="border-dashed border-white">
+						<Accordion.Trigger class="text-lg text-white hover:no-underline">
+							Next Steps
+						</Accordion.Trigger>
+						<Accordion.Content>
+							<div class="notes-content pt-2">
+								{@html data.nextSteps}
+							</div>
+						</Accordion.Content>
+					</Accordion.Item>
+				{/if}
+			</Accordion.Root>
 		{/if}
 	</main>
 </div>
@@ -338,5 +369,13 @@
 
 	.usage-dialog-content :global(a:hover) {
 		color: #6d28d9;
+	}
+
+	/* Accordion custom styles */
+	:global(.accordion-custom svg) {
+		width: 1.5rem !important;
+		height: 1.5rem !important;
+		color: white !important;
+		stroke: white !important;
 	}
 </style>

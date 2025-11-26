@@ -26,7 +26,9 @@
  * @property {string} parameters[].name - Parameter or function name
  * @property {string} parameters[].type - Type (e.g., "define", "function")
  * @property {string} parameters[].description - What the parameter/function does
- * @property {string} notes - HTML string with additional notes, troubleshooting tips, and next steps
+ * @property {string} notes - HTML string with additional notes and explanations for beginners
+ * @property {string} [troubleshooting] - HTML string with common issues and solutions (optional)
+ * @property {string} [nextSteps] - HTML string with suggestions for what to build next (optional)
  */
 
 /**
@@ -189,20 +191,46 @@ void loop() {
         description: "Pauses the program for the specified number of milliseconds."
       }
     ],
-    notes: `<p><strong>ESP32-C3 Notes:</strong></p>
+    notes: `<p><strong>Understanding the Code:</strong></p>
         <ul>
-          <li>The built-in LED on most ESP32-C3 boards is connected to GPIO8</li>
-          <li>Some boards may have the LED on a different pin - check your board's documentation</li>
-          <li>You can change LED_PIN to use an external LED on any GPIO pin</li>
+          <li><strong>GPIO8:</strong> The built-in LED on most ESP32-C3 boards is connected to GPIO8</li>
+          <li><strong>pinMode():</strong> Configures a pin to be either an input (reads signals) or output (sends signals)</li>
+          <li><strong>digitalWrite():</strong> Sets a pin to HIGH (3.3V, LED on) or LOW (0V, LED off)</li>
+          <li><strong>delay():</strong> Pauses the program for a specified time in milliseconds (1000ms = 1 second)</li>
+          <li><strong>Serial Monitor:</strong> A tool that lets you see messages from your ESP32 on your computer</li>
         </ul>
-        <p><strong>Troubleshooting:</strong></p>
+        
+        <p><strong>Board Variations:</strong></p>
         <ul>
-          <li>If the LED doesn't blink, verify the LED_PIN matches your board's built-in LED</li>
-          <li>If you don't see serial output, check that the correct COM port is selected</li>
-          <li>Make sure the baud rate in Serial Monitor matches the code (115200)</li>
-          <li>Try pressing the reset button on your ESP32-C3</li>
+          <li>Some ESP32-C3 boards may have the LED on a different pin - check your board's documentation</li>
+          <li>You can change <code>LED_PIN</code> to any GPIO pin to use an external LED</li>
+          <li>Different ESP32-C3 models (like Seeed XIAO) may need different board selections in Arduino IDE</li>
+        </ul>`,
+    troubleshooting: `<p><strong>LED Issues:</strong></p>
+        <ul>
+          <li><strong>LED doesn't blink:</strong> Verify <code>LED_PIN</code> matches your board's built-in LED pin</li>
+          <li><strong>No LED at all:</strong> Some boards don't have a built-in LED - you'll need to connect an external one</li>
         </ul>
-        <p><strong>Next Steps:</strong> Try changing the delay times to make the LED blink faster or slower, or connect an external LED to a different GPIO pin.</p>`
+        
+        <p><strong>Serial Monitor Issues:</strong></p>
+        <ul>
+          <li><strong>No serial output:</strong> Check that the correct COM port is selected in <strong>Tools → Port</strong></li>
+          <li><strong>Garbled text:</strong> Make sure the baud rate in Serial Monitor matches the code (115200)</li>
+          <li><strong>Port not showing:</strong> Try a different USB cable or USB port on your computer</li>
+        </ul>
+        
+        <p><strong>Upload Issues:</strong></p>
+        <ul>
+          <li><strong>Can't upload:</strong> Press and hold the BOOT button on your board, then click Upload</li>
+          <li><strong>Still not working:</strong> Try pressing the reset button on your ESP32-C3</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Change the delay times to make the LED blink faster or slower</li>
+          <li>Connect an external LED to a different GPIO pin and control it</li>
+          <li>Try making the LED blink in a pattern (like SOS: ···---···)</li>
+          <li>Add a second LED and make them blink alternately</li>
+          <li>Move on to the WiFi Connection block to connect your ESP32 to the internet</li>
+        </ul>`
   },
   {
     slug: "cyd-hello-display",
@@ -394,36 +422,59 @@ void loop() {
         description: "Pauses the program for the specified number of milliseconds."
       }
     ],
-    notes: `<p><strong>CYD Specifications:</strong></p>
+    notes: `<p><strong>About the CYD (Cheap Yellow Display):</strong></p>
         <ul>
-          <li>Display: 320x240 pixels, 2.8" ILI9341 TFT LCD</li>
-          <li>Touchscreen: Resistive touch (XPT2046)</li>
-          <li>Processor: ESP32 with WiFi and Bluetooth</li>
-          <li>Cost: Around $15 USD</li>
-          <li>Additional features: SD card slot, RGB LED (GPIO4), extra GPIO pins</li>
+          <li><strong>Official name:</strong> ESP32-2432S028R</li>
+          <li><strong>Display:</strong> 320x240 pixels, 2.8" ILI9341 TFT LCD</li>
+          <li><strong>Touchscreen:</strong> Resistive touch (XPT2046)</li>
+          <li><strong>Processor:</strong> ESP32 with WiFi and Bluetooth</li>
+          <li><strong>Cost:</strong> Around $15 USD (very affordable!)</li>
+          <li><strong>Extra features:</strong> SD card slot, RGB LED, extra GPIO pins</li>
         </ul>
-        <p><strong>CYD Notes:</strong></p>
+        
+        <p><strong>Understanding the RGB LED:</strong></p>
         <ul>
-          <li>The built-in RGB LED on the CYD is connected to GPIO4</li>
-          <li>This is an RGB LED, so you can control different colors with additional code</li>
-          <li>The CYD has many more features including a touchscreen display - check the resources for advanced examples</li>
+          <li>The built-in RGB LED is connected to GPIO4</li>
+          <li>An RGB LED can show different colors (red, green, blue, and combinations)</li>
+          <li>This example just turns it on/off - you can control individual colors with more advanced code</li>
+          <li>Perfect for status indicators in your projects</li>
         </ul>
-        <p><strong>Troubleshooting:</strong></p>
+        
+        <p><strong>CYD Hardware Features:</strong></p>
         <ul>
-          <li><strong>Port not detected:</strong> Install CH340 driver and restart your computer</li>
-          <li><strong>Upload fails:</strong> Try holding the BOOT button while uploading</li>
-          <li>If the LED doesn't blink, verify the LED_PIN is set to 4</li>
-          <li>If you don't see serial output, check that the correct COM port is selected</li>
-          <li>Make sure the baud rate in Serial Monitor matches the code (115200)</li>
-          <li>Try pressing the reset button on your CYD after upload</li>
+          <li><strong>Touchscreen:</strong> You can detect finger touches and build interactive interfaces</li>
+          <li><strong>Display:</strong> Much larger than OLED displays - great for dashboards and UIs</li>
+          <li><strong>SD Card:</strong> Store data, images, or configuration files</li>
+          <li><strong>All-in-one:</strong> Everything you need in one board - no extra wiring!</li>
+        </ul>`,
+    troubleshooting: `<p><strong>Driver Issues:</strong></p>
+        <ul>
+          <li><strong>Computer doesn't detect CYD:</strong> Install the CH340 USB driver (see prerequisites)</li>
+          <li><strong>Driver installed but still not working:</strong> Restart your computer after driver installation</li>
+          <li><strong>Port shows but upload fails:</strong> Try a different USB cable (some cables are charge-only)</li>
         </ul>
-        <p><strong>Next Steps:</strong></p>
+        
+        <p><strong>Upload Issues:</strong></p>
         <ul>
-          <li>Try changing the delay times to make the LED blink faster or slower</li>
-          <li>Explore the TFT display functionality using the TFT_eSPI library</li>
+          <li><strong>Upload fails:</strong> Hold the BOOT button on the CYD while clicking Upload</li>
+          <li><strong>Timeout during upload:</strong> Press and hold BOOT, then press Reset, then release BOOT, then try uploading</li>
+          <li><strong>Still can't upload:</strong> Make sure you selected "ESP32 Dev Module" (not ESP32-C3)</li>
+        </ul>
+        
+        <p><strong>LED and Serial Issues:</strong></p>
+        <ul>
+          <li><strong>LED doesn't blink:</strong> Verify <code>LED_PIN</code> is set to 4</li>
+          <li><strong>No serial output:</strong> Check the correct COM port is selected in <strong>Tools → Port</strong></li>
+          <li><strong>Garbled text:</strong> Set Serial Monitor baud rate to 115200</li>
+          <li><strong>After upload:</strong> Try pressing the reset button on your CYD</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Change the delay times to make the LED blink in different patterns</li>
+          <li>Explore the color TFT display using the TFT_eSPI library</li>
           <li>Add touch screen functionality using the XPT2046_Touchscreen library</li>
-          <li>Add WiFi connectivity to fetch and display real-time data</li>
-          <li>Check the <a href="https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display" target="_blank">CYD GitHub repository</a> for more advanced examples</li>
+          <li>Connect to WiFi and display live data from the internet</li>
+          <li>Build a weather dashboard, crypto ticker, or smart home control panel</li>
+          <li>Check the <a href="https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display" target="_blank">CYD GitHub repository</a> for tons of examples and inspiration</li>
         </ul>`
   },
   {
@@ -581,28 +632,61 @@ curl -X POST http://localhost:3000/api/items \\
         description: "Starts the server on the specified port"
       }
     ],
-    notes: `<p><strong>Understanding the Basics:</strong></p>
+    notes: `<p><strong>Understanding HTTP Methods:</strong></p>
         <ul>
-          <li><strong>GET:</strong> Used to retrieve/read data from the server</li>
-          <li><strong>POST:</strong> Used to send/create new data on the server</li>
+          <li><strong>GET:</strong> Used to retrieve/read data from the server (like viewing a list)</li>
+          <li><strong>POST:</strong> Used to send/create new data on the server (like adding a new item)</li>
+          <li><strong>PUT:</strong> Used to update existing data (not shown in this example)</li>
+          <li><strong>DELETE:</strong> Used to remove data (not shown in this example)</li>
+        </ul>
+        
+        <p><strong>Key Concepts for Beginners:</strong></p>
+        <ul>
           <li><strong>API:</strong> Application Programming Interface - a way for programs to talk to each other</li>
-          <li><strong>JSON:</strong> JavaScript Object Notation - a format for sending data</li>
+          <li><strong>Endpoint:</strong> A specific URL path (like <code>/api/items</code>) that does something</li>
+          <li><strong>JSON:</strong> JavaScript Object Notation - a format for sending data that looks like: <code>{"name": "value"}</code></li>
+          <li><strong>Request:</strong> When someone (or a program) asks your API for something</li>
+          <li><strong>Response:</strong> What your API sends back</li>
+          <li><strong>Port:</strong> A numbered "door" on your computer where the server listens (like 3000)</li>
         </ul>
         
-        <p><strong>Common Issues:</strong></p>
+        <p><strong>How This Example Works:</strong></p>
         <ul>
-          <li><strong>"Cannot find module 'express'":</strong> Run <code>npm install express</code></li>
-          <li><strong>"Port already in use":</strong> Another program is using port 3000. Change the PORT number in the code.</li>
-          <li><strong>"Cannot read property 'name'":</strong> Make sure you're sending the data in the correct JSON format</li>
+          <li>The server stores items in an array (temporary - resets when you restart)</li>
+          <li>GET /api/items shows all items</li>
+          <li>POST /api/items creates a new item</li>
+          <li>Each item gets an automatic ID number</li>
+          <li>You can test it in your browser or with tools like Postman or curl</li>
+        </ul>`,
+    troubleshooting: `<p><strong>Installation Errors:</strong></p>
+        <ul>
+          <li><strong>"Cannot find module 'express'":</strong> Run <code>npm install express</code> in your project folder</li>
+          <li><strong>"npm: command not found":</strong> Install Node.js first from <a href="https://nodejs.org" target="_blank">nodejs.org</a></li>
+          <li><strong>"Permission denied":</strong> Don't use <code>sudo</code> - instead fix npm permissions or use nvm</li>
         </ul>
         
-        <p><strong>What's Next?</strong></p>
+        <p><strong>Server Errors:</strong></p>
         <ul>
-          <li>Try adding a PUT endpoint to update items</li>
-          <li>Try adding a DELETE endpoint to remove items</li>
-          <li>Connect to a real database like MongoDB</li>
-          <li>Learn about authentication to protect your API</li>
-          <li>Add more fields to your items (like price, category, etc.)</li>
+          <li><strong>"Port already in use" / EADDRINUSE:</strong> Another program is using port 3000. Change <code>PORT</code> to 3001 or 8080 in the code</li>
+          <li><strong>Can't access from browser:</strong> Make sure you're using <code>http://localhost:3000</code> (not https)</li>
+          <li><strong>Empty response:</strong> Check the URL path is exactly <code>/api/items</code> (with the slash)</li>
+        </ul>
+        
+        <p><strong>POST Request Errors:</strong></p>
+        <ul>
+          <li><strong>"Cannot read property 'name'":</strong> Make sure you're sending JSON data with the correct field names</li>
+          <li><strong>"Unexpected token":</strong> Check your JSON syntax - use double quotes, not single quotes</li>
+          <li><strong>400 error:</strong> The request is missing required fields (name or description)</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Add a PUT endpoint to update items by ID</li>
+          <li>Add a DELETE endpoint to remove items</li>
+          <li>Add a GET endpoint to retrieve a single item by ID (like <code>/api/items/:id</code>)</li>
+          <li>Connect to a real database like MongoDB to save data permanently</li>
+          <li>Learn about authentication to protect your API with passwords or tokens</li>
+          <li>Add more fields to your items (price, category, image URL, etc.)</li>
+          <li>Build a simple HTML frontend to interact with your API</li>
+          <li>Add validation to check if data is correct before saving</li>
         </ul>`
   },
   {
@@ -821,38 +905,64 @@ void loop() {
         description: "Returns the MAC address of your ESP32's WiFi interface"
       }
     ],
-    notes: `<p><strong>Understanding WiFi on ESP32:</strong></p>
+    notes: `<p><strong>Understanding WiFi Basics:</strong></p>
         <ul>
-          <li><strong>2.4GHz Only:</strong> ESP32 only supports 2.4GHz WiFi networks, not 5GHz</li>
-          <li><strong>RSSI Values:</strong> Signal strength in dBm. -50 dBm is excellent, -70 dBm is fair, below -80 dBm is poor</li>
-          <li><strong>Station Mode (STA):</strong> Your ESP32 acts as a WiFi client connecting to a router</li>
-          <li><strong>Access Point Mode (AP):</strong> Your ESP32 creates its own WiFi network (not shown in this example)</li>
+          <li><strong>SSID:</strong> Your WiFi network name (the name you see when looking for WiFi on your phone)</li>
+          <li><strong>Password:</strong> The key needed to connect to your WiFi network</li>
+          <li><strong>IP Address:</strong> A unique number assigned to your ESP32 on the network (like 192.168.1.100)</li>
+          <li><strong>RSSI:</strong> Signal strength in dBm - closer to 0 is better (-50 is excellent, -80 is poor)</li>
         </ul>
         
-        <p><strong>Common Connection Issues:</strong></p>
+        <p><strong>WiFi Modes Explained:</strong></p>
         <ul>
-          <li><strong>Stuck on connecting dots:</strong> Check that your WiFi name and password are correct (they are case-sensitive!)</li>
+          <li><strong>Station Mode (STA):</strong> ESP32 connects to your existing WiFi (like your phone does) - this is what we use in this example</li>
+          <li><strong>Access Point Mode (AP):</strong> ESP32 creates its own WiFi network that others can connect to</li>
+          <li><strong>Both modes:</strong> ESP32 can do both at the same time in advanced setups</li>
+        </ul>
+        
+        <p><strong>Important Limitations:</strong></p>
+        <ul>
+          <li><strong>2.4GHz Only:</strong> ESP32 only works with 2.4GHz WiFi, NOT 5GHz networks</li>
+          <li><strong>Most routers:</strong> Modern routers usually broadcast both 2.4GHz and 5GHz - make sure you're connecting to the 2.4GHz one</li>
+          <li><strong>How to tell:</strong> Some routers name them differently (like "MyWiFi" for 2.4GHz and "MyWiFi-5G" for 5GHz)</li>
+        </ul>
+        
+        <p><strong>Security Best Practices:</strong></p>
+        <ul>
+          <li>Never share your code with the WiFi password visible - remove it before sharing</li>
+          <li>For GitHub or public projects, use environment variables or separate config files</li>
+          <li>Both SSID and password are case-sensitive - "MyWiFi" is different from "mywifi"</li>
+        </ul>`,
+    troubleshooting: `<p><strong>Connection Problems:</strong></p>
+        <ul>
+          <li><strong>Stuck on connecting dots (...):</strong> Check that SSID and password are spelled exactly right (case-sensitive!)</li>
           <li><strong>"Failed to connect":</strong> Make sure you're using a 2.4GHz network, not 5GHz</li>
-          <li><strong>Connection drops:</strong> Your ESP32 might be too far from the router. Try moving it closer</li>
-          <li><strong>Special characters in password:</strong> If your password has quotes or backslashes, you may need to escape them</li>
-          <li><strong>Hidden network:</strong> If your WiFi is hidden, you may need additional configuration</li>
+          <li><strong>Connection drops frequently:</strong> ESP32 might be too far from router - try moving it closer or use a WiFi extender</li>
+          <li><strong>Connects then immediately disconnects:</strong> Router might have MAC address filtering or too many devices connected</li>
         </ul>
         
-        <p><strong>Security Tips:</strong></p>
+        <p><strong>Password Issues:</strong></p>
         <ul>
-          <li>Never share your code with the WiFi password still in it</li>
-          <li>Consider storing credentials in a separate file that you don't commit to version control</li>
-          <li>For production projects, consider using WiFi provisioning methods</li>
+          <li><strong>Special characters:</strong> If your password has quotes (") or backslashes (\\), you need to "escape" them: use \\" for " and \\\\ for \\</li>
+          <li><strong>Spaces in password:</strong> These work fine, but make sure you include them exactly</li>
+          <li><strong>Hidden networks:</strong> If your WiFi network is hidden, you may need to add extra configuration</li>
         </ul>
         
-        <p><strong>Next Steps:</strong></p>
+        <p><strong>ESP32-Specific Issues:</strong></p>
         <ul>
-          <li>Make HTTP requests to APIs once connected</li>
-          <li>Create a web server on your ESP32 to control it from your browser</li>
-          <li>Use mDNS to access your ESP32 with a custom name instead of IP</li>
-          <li>Implement OTA (Over-The-Air) updates to upload code via WiFi</li>
-          <li>Add WiFi Manager for easy credential configuration without code changes</li>
-          <li>Connect to MQTT broker for IoT messaging</li>
+          <li><strong>No IP address shown:</strong> Connection failed - check Serial Monitor for error messages</li>
+          <li><strong>Can't see Serial output:</strong> Make sure Serial Monitor baud rate is set to 115200</li>
+          <li><strong>Brownout detector triggered:</strong> Power issue - use a better USB cable or power supply</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Make HTTP requests to fetch data from the internet (see the HTTP Request block)</li>
+          <li>Create a web server on your ESP32 to control it from your web browser</li>
+          <li>Display the IP address on an OLED screen so you don't need Serial Monitor</li>
+          <li>Use mDNS to access your ESP32 with a friendly name like "http://esp32.local" instead of an IP address</li>
+          <li>Implement OTA (Over-The-Air) updates to upload new code via WiFi without USB cable</li>
+          <li>Add WiFiManager library for easy WiFi setup without hardcoding credentials</li>
+          <li>Connect to MQTT broker for real-time IoT messaging</li>
+          <li>Build a web dashboard to monitor sensor data</li>
         </ul>`
   },
   {
@@ -1058,37 +1168,66 @@ JsonArray forecast = doc["forecast"];</code></pre>`,
         description: "Represents a JSON array. Loop through it to get each value"
       }
     ],
-    notes: `<p><strong>Understanding the Code:</strong></p>
+    notes: `<p><strong>What is JSON?</strong></p>
         <ul>
-          <li><strong>Nested Values:</strong> Use <code>doc["key1"]["key2"]</code> to access nested objects</li>
-          <li><strong>Arrays:</strong> Use <code>JsonArray</code> and loop through with <code>for (int value : array)</code></li>
-          <li><strong>Error Checking:</strong> Always check if <code>error</code> exists before using parsed data</li>
-          <li><strong>Data Types:</strong> Can extract strings, numbers (int/float), and booleans</li>
+          <li><strong>JSON:</strong> JavaScript Object Notation - a way to structure data that both humans and computers can read</li>
+          <li><strong>Used everywhere:</strong> Almost all web APIs send data as JSON</li>
+          <li><strong>Format:</strong> Data is organized in key-value pairs like <code>{"temperature": 23.5}</code></li>
+          <li><strong>Why parse it:</strong> We need to extract specific values (like the temperature) from the JSON text</li>
         </ul>
         
-        <p><strong>Common Issues:</strong></p>
+        <p><strong>Understanding JSON Structure:</strong></p>
         <ul>
-          <li><strong>"Parsing failed":</strong> Check that your JSON syntax is correct (use an online validator)</li>
-          <li><strong>Wrong values:</strong> Key names are case-sensitive - "Temperature" ≠ "temperature"</li>
-          <li><strong>Library not found:</strong> Install ArduinoJson from Library Manager</li>
-          <li><strong>Garbled output:</strong> Make sure Serial Monitor baud rate is set to 115200</li>
+          <li><strong>Objects:</strong> Data wrapped in <code>{}</code> with key-value pairs: <code>{"city": "Amsterdam"}</code></li>
+          <li><strong>Arrays:</strong> Lists wrapped in <code>[]</code>: <code>[1, 2, 3, 4, 5]</code></li>
+          <li><strong>Nested objects:</strong> Objects inside objects: <code>{"location": {"city": "Amsterdam"}}</code></li>
+          <li><strong>Accessing nested data:</strong> Use <code>doc["location"]["city"]</code> to get "Amsterdam"</li>
         </ul>
         
-        <p><strong>Using with Real APIs:</strong></p>
+        <p><strong>How the Code Works:</strong></p>
         <ul>
-          <li>This example uses a simulated response stored in the code</li>
-          <li>In real projects, replace <code>apiResponse</code> with data from HTTP requests</li>
-          <li>Combine with WiFi and HTTPClient to fetch live data</li>
-          <li>Most APIs (weather, crypto, IoT) return JSON responses</li>
+          <li><strong>JsonDocument:</strong> Creates a container to hold the parsed JSON data in memory</li>
+          <li><strong>deserializeJson():</strong> Converts JSON text into data you can use</li>
+          <li><strong>Error checking:</strong> Always check if parsing worked before using the data (prevents crashes)</li>
+          <li><strong>Extracting values:</strong> Use the key names to get specific pieces of data</li>
+          <li><strong>Data types:</strong> Can extract text (strings), numbers (int/float), true/false (booleans), and arrays</li>
         </ul>
         
-        <p><strong>Next Steps:</strong></p>
+        <p><strong>Real-World Usage:</strong></p>
         <ul>
-          <li>Connect to WiFi and fetch real API data</li>
-          <li>Parse blockchain APIs (Cardano epoch data, wallet balances)</li>
-          <li>Display parsed data on an LCD or OLED screen</li>
-          <li>Learn to create JSON for sending data to APIs</li>
-          <li>Build a weather station that displays live data</li>
+          <li>This example uses simulated JSON stored in the code for learning</li>
+          <li>In real projects, you'll get JSON from HTTP API requests</li>
+          <li>Weather APIs, cryptocurrency prices, blockchain data - they all use JSON</li>
+          <li>Combine this with the WiFi and HTTP Request blocks to fetch live data</li>
+        </ul>`,
+    troubleshooting: `<p><strong>Parsing Errors:</strong></p>
+        <ul>
+          <li><strong>"Parsing failed":</strong> The JSON syntax is wrong - use an online JSON validator to check it</li>
+          <li><strong>Missing data:</strong> Check that all quotes, brackets, and braces match up correctly</li>
+          <li><strong>Memory errors:</strong> JSON response might be too large - you may need a bigger JsonDocument</li>
+        </ul>
+        
+        <p><strong>Wrong Values or Crashes:</strong></p>
+        <ul>
+          <li><strong>Wrong values extracted:</strong> Key names are case-sensitive - "Temperature" is NOT the same as "temperature"</li>
+          <li><strong>Crash when accessing data:</strong> The key doesn't exist in the JSON - always check error first</li>
+          <li><strong>Getting zeros or blanks:</strong> Data type mismatch - can't extract a number as a string or vice versa</li>
+        </ul>
+        
+        <p><strong>Library Issues:</strong></p>
+        <ul>
+          <li><strong>"Library not found":</strong> Install ArduinoJson from <strong>Sketch → Include Library → Manage Libraries</strong></li>
+          <li><strong>Compilation errors:</strong> Make sure you installed ArduinoJson version 6 or later</li>
+          <li><strong>Garbled Serial output:</strong> Set Serial Monitor baud rate to 115200</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Combine with WiFi and HTTP blocks to fetch real JSON data from APIs</li>
+          <li>Parse weather API data and display temperature/conditions</li>
+          <li>Fetch Cardano blockchain data (epoch info, ada prices, pool data)</li>
+          <li>Get cryptocurrency prices from CoinGecko API</li>
+          <li>Display parsed data on an OLED or TFT screen</li>
+          <li>Learn to create JSON for sending data to APIs (use serializeJson)</li>
+          <li>Build a complete weather station or crypto price ticker</li>
         </ul>`
   },
   {
@@ -1101,10 +1240,8 @@ JsonArray forecast = doc["forecast"];</code></pre>`,
     features: [
       "I2C communication setup",
       "Display text in different sizes",
-      "Draw shapes and graphics",
-      "Show sensor readings",
-      "Scrolling text",
-      "Simple animation example"
+      "Draw rectangles",
+      "Simple and easy to understand"
     ],
     prerequisites: `<h3>Before You Begin</h3>
         
@@ -1140,8 +1277,8 @@ JsonArray forecast = doc["forecast"];</code></pre>`,
 /*
  * ESP32-C3 I2C OLED Display Example (SSD1306)
  * 
- * This example shows how to use a small OLED display with I2C communication.
- * Perfect for displaying sensor data, status messages, or simple graphics.
+ * A simple example showing how to display text and shapes on an OLED screen.
+ * This demonstrates the basics of OLED display control with I2C.
  * 
  * Hardware:
  * - ESP32-C3 board
@@ -1185,174 +1322,38 @@ void setup() {
   }
   
   Serial.println("OLED Display initialized!");
-  
-  // Clear the display buffer
-  display.clearDisplay();
-  
-  // Run through different display examples
-  displayWelcome();
-  delay(3000);
-  
-  displayTextSizes();
-  delay(3000);
-  
-  displayShapes();
-  delay(3000);
-  
-  displaySensorData();
-  delay(3000);
-  
-  displayScrollingText();
 }
 
 void loop() {
-  // Display updating counter
-  static int counter = 0;
-  
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(20, 20);
-  display.print("Count: ");
-  display.println(counter);
-  display.display();
-  
-  counter++;
-  delay(1000);
-}
-
-// ============================================================================
-// EXAMPLE 1: Welcome Message
-// ============================================================================
-void displayWelcome() {
+  // Clear the display buffer
   display.clearDisplay();
   
-  // Set text properties
-  display.setTextSize(2);              // Medium text
-  display.setTextColor(SSD1306_WHITE); // White text
-  display.setCursor(15, 10);           // Position (x, y)
-  display.println("ESP32-C3");
-  
-  display.setTextSize(1);
-  display.setCursor(15, 35);
-  display.println("OLED Display");
-  display.setCursor(30, 50);
-  display.println("Example");
-  
-  // Send buffer to display
-  display.display();
-}
-
-// ============================================================================
-// EXAMPLE 2: Different Text Sizes
-// ============================================================================
-void displayTextSizes() {
-  display.clearDisplay();
-  
+  // Set text color to white
   display.setTextColor(SSD1306_WHITE);
   
-  // Size 1 (small)
+  // Display small text (size 1)
   display.setTextSize(1);
   display.setCursor(0, 0);
-  display.println("Size 1 Text");
+  display.println("Small Text");
   
-  // Size 2 (medium)
+  // Display medium text (size 2)
   display.setTextSize(2);
   display.setCursor(0, 15);
-  display.println("Size 2");
+  display.println("Medium");
   
-  // Size 3 (large)
+  // Display large text (size 3)
   display.setTextSize(3);
   display.setCursor(0, 40);
   display.println("Big!");
   
-  display.display();
-}
-
-// ============================================================================
-// EXAMPLE 3: Draw Shapes
-// ============================================================================
-void displayShapes() {
-  display.clearDisplay();
+  // Draw a rectangle in the top right
+  display.drawRect(95, 5, 30, 25, SSD1306_WHITE);
   
-  // Draw rectangle
-  display.drawRect(5, 5, 40, 30, SSD1306_WHITE);
-  
-  // Draw filled rectangle
-  display.fillRect(50, 5, 40, 30, SSD1306_WHITE);
-  
-  // Draw circle
-  display.drawCircle(20, 50, 10, SSD1306_WHITE);
-  
-  // Draw filled circle
-  display.fillCircle(70, 50, 10, SSD1306_WHITE);
-  
-  // Draw line
-  display.drawLine(95, 5, 120, 30, SSD1306_WHITE);
-  
-  display.display();
-}
-
-// ============================================================================
-// EXAMPLE 4: Simulated Sensor Data
-// ============================================================================
-void displaySensorData() {
-  display.clearDisplay();
-  
-  // Simulate sensor readings
-  float temperature = 23.5;
-  int humidity = 65;
-  
-  // Title
-  display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(25, 0);
-  display.println("Sensor Data");
-  
-  // Draw separator line
-  display.drawLine(0, 12, 128, 12, SSD1306_WHITE);
-  
-  // Temperature
-  display.setTextSize(1);
-  display.setCursor(5, 20);
-  display.print("Temp: ");
-  display.setTextSize(2);
-  display.setCursor(5, 30);
-  display.print(temperature, 1);
-  display.setTextSize(1);
-  display.print(" C");
-  
-  // Humidity
-  display.setTextSize(1);
-  display.setCursor(5, 48);
-  display.print("Humidity: ");
-  display.print(humidity);
-  display.print("%");
-  
-  display.display();
-}
-
-// ============================================================================
-// EXAMPLE 5: Scrolling Text
-// ============================================================================
-void displayScrollingText() {
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(10, 0);
-  display.println("Scrolling");
-  display.setTextSize(1);
-  display.setCursor(0, 25);
-  display.println("This text will");
-  display.println("scroll up!");
+  // Send everything to the display
   display.display();
   
-  delay(1000);
-  
-  // Scroll up
-  display.startscrollup(0x00, 0x0F);
+  // Wait 2 seconds before refreshing
   delay(2000);
-  display.stopscroll();
 }`,
     githubLink: "https://github.com/cardanothings/examples/tree/main/blocks/esp32-oled-i2c-display",
     resources: [
@@ -1369,20 +1370,17 @@ void displayScrollingText() {
     ],
     usage: `<ol>
           <li>Install the required libraries (see Prerequisites)</li>
-          <li>Wire up your OLED display to the ESP32-C3</li>
-          <li>Create a new sketch and paste the code</li>
-          <li>Upload to your ESP32-C3</li>
-          <li>Watch the display show different examples!</li>
-          <li>The display will cycle through:
+          <li>Wire up your OLED display to the ESP32-C3:
             <ul>
-              <li>Welcome message</li>
-              <li>Different text sizes</li>
-              <li>Shapes (rectangles, circles, lines)</li>
-              <li>Sensor data display</li>
-              <li>Scrolling text</li>
-              <li>Finally, a counting loop</li>
+              <li>VCC → 3.3V</li>
+              <li>GND → GND</li>
+              <li>SDA → GPIO 8</li>
+              <li>SCL → GPIO 9</li>
             </ul>
           </li>
+          <li>Create a new sketch and paste the code</li>
+          <li>Upload to your ESP32-C3</li>
+          <li>The display will show text in different sizes and a rectangle!</li>
         </ol>`,
     parameters: [
       {
@@ -1434,71 +1432,736 @@ void displayScrollingText() {
         name: "display.drawRect()",
         type: "function",
         description: "Draws a rectangle outline at (x, y) with width and height"
-      },
-      {
-        name: "display.fillRect()",
-        type: "function",
-        description: "Draws a filled rectangle"
-      },
-      {
-        name: "display.drawCircle()",
-        type: "function",
-        description: "Draws a circle outline at center (x, y) with radius"
       }
     ],
-    notes: `<p><strong>Understanding the Display:</strong></p>
+    notes: `<p><strong>Understanding OLED Displays:</strong></p>
         <ul>
-          <li><strong>Buffer System:</strong> Changes are stored in memory first, then sent to display with <code>display.display()</code></li>
-          <li><strong>Coordinates:</strong> (0,0) is top-left corner, (127,63) is bottom-right on 128x64 display</li>
-          <li><strong>Colors:</strong> OLED is monochrome - pixels are either on (white) or off (black)</li>
-          <li><strong>I2C Address:</strong> Usually 0x3C, but some displays use 0x3D - check your display's documentation</li>
+          <li><strong>OLED:</strong> Organic Light-Emitting Diode - each pixel lights up on its own (no backlight needed)</li>
+          <li><strong>Monochrome:</strong> These displays only show one color (white, blue, or yellow depending on model)</li>
+          <li><strong>Small but useful:</strong> Perfect for showing sensor readings, status messages, or simple menus</li>
+          <li><strong>Low power:</strong> Uses very little electricity compared to TFT LCD screens</li>
         </ul>
         
-        <p><strong>Common Issues:</strong></p>
+        <p><strong>How the Buffer System Works:</strong></p>
         <ul>
-          <li><strong>"SSD1306 allocation failed":</strong> Check wiring connections, especially VCC and GND</li>
-          <li><strong>Nothing on display:</strong> Make sure you call <code>display.display()</code> after drawing</li>
-          <li><strong>Wrong I2C address:</strong> Try changing SCREEN_ADDRESS to 0x3D if 0x3C doesn't work</li>
-          <li><strong>Text cut off:</strong> Check that cursor position and text size fit within screen bounds</li>
-          <li><strong>Display dim or flickering:</strong> Power issue - make sure ESP32 is getting enough power via USB</li>
+          <li><strong>Buffer:</strong> A temporary storage area in ESP32's memory that holds what you want to show</li>
+          <li><strong>Why use a buffer:</strong> You can prepare the entire screen in memory first, then display it all at once (prevents flicker)</li>
+          <li><strong>clearDisplay():</strong> Clears the buffer in memory (doesn't touch the screen yet)</li>
+          <li><strong>print(), drawRect():</strong> These add things to the buffer</li>
+          <li><strong>display():</strong> Sends the buffer to the actual screen - this is when you see the changes!</li>
         </ul>
         
-        <p><strong>Display Tips:</strong></p>
+        <p><strong>Understanding Coordinates:</strong></p>
         <ul>
-          <li>Always clear the display before drawing new content: <code>display.clearDisplay()</code></li>
-          <li>Call <code>display.display()</code> only once after all drawing commands for smooth updates</li>
-          <li>Use smaller text sizes to fit more information</li>
-          <li>Draw frames or lines to organize information</li>
-          <li>Avoid updating the display too frequently (causes flicker) - once per second is usually fine</li>
+          <li><strong>(0, 0):</strong> Top-left corner of the screen</li>
+          <li><strong>(127, 63):</strong> Bottom-right corner on a 128x64 display</li>
+          <li><strong>X-axis:</strong> Horizontal position (0 to 127)</li>
+          <li><strong>Y-axis:</strong> Vertical position (0 to 63)</li>
+          <li><strong>Example:</strong> <code>setCursor(10, 20)</code> puts text 10 pixels from the left, 20 pixels from the top</li>
         </ul>
         
-        <p><strong>Finding Your I2C Address:</strong></p>
-        <p>If your display doesn't work, scan for I2C devices:</p>
-        <pre><code>// I2C Scanner
-#include &lt;Wire.h&gt;
+        <p><strong>I2C Communication:</strong></p>
+        <ul>
+          <li><strong>I2C:</strong> A way for devices to talk to each other using just 2 wires (SDA and SCL)</li>
+          <li><strong>I2C address:</strong> Like a phone number for the display (usually 0x3C or 0x3D)</li>
+          <li><strong>Multiple devices:</strong> You can connect several I2C devices to the same pins if they have different addresses</li>
+        </ul>`,
+    troubleshooting: `<p><strong>Display Not Working:</strong></p>
+        <ul>
+          <li><strong>"SSD1306 allocation failed":</strong> Check all 4 wire connections - especially VCC (power) and GND (ground)</li>
+          <li><strong>Nothing shows on display:</strong> Make sure you call <code>display.display()</code> after all your drawing commands</li>
+          <li><strong>Display shows old content:</strong> Call <code>display.clearDisplay()</code> before drawing new content</li>
+        </ul>
+        
+        <p><strong>Wrong I2C Address:</strong></p>
+        <ul>
+          <li><strong>Still "allocation failed":</strong> Your display might use address 0x3D instead of 0x3C</li>
+          <li><strong>How to fix:</strong> Change <code>SCREEN_ADDRESS 0x3C</code> to <code>SCREEN_ADDRESS 0x3D</code> in the code</li>
+          <li><strong>Find your address:</strong> Check the back of your display module - it might have the address printed on it</li>
+        </ul>
+        
+        <p><strong>Display Quality Issues:</strong></p>
+        <ul>
+          <li><strong>Display very dim:</strong> Power issue - try a different USB cable or USB port with more power</li>
+          <li><strong>Flickering:</strong> You're updating too fast - add longer delays between updates</li>
+          <li><strong>Text cut off:</strong> Check that your cursor position + text size fits within screen bounds</li>
+        </ul>
+        
+        <p><strong>Wiring Problems:</strong></p>
+        <ul>
+          <li><strong>Wrong pins:</strong> ESP32-C3 uses GPIO 8 (SDA) and GPIO 9 (SCL) - other ESP32 boards might use different pins</li>
+          <li><strong>Loose wires:</strong> Make sure jumper wires are firmly connected</li>
+          <li><strong>3.3V not 5V:</strong> OLED needs 3.3V - don't connect VCC to 5V pin!</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Display real sensor data like temperature and humidity</li>
+          <li>Show your ESP32's WiFi connection status and IP address</li>
+          <li>Display live data from internet APIs (weather, crypto prices)</li>
+          <li>Add circles, lines, and filled shapes to make fancy graphics</li>
+          <li>Create a simple menu system that you can navigate with buttons</li>
+          <li>Show progress bars or animated indicators</li>
+          <li>Build a clock that displays time (use NTP time server)</li>
+          <li>Make a tiny game with simple graphics</li>
+        </ul>`
+  },
+  {
+    slug: "esp32-http-request",
+    title: "Making HTTP GET Requests",
+    tags: ["Arduino-IDE", "ESP32-C3", "ESP32-CYD"],
+    description: "Learn how to make HTTP GET requests to APIs and process the responses with your ESP32",
+    link: "/blocks/esp32-http-request",
+    overview: "This block teaches you how to connect to web APIs using HTTP GET requests. You'll learn how to fetch data from the internet, which is essential for building IoT projects that display live information like weather data, cryptocurrency prices, or blockchain information. The example uses a free test API to demonstrate the complete flow from making a request to parsing the response.",
+    features: [
+      "WiFi connection setup",
+      "HTTP GET requests to APIs",
+      "Response status code handling",
+      "Parse and display JSON responses",
+      "Error handling and retry logic",
+      "Works with any REST API"
+    ],
+    prerequisites: `<h3>Before You Begin</h3>
+        
+        <h4>1. Hardware Setup</h4>
+        <ul>
+          <li>ESP32-C3 or ESP32 CYD development board</li>
+          <li>USB cable to connect to your computer</li>
+          <li>Arduino IDE installed with ESP32 board support</li>
+        </ul>
+        
+        <h4>2. WiFi Connection</h4>
+        <ul>
+          <li>Make sure you have completed the <strong>ESP32 WiFi Connection</strong> block first</li>
+          <li>Know your WiFi network name (SSID) and password</li>
+          <li>Ensure you're using a 2.4GHz network (ESP32 doesn't support 5GHz)</li>
+        </ul>
+        
+        <h4>3. Libraries</h4>
+        <ul>
+          <li>HTTPClient library (included with ESP32 board support)</li>
+          <li>WiFi library (included with ESP32 board support)</li>
+          <li>ArduinoJson library (optional, for parsing responses)</li>
+        </ul>
+        
+        <h4>4. Internet Connection</h4>
+        <ul>
+          <li>Your WiFi network must have internet access</li>
+          <li>The ESP32 will need to reach external APIs</li>
+          <li>Some networks block outbound requests - test with your network</li>
+        </ul>`,
+    code: `
+/*
+ * ESP32 HTTP GET Request Example
+ * 
+ * This example demonstrates how to make HTTP GET requests to web APIs.
+ * We'll fetch data from a free test API (JSONPlaceholder) and display
+ * the response in the Serial Monitor.
+ * 
+ * Compatible with: ESP32-C3, ESP32 CYD, and all ESP32 boards
+ * 
+ * What you'll learn:
+ * - How to include HTTP and WiFi libraries
+ * - How to make HTTP GET requests
+ * - How to handle HTTP response codes
+ * - How to read and parse API responses
+ * - How to handle connection errors
+ */
+
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// Replace with your network credentials
+const char* ssid = "YOUR_WIFI_NAME";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+// API endpoint - using JSONPlaceholder as a free test API
+// This API provides fake data for testing and prototyping
+const char* apiEndpoint = "https://jsonplaceholder.typicode.com/posts/1";
 
 void setup() {
+  // Initialize serial communication
   Serial.begin(115200);
-  Wire.begin(8, 9); // SDA, SCL
-  Serial.println("I2C Scanner");
+  delay(1000);
   
-  for(byte address = 1; address < 127; address++) {
-    Wire.beginTransmission(address);
-    if(Wire.endTransmission() == 0) {
-      Serial.print("Found device at: 0x");
-      Serial.println(address, HEX);
+  Serial.println();
+  Serial.println("========================================");
+  Serial.println("ESP32 HTTP Request Example");
+  Serial.println("========================================");
+  
+  // Connect to WiFi
+  connectToWiFi();
+  
+  // Make HTTP request
+  if (WiFi.status() == WL_CONNECTED) {
+    makeHTTPRequest();
+  } else {
+    Serial.println("ERROR: Not connected to WiFi");
+  }
+}
+
+void loop() {
+  // Make a new request every 30 seconds
+  static unsigned long lastRequest = 0;
+  unsigned long currentMillis = millis();
+  
+  if (currentMillis - lastRequest >= 30000) {
+    lastRequest = currentMillis;
+    
+    // Check WiFi connection
+    if (WiFi.status() == WL_CONNECTED) {
+      Serial.println("\\n--- Making periodic request ---");
+      makeHTTPRequest();
+    } else {
+      Serial.println("\\n--- WiFi disconnected, reconnecting... ---");
+      connectToWiFi();
     }
   }
-}</code></pre>
+}
+
+/**
+ * Connect to WiFi network
+ */
+void connectToWiFi() {
+  Serial.println();
+  Serial.print("Connecting to WiFi: ");
+  Serial.println(ssid);
+  
+  // Set WiFi mode to Station (client)
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(100);
+  
+  // Begin WiFi connection
+  WiFi.begin(ssid, password);
+  
+  // Wait for connection (max 30 seconds)
+  int attempts = 0;
+  while (WiFi.status() != WL_CONNECTED && attempts < 60) {
+    delay(500);
+    Serial.print(".");
+    attempts++;
+  }
+  
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println();
+    Serial.println("========================================");
+    Serial.println("WiFi Connected!");
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
+    Serial.println("========================================");
+  } else {
+    Serial.println();
+    Serial.println("Failed to connect to WiFi");
+  }
+}
+
+/**
+ * Make HTTP GET request to API
+ */
+void makeHTTPRequest() {
+  // Create HTTPClient object
+  HTTPClient http;
+  
+  Serial.println();
+  Serial.println("--- Making HTTP GET Request ---");
+  Serial.print("Endpoint: ");
+  Serial.println(apiEndpoint);
+  
+  // Initialize HTTP connection
+  // For HTTPS, you may need to add SSL certificate (for testing, we use HTTP)
+  http.begin(apiEndpoint);
+  
+  // Set timeout (optional)
+  http.setTimeout(10000); // 10 seconds
+  
+  // Add custom headers if needed (optional)
+  // http.addHeader("Content-Type", "application/json");
+  // http.addHeader("Authorization", "Bearer YOUR_TOKEN");
+  
+  // Make GET request
+  int httpResponseCode = http.GET();
+  
+  Serial.print("Response Code: ");
+  Serial.println(httpResponseCode);
+  
+  // Check response code
+  if (httpResponseCode > 0) {
+    // Success - we got a response
+    Serial.println("--- Response received ---");
+    
+    // Get the response payload (body)
+    String payload = http.getString();
+    
+    Serial.println("Response Body:");
+    Serial.println("----------------------------------------");
+    Serial.println(payload);
+    Serial.println("----------------------------------------");
+    
+    // You can now parse the JSON response
+    // See the "Arduino JSON Basics" block for parsing examples
+    
+    // Common HTTP response codes:
+    // 200: OK - Request successful
+    // 201: Created - Resource created successfully
+    // 400: Bad Request - Invalid request
+    // 401: Unauthorized - Authentication required
+    // 404: Not Found - Resource doesn't exist
+    // 500: Internal Server Error - Server error
+    
+    if (httpResponseCode == 200) {
+      Serial.println("✓ Request successful!");
+    }
+    
+  } else {
+    // Error making request
+    Serial.print("✗ Error making request: ");
+    Serial.println(http.errorToString(httpResponseCode));
+    
+    // Common error codes:
+    // -1: Connection refused
+    // -2: Send header failed
+    // -3: Send payload failed
+    // -11: Timeout
+  }
+  
+  // Free resources
+  http.end();
+}`,
+    githubLink: "https://github.com/cardanothings/examples/tree/main/blocks/esp32-http-request",
+    resources: [
+      {
+        title: "ESP32 HTTPClient Documentation",
+        url: "https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient",
+        description: "Official HTTPClient library documentation for ESP32"
+      },
+      {
+        title: "HTTP Status Codes",
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+        description: "Complete reference for HTTP status codes"
+      },
+      {
+        title: "JSONPlaceholder API",
+        url: "https://jsonplaceholder.typicode.com/",
+        description: "Free fake API for testing and prototyping"
+      }
+    ],
+    usage: `<ol>
+          <li>Open Arduino IDE and create a new sketch</li>
+          <li>Copy and paste the code into your sketch</li>
+          <li><strong>Important:</strong> Replace <code>YOUR_WIFI_NAME</code> with your WiFi network name</li>
+          <li><strong>Important:</strong> Replace <code>YOUR_WIFI_PASSWORD</code> with your WiFi password</li>
+          <li>Select your board (<strong>Tools → Board → ESP32C3 Dev Module</strong> or <strong>ESP32 Dev Module</strong>)</li>
+          <li>Select your COM port (<strong>Tools → Port</strong>)</li>
+          <li>Click Upload to flash the code to your ESP32</li>
+          <li>Open Serial Monitor (<strong>Tools → Serial Monitor</strong>)</li>
+          <li>Set baud rate to 115200</li>
+          <li>Press the reset button on your ESP32</li>
+          <li>You should see the WiFi connection process and then the API response!</li>
+          <li>The ESP32 will automatically make a new request every 30 seconds</li>
+        </ol>
         
-        <p><strong>Next Steps:</strong></p>
+        <h4>Testing with Different APIs:</h4>
+        <p>You can easily change the <code>apiEndpoint</code> to test other APIs:</p>
+        <pre><code>// Weather example (requires API key from openweathermap.org)
+const char* apiEndpoint = "http://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY";
+
+// Cryptocurrency price (CoinGecko - no API key needed)
+const char* apiEndpoint = "https://api.coingecko.com/api/v3/simple/price?ids=cardano&vs_currencies=usd";
+
+// Random user data
+const char* apiEndpoint = "https://randomuser.me/api/";</code></pre>`,
+    parameters: [
+      {
+        name: "#include <HTTPClient.h>",
+        type: "library",
+        description: "HTTP client library for making web requests"
+      },
+      {
+        name: "HTTPClient",
+        type: "class",
+        description: "Object that handles HTTP requests and responses"
+      },
+      {
+        name: "http.begin()",
+        type: "function",
+        description: "Initialize HTTP connection with the specified URL"
+      },
+      {
+        name: "http.GET()",
+        type: "function",
+        description: "Make an HTTP GET request. Returns the HTTP response code (200 = success)"
+      },
+      {
+        name: "http.getString()",
+        type: "function",
+        description: "Get the response body as a String"
+      },
+      {
+        name: "http.setTimeout()",
+        type: "function",
+        description: "Set the timeout for the HTTP request in milliseconds"
+      },
+      {
+        name: "http.addHeader()",
+        type: "function",
+        description: "Add custom HTTP headers to the request (e.g., API keys, content type)"
+      },
+      {
+        name: "http.end()",
+        type: "function",
+        description: "Close the HTTP connection and free resources - always call this when done"
+      }
+    ],
+    notes: `<p><strong>Understanding HTTP Methods:</strong></p>
         <ul>
-          <li>Display real sensor data (temperature, humidity, etc.)</li>
-          <li>Show WiFi connection status and IP address</li>
-          <li>Display API data (weather, crypto prices, etc.)</li>
-          <li>Create animated icons or progress bars</li>
-          <li>Build a simple menu system with button navigation</li>
-          <li>Show QR codes for payments or URLs</li>
+          <li><strong>GET:</strong> Retrieve/read data from a server (like viewing a webpage or fetching API data)</li>
+          <li><strong>POST:</strong> Send data to create new resources (like submitting a form)</li>
+          <li><strong>PUT:</strong> Update existing resources</li>
+          <li><strong>DELETE:</strong> Remove resources</li>
+          <li><strong>This example uses GET:</strong> The most common method for fetching data from APIs</li>
+        </ul>
+        
+        <p><strong>HTTP vs HTTPS - What's the Difference?</strong></p>
+        <ul>
+          <li><strong>HTTP:</strong> Regular unencrypted connection (port 80) - anyone can see the data</li>
+          <li><strong>HTTPS:</strong> Encrypted connection with SSL/TLS (port 443) - data is scrambled for security</li>
+          <li><strong>When to use:</strong> Always use HTTPS for passwords or sensitive data. HTTP is OK for public data like weather or crypto prices</li>
+          <li><strong>Certificates:</strong> HTTPS needs SSL certificates - the example uses HTTP for simplicity</li>
+        </ul>
+        
+        <p><strong>Understanding Response Codes:</strong></p>
+        <ul>
+          <li><strong>200:</strong> Success! Everything worked</li>
+          <li><strong>404:</strong> Not Found - the URL/endpoint doesn't exist</li>
+          <li><strong>401:</strong> Unauthorized - you need an API key or password</li>
+          <li><strong>500:</strong> Server Error - something broke on the API's side</li>
+          <li><strong>Negative numbers:</strong> Connection errors (WiFi problem, timeout, etc.)</li>
+        </ul>
+        
+        <p><strong>API Authentication - Getting Access:</strong></p>
+        <ul>
+          <li><strong>API Keys:</strong> Like passwords that let you use an API (usually free to get)</li>
+          <li><strong>In headers:</strong> Add using <code>http.addHeader("Authorization", "Bearer YOUR_KEY")</code></li>
+          <li><strong>In URL:</strong> Add using <code>?apikey=YOUR_KEY</code> at the end of the URL</li>
+          <li><strong>Security:</strong> Never share your API keys publicly or commit them to GitHub</li>
+          <li><strong>Free APIs:</strong> Many APIs offer free tiers (like OpenWeather, CoinGecko, Koios for Cardano)</li>
+        </ul>
+        
+        <p><strong>Memory and Performance:</strong></p>
+        <ul>
+          <li><strong>ESP32 has limited RAM:</strong> Large responses (like 50KB+) can cause crashes</li>
+          <li><strong>Always free memory:</strong> Call <code>http.end()</code> when done</li>
+          <li><strong>For large data:</strong> Use <code>http.getStream()</code> to process data in chunks</li>
+          <li><strong>Keep responses small:</strong> Many APIs let you filter what data you receive</li>
+        </ul>`,
+    troubleshooting: `<p><strong>Connection Errors:</strong></p>
+        <ul>
+          <li><strong>Response code -1 (Connection refused):</strong> Check WiFi is connected and has internet access. Try opening a website on your phone using the same WiFi</li>
+          <li><strong>Response code -11 (Timeout):</strong> API is too slow or unreachable. Try increasing timeout with <code>http.setTimeout(15000)</code></li>
+          <li><strong>Response code -2 or -3:</strong> Network problem. Try resetting your ESP32 and router</li>
+        </ul>
+        
+        <p><strong>HTTP Status Errors:</strong></p>
+        <ul>
+          <li><strong>Response code 404:</strong> URL is wrong. Double-check the <code>apiEndpoint</code> spelling and path</li>
+          <li><strong>Response code 401 or 403:</strong> API needs authentication. Add your API key in headers or URL</li>
+          <li><strong>Response code 429:</strong> Too many requests. Wait a bit - you're being rate-limited</li>
+          <li><strong>Response code 500 or 502:</strong> API server has problems. Not your fault - try again later</li>
+        </ul>
+        
+        <p><strong>Data Problems:</strong></p>
+        <ul>
+          <li><strong>Empty response:</strong> Make sure you call <code>http.getString()</code> BEFORE <code>http.end()</code></li>
+          <li><strong>Garbled data:</strong> Set Serial Monitor to 115200 baud. Some APIs send compressed data - check API documentation</li>
+          <li><strong>ESP32 crashes/restarts:</strong> Response too large for memory. Reduce data requested or use streaming</li>
+        </ul>
+        
+        <p><strong>API-Specific Issues:</strong></p>
+        <ul>
+          <li><strong>HTTPS not working:</strong> Some HTTPS APIs need certificates. Try finding an HTTP alternative for testing</li>
+          <li><strong>CORS errors:</strong> Don't apply to ESP32 - this is only a browser security feature</li>
+          <li><strong>Rate limiting:</strong> Many free APIs limit requests (like 60 per hour). Add longer delays between requests</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Combine with the Arduino JSON block to parse API responses and extract specific data</li>
+          <li>Display API data on an OLED display or TFT screen</li>
+          <li>Fetch Cardano blockchain data from Koios or Blockfrost (epoch info, wallet balances, pool data)</li>
+          <li>Get real-time cryptocurrency prices from CoinGecko API</li>
+          <li>Build a weather station using OpenWeatherMap API</li>
+          <li>Make POST requests to send sensor data to your own server</li>
+          <li>Create a smart ticker that displays live prices on an LED matrix</li>
+          <li>Add error handling and retry logic for more reliable connections</li>
+          <li>Store API responses in ESP32's flash memory for offline access</li>
+        </ul>`
+  },
+  {
+    slug: "esp32-i2c-scanner",
+    title: "I2C Device Scanner",
+    tags: ["Arduino-IDE", "ESP32-C3", "ESP32-CYD"],
+    description: "Scan for I2C devices and find their addresses - essential for debugging I2C connections",
+    link: "/blocks/esp32-i2c-scanner",
+    overview: "The I2C Scanner is a debugging tool that helps you find I2C devices connected to your ESP32. When you connect an OLED display, sensor, or any I2C device, you need to know its address to communicate with it. This simple scanner checks all possible I2C addresses (0-127) and reports which ones have devices connected. It's like a WiFi scanner, but for I2C devices!",
+    features: [
+      "Scan all I2C addresses (0x00 to 0x7F)",
+      "Display found devices with their addresses",
+      "Works with ESP32-C3 and ESP32-CYD",
+      "Continuous scanning every 5 seconds",
+      "Essential debugging tool"
+    ],
+    prerequisites: `<h3>Before You Begin</h3>
+        
+        <h4>1. Hardware Setup</h4>
+        <ul>
+          <li>ESP32-C3 or ESP32-CYD development board</li>
+          <li>USB cable to connect to your computer</li>
+          <li>Arduino IDE installed with ESP32 board support</li>
+          <li><strong>Optional:</strong> An I2C device to test (like an OLED display or sensor)</li>
+        </ul>
+        
+        <h4>2. I2C Pins</h4>
+        <ul>
+          <li><strong>ESP32-C3:</strong> SDA = GPIO 8, SCL = GPIO 9</li>
+          <li><strong>ESP32-CYD:</strong> SDA = GPIO 27, SCL = GPIO 22 (check your board documentation)</li>
+          <li>You can use different pins by changing them in the code</li>
+        </ul>
+        
+        <h4>3. No Libraries Needed</h4>
+        <ul>
+          <li>This scanner uses the built-in Wire library</li>
+          <li>No additional libraries to install!</li>
+        </ul>`,
+    code: `
+/*
+ * ESP32 I2C Scanner
+ * 
+ * This tool scans all I2C addresses and reports which devices are found.
+ * Use this when you don't know your device's I2C address or to verify connections.
+ * 
+ * Compatible with: ESP32-C3, ESP32 CYD, and all ESP32 boards
+ * 
+ * What you'll learn:
+ * - How to scan for I2C devices
+ * - How to use the Wire library for I2C communication
+ * - How to interpret I2C addresses
+ * - How to debug I2C connection issues
+ */
+
+#include <Wire.h>
+
+// I2C pins - adjust these for your board
+// ESP32-C3: SDA = GPIO 8, SCL = GPIO 9
+// ESP32 CYD: SDA = GPIO 27, SCL = GPIO 22 (may vary)
+#define I2C_SDA 8
+#define I2C_SCL 9
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(115200);
+  delay(1000);
+  
+  Serial.println();
+  Serial.println("========================================");
+  Serial.println("I2C Device Scanner");
+  Serial.println("========================================");
+  Serial.println();
+  
+  // Initialize I2C with custom pins
+  Wire.begin(I2C_SDA, I2C_SCL);
+  
+  Serial.print("Scanning I2C bus on SDA=GPIO");
+  Serial.print(I2C_SDA);
+  Serial.print(", SCL=GPIO");
+  Serial.println(I2C_SCL);
+  Serial.println();
+}
+
+void loop() {
+  int devicesFound = 0;
+  
+  Serial.println("Scanning...");
+  
+  // Scan all 128 possible I2C addresses (0x00 to 0x7F)
+  for (byte address = 1; address < 127; address++) {
+    // Try to communicate with this address
+    Wire.beginTransmission(address);
+    byte error = Wire.endTransmission();
+    
+    // If error is 0, a device responded
+    if (error == 0) {
+      Serial.print("✓ I2C device found at address 0x");
+      if (address < 16) {
+        Serial.print("0");  // Add leading zero for addresses < 0x10
+      }
+      Serial.print(address, HEX);
+      Serial.println();
+      
+      devicesFound++;
+    }
+    else if (error == 4) {
+      // Error 4 means unknown error at this address
+      Serial.print("✗ Unknown error at address 0x");
+      if (address < 16) {
+        Serial.print("0");
+      }
+      Serial.print(address, HEX);
+      Serial.println();
+    }
+  }
+  
+  // Summary
+  Serial.println();
+  if (devicesFound == 0) {
+    Serial.println("No I2C devices found.");
+    Serial.println("Check your wiring:");
+    Serial.println("- Is VCC connected to 3.3V?");
+    Serial.println("- Is GND connected to GND?");
+    Serial.println("- Are SDA and SCL connected correctly?");
+  }
+  else {
+    Serial.print("Found ");
+    Serial.print(devicesFound);
+    Serial.print(" device");
+    if (devicesFound > 1) Serial.print("s");
+    Serial.println();
+  }
+  
+  Serial.println("========================================");
+  Serial.println();
+  
+  // Wait 5 seconds before scanning again
+  delay(5000);
+}`,
+    githubLink: "https://github.com/cardanothings/examples/tree/main/blocks/esp32-i2c-scanner",
+    resources: [
+      {
+        title: "I2C Protocol Basics",
+        url: "https://learn.sparkfun.com/tutorials/i2c",
+        description: "Learn how the I2C protocol works"
+      },
+      {
+        title: "Common I2C Addresses",
+        url: "https://i2cdevices.org/addresses",
+        description: "Database of common I2C device addresses"
+      }
+    ],
+    usage: `<ol>
+          <li>Open Arduino IDE and create a new sketch</li>
+          <li>Copy and paste the code into your sketch</li>
+          <li><strong>Important:</strong> Check the I2C pin definitions match your board:
+            <ul>
+              <li>ESP32-C3: Usually SDA=GPIO8, SCL=GPIO9</li>
+              <li>ESP32-CYD: May be SDA=GPIO27, SCL=GPIO22 (check your board docs)</li>
+            </ul>
+          </li>
+          <li>Select your board (<strong>Tools → Board → ESP32C3 Dev Module</strong> or <strong>ESP32 Dev Module</strong>)</li>
+          <li>Select your COM port (<strong>Tools → Port</strong>)</li>
+          <li>Click Upload to flash the code to your ESP32</li>
+          <li>Open Serial Monitor (<strong>Tools → Serial Monitor</strong>)</li>
+          <li>Set baud rate to 115200</li>
+          <li>The scanner will automatically start and show any devices found!</li>
+          <li>It will re-scan every 5 seconds</li>
+        </ol>
+        
+        <h4>Reading the Results:</h4>
+        <p>The scanner will show addresses in hexadecimal format (0x3C, 0x76, etc.). Common devices:</p>
+        <ul>
+          <li><strong>0x3C or 0x3D:</strong> SSD1306 OLED display</li>
+          <li><strong>0x27 or 0x3F:</strong> LCD display with I2C backpack</li>
+          <li><strong>0x40:</strong> SHT21 temperature/humidity sensor</li>
+          <li><strong>0x76 or 0x77:</strong> BME280/BMP280 pressure sensor</li>
+          <li><strong>0x68:</strong> MPU6050 accelerometer/gyroscope or DS3231 RTC</li>
+        </ul>`,
+    parameters: [
+      {
+        name: "#include <Wire.h>",
+        type: "library",
+        description: "Built-in library for I2C communication on ESP32"
+      },
+      {
+        name: "Wire.begin(SDA, SCL)",
+        type: "function",
+        description: "Initialize I2C communication with custom pin numbers"
+      },
+      {
+        name: "Wire.beginTransmission(address)",
+        type: "function",
+        description: "Start I2C transmission to a specific address"
+      },
+      {
+        name: "Wire.endTransmission()",
+        type: "function",
+        description: "End transmission and return status code (0 = success, 4 = error)"
+      }
+    ],
+    notes: `<p><strong>What is I2C?</strong></p>
+        <ul>
+          <li><strong>I2C:</strong> Inter-Integrated Circuit - a way for chips to talk to each other</li>
+          <li><strong>Only 2 wires:</strong> SDA (data) and SCL (clock) - much simpler than other protocols</li>
+          <li><strong>Multiple devices:</strong> You can connect many I2C devices to the same two wires</li>
+          <li><strong>Addresses:</strong> Each device has a unique address (like a phone number) so they don't interfere</li>
+        </ul>
+        
+        <p><strong>Understanding I2C Addresses:</strong></p>
+        <ul>
+          <li><strong>Format:</strong> Usually shown in hexadecimal with "0x" prefix (like 0x3C)</li>
+          <li><strong>Range:</strong> 0x00 to 0x7F (0 to 127 in decimal)</li>
+          <li><strong>Reserved addresses:</strong> 0x00-0x07 and 0x78-0x7F are reserved, so we scan 0x08-0x77</li>
+          <li><strong>Fixed vs configurable:</strong> Some devices have fixed addresses, others have jumpers to change them</li>
+        </ul>
+        
+        <p><strong>When to Use This Scanner:</strong></p>
+        <ul>
+          <li><strong>New device:</strong> You bought a sensor/display but don't know its I2C address</li>
+          <li><strong>Debugging:</strong> Your I2C device isn't working - check if it's even detected</li>
+          <li><strong>Multiple devices:</strong> Make sure addresses don't conflict</li>
+          <li><strong>Verify wiring:</strong> Confirm your SDA and SCL connections are correct</li>
+        </ul>
+        
+        <p><strong>How the Scanner Works:</strong></p>
+        <ul>
+          <li><strong>Step 1:</strong> Loop through all 127 possible addresses</li>
+          <li><strong>Step 2:</strong> Try to start communication with each address</li>
+          <li><strong>Step 3:</strong> If a device responds (error = 0), print its address</li>
+          <li><strong>Step 4:</strong> If no response, move to next address</li>
+          <li><strong>Result:</strong> List of all devices that responded</li>
+        </ul>`,
+    troubleshooting: `<p><strong>No Devices Found:</strong></p>
+        <ul>
+          <li><strong>Check power:</strong> Is VCC connected to 3.3V (NOT 5V for most devices)?</li>
+          <li><strong>Check ground:</strong> Is GND connected to ESP32 ground?</li>
+          <li><strong>Check SDA/SCL:</strong> Are data and clock wires on the correct GPIO pins?</li>
+          <li><strong>Swapped wires:</strong> Try swapping SDA and SCL - easy mistake to make</li>
+          <li><strong>Wrong pins in code:</strong> Make sure <code>I2C_SDA</code> and <code>I2C_SCL</code> match your actual wiring</li>
+        </ul>
+        
+        <p><strong>Device Should Be There But Isn't Found:</strong></p>
+        <ul>
+          <li><strong>Power cycle:</strong> Unplug and replug your ESP32 and I2C device</li>
+          <li><strong>Bad connections:</strong> Check that jumper wires are firmly connected</li>
+          <li><strong>Faulty device:</strong> Try the device on a different I2C bus or with different wiring</li>
+          <li><strong>Pull-up resistors:</strong> I2C needs pull-up resistors - most breakout boards have them built in, but check your device</li>
+        </ul>
+        
+        <p><strong>Scanner Shows Errors:</strong></p>
+        <ul>
+          <li><strong>"Unknown error at 0x__":</strong> Might indicate a wiring issue or device in a bad state</li>
+          <li><strong>Many addresses found:</strong> Could be noise on the I2C bus - check your wiring for loose connections</li>
+          <li><strong>Scanner freezes:</strong> Short circuit possible - immediately disconnect and check wiring</li>
+        </ul>
+        
+        <p><strong>ESP32-Specific Issues:</strong></p>
+        <ul>
+          <li><strong>Different boards, different pins:</strong> ESP32-C3 uses different default pins than regular ESP32</li>
+          <li><strong>GPIO limitations:</strong> Not all GPIO pins support I2C - stick to recommended pins</li>
+          <li><strong>Serial Monitor blank:</strong> Make sure baud rate is set to 115200</li>
+        </ul>`,
+    nextSteps: `<ul>
+          <li>Once you find your device's address, update it in your project code (like the OLED display block)</li>
+          <li>Connect multiple I2C devices to the same bus and scan to verify they don't conflict</li>
+          <li>Use the found addresses to configure OLED displays, sensors, or other I2C modules</li>
+          <li>Build a temperature/humidity monitor using an I2C sensor</li>
+          <li>Create a multi-sensor dashboard with several I2C devices</li>
+          <li>Learn about I2C pull-up resistors and when you need external ones</li>
+          <li>Experiment with changing I2C clock speed for faster or more reliable communication</li>
         </ul>`
   }
 ]
