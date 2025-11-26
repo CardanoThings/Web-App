@@ -1,5 +1,6 @@
 <script>
 	import * as Card from '$lib/components/ui/card/index.js';
+	import { Badge } from '$lib/components/ui/badge/index.js';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 
 	let { data } = $props();
@@ -13,6 +14,20 @@
 <div class="w-max-4xl mx-auto w-full">
 	<header class="block-header w-1/2">
 		<h1>{data.title}</h1>
+		{#if data.tags && data.tags.length > 0}
+			<div class="mb-3 flex flex-wrap gap-2">
+				{#each data.tags as tag}
+					<a href="/blocks?tags={encodeURIComponent(tag)}">
+						<Badge
+							variant="secondary"
+							class="cursor-pointer text-xs transition-all hover:scale-105"
+						>
+							{tag}
+						</Badge>
+					</a>
+				{/each}
+			</div>
+		{/if}
 		<p class="text-lg leading-relaxed font-thin text-white">{data.description}</p>
 	</header>
 

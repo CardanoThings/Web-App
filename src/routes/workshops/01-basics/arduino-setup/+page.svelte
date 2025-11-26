@@ -69,9 +69,51 @@
 	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Setup your Microcontroller</h2>
 		<p class="text-lg font-thin text-white">
-			Now that you have the Arduino IDE installed, you can start setting up your microcontroller.
-			Follow the steps below to get your microcontroller ready for development.
+			Now that you have the Arduino IDE installed, you need to install the ESP32 board support
+			package. This allows the Arduino IDE to compile and upload code to ESP32 microcontrollers.
 		</p>
+
+		<h3 class="mt-4 text-2xl font-medium">Step 1: Install ESP32 Board Support</h3>
+		<p class="text-lg font-thin text-white">
+			The ESP32 board package is now available directly in the Arduino IDE Boards Manager.
+		</p>
+		<ol class="ml-4 list-decimal space-y-2">
+			<li>Open Arduino IDE</li>
+			<li>Go to <strong>Tools → Board → Boards Manager</strong></li>
+			<li>In the search box, type <strong>esp32</strong></li>
+			<li>Find <strong>"esp32 by Espressif Systems"</strong> in the list</li>
+			<li>Click <strong>Install</strong> (this may take a few minutes)</li>
+			<li>Wait for the installation to complete</li>
+		</ol>
+
+		<h3 class="mt-6 text-2xl font-medium">Step 2: Select Your Board</h3>
+		<p class="text-lg font-thin text-white">
+			After installation, you need to select the correct board for your ESP32 microcontroller.
+		</p>
+
+		<div class="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
+			<p class="text-sm font-medium text-red-300">
+				<strong>⚠️ Important - USB Cable:</strong> Make sure you're using a USB cable that supports
+				<strong>data transfer</strong>, not just charging! Many USB cables (especially cheap ones or
+				those that come with power banks) are charging-only and don't have the data lines connected.
+				If your computer doesn't recognize your ESP32, try a different USB cable. Data cables are
+				typically thicker and often labeled as "data" or "sync" cables.
+			</p>
+		</div>
+
+		<ol class="ml-4 list-decimal space-y-2">
+			<li>Connect your ESP32-C3 to your computer via USB</li>
+			<li>Go to <strong>Tools → Board → esp32</strong></li>
+			<li>Select <strong>ESP32C3 Dev Module</strong> from the list</li>
+			<li>
+				Go to <strong>Tools → Port</strong> and select the port where your ESP32 is connected
+				<ul class="mt-1 ml-4 list-disc space-y-1 text-sm">
+					<li>On Windows: Usually shows as COM3, COM4, etc.</li>
+					<li>On macOS: Usually shows as /dev/cu.usbserial-* or /dev/cu.SLAB_USBtoUART</li>
+					<li>On Linux: Usually shows as /dev/ttyUSB0 or /dev/ttyACM0</li>
+				</ul>
+			</li>
+		</ol>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
@@ -98,18 +140,22 @@
 
 		<h3 class="mt-4 text-2xl font-medium">How it works</h3>
 		<ul>
+			<li>
+				The <i>#define LED_PIN 8</i> statement creates a constant that maps pin 8 to LED_PIN. This makes
+				the code more readable and easier to modify.
+			</li>
 			<li>The <i>setup</i> function is called once when the microcontroller starts up.</li>
 			<li>The <i>loop</i> function is called repeatedly.</li>
 			<li>The <i>setup</i> function is used to initialize the microcontroller.</li>
 			<li>The <i>loop</i> function is used to run the main program.</li>
 			<li>
-				The <i>digitalWrite</i> function is used to set the state of the pin. The HIGH state is 5V and
-				the LOW state is 0V. The delay function is used to pause the program for the specified number
-				of milliseconds.
+				The <i>digitalWrite</i> function is used to set the state of the pin. The HIGH state is 3.3V
+				(for ESP32) and the LOW state is 0V. The delay function is used to pause the program for the
+				specified number of milliseconds.
 			</li>
 			<li>
-				The <i>LED_BUILTIN</i> is the built-in LED on your Microcontroller. You can find the actual pin
-				number in the Microcontroller datasheet.
+				Pin 8 is used to control an external LED. You'll need to connect an LED with a
+				current-limiting resistor (220Ω-1kΩ) to this pin.
 			</li>
 		</ul>
 	</section>
