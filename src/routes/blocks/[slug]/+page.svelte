@@ -18,12 +18,12 @@
 </svelte:head>
 
 <div class="w-max-4xl mx-auto w-full">
-	<header class="mb-8 w-full lg:w-1/2">
-		<h1 class="mb-2 text-5xl font-semibold text-white">{data.title}</h1>
+	<header class="mb-8 w-full md:w-1/2">
+		<h1 class="mb-4 text-5xl font-semibold text-white">{data.title}</h1>
 		{#if data.tags && data.tags.length > 0}
-			<div class="mb-3 flex flex-wrap gap-2">
+			<div class="mt-2 mb-3 flex flex-wrap gap-2">
 				{#each data.tags as tag}
-					<TagBadge {tag} />
+					<TagBadge {tag} size="small" />
 				{/each}
 			</div>
 		{/if}
@@ -36,7 +36,7 @@
 			</p>
 
 			{#if data.features && data.features.length > 0}
-				<h3 class="mt-2 mb-2 text-xl font-semibold text-white">Features</h3>
+				<h3 class="mt-6 mb-2 text-xl font-semibold text-white">Features</h3>
 				<ul class="my-2 list-disc pl-6 text-white/90">
 					{#each data.features as feature}
 						<li class="my-2">{feature}</li>
@@ -45,7 +45,12 @@
 			{/if}
 
 			{#if data.prerequisites}
-				<div class="mt-6">
+				<div class="mt-6 rounded-lg border-2 border-purple-600 bg-purple-600/20 p-4">
+					<h3 class="mb-2 text-xl font-semibold text-white">Before You Begin</h3>
+					<p class="mb-3 text-sm text-white/80">
+						Make sure you have the necessary setup and understanding before implementing this code
+						block.
+					</p>
 					<Button variant="outline" onclick={() => (prerequisitesOpen = true)} class="gap-2">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +67,7 @@
 							<path d="M12 16v-4" />
 							<path d="m12 8 .01 0" />
 						</svg>
-						Before You Begin
+						Prerequisites
 					</Button>
 				</div>
 			{/if}
@@ -171,12 +176,12 @@
 
 {#if data.prerequisites}
 	<Drawer.Root bind:open={prerequisitesOpen} direction="right">
-		<Drawer.Content class="h-screen w-full max-w-2xl ">
-			<div class="relative p-6">
+		<Drawer.Content class="h-screen w-full max-w-2xl overflow-x-hidden overflow-y-auto">
+			<div class="relative p-6 pt-0">
 				<Button
 					variant="ghost"
 					size="icon"
-					class="absolute top-4 right-4"
+					class="absolute top-4 right-4 z-10"
 					onclick={() => (prerequisitesOpen = false)}
 				>
 					<X class="h-4 w-4" />
