@@ -199,103 +199,92 @@
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Displaying Wallet Balance</h2>
+		<h2 class="text-4xl font-medium">Displaying Your Wallet Balance</h2>
 		<p class="text-lg font-thin text-white">
-			Now that you've verified your display works, let's create a sketch that fetches your wallet
-			balance and displays it on the TFT screen. This combines the wallet balance fetching code from
-			the previous step with TFT display functionality.
+			Now that you've verified your display works, let's create a sketch that fetches your stake
+			account balance and displays it on the TFT screen. This example uses a simple, clean design
+			with white text on a blue background, showing your balance and a live timestamp that updates
+			every second. The balance is fetched every 60 seconds.
 		</p>
 
-		<Card.Root>
-			<Card.Header class="mb-0 pb-0">
-				<Card.Title>Wallet Balance Display Code</Card.Title>
-			</Card.Header>
-			<Card.Content>
-				<SyntaxHighlighter language="cpp" code={data.tftDisplayCode} />
-			</Card.Content>
-			<Card.Footer>
-				<p class="text-xs leading-relaxed">
-					Copy and paste the code into your Arduino IDE. Make sure you've completed the library
-					configuration steps above (replacing User_Setup.h with the CYD version). Replace the WiFi
-					credentials and wallet address with your own. Upload it to your microcontroller and you
-					should see your wallet balance displayed on the screen.
-				</p>
-			</Card.Footer>
-		</Card.Root>
+		<CodeCard
+			title="Wallet Balance Display Code"
+			language="cpp"
+			code={data.tftDisplayCode}
+			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/tft-display-code"
+			footerText="Copy and paste the code into your Arduino IDE. Make sure you've completed the library configuration steps above (replacing User_Setup.h with the CYD version). Replace the WiFi credentials and stake address with your own. Upload it to your microcontroller and you should see your wallet balance in white text on a blue background. The balance fetches every 60 seconds, and the timestamp updates every second."
+			howItWorksContent={`
+				<h3>Program Structure</h3>
+				<p>This sketch combines WiFi connectivity, API requests, JSON parsing, and TFT display control into a complete wallet monitoring system.</p>
 
-		<h3 class="mt-4 text-2xl font-medium">How it works</h3>
-		<ul>
-			<li>
-				The <i>setup</i> function initializes the TFT display, sets the rotation, and connects to WiFi.
-			</li>
-			<li>
-				The <i>updateDisplay</i> function clears the screen and draws the wallet balance with different
-				text sizes and colors for visual hierarchy.
-			</li>
-			<li>
-				The <i>fetchWalletBalance</i> function is similar to the previous step, but now calls
-				<i>updateDisplay</i> when the balance changes.
-			</li>
-			<li>
-				The display shows the title, balance amount, and last update time, making it easy to see
-				your wallet status at a glance.
-			</li>
-		</ul>
-	</section>
+				<h3>Setup Phase</h3>
+				<p>The <code>setup()</code> function initializes all components in sequence:</p>
+				<ul>
+					<li><strong>Serial Communication:</strong> Opens serial monitor at 115200 baud for debugging</li>
+					<li><strong>Display Initialization:</strong> Configures the TFT display with landscape orientation and color inversion</li>
+					<li><strong>WiFi Connection:</strong> Connects to your network and displays status messages on screen</li>
+					<li><strong>Initial Fetch:</strong> Immediately fetches and displays the wallet balance</li>
+				</ul>
 
-	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Formatting and Styling</h2>
-		<p class="text-lg font-thin text-white">
-			The TFT_eSPI library provides many options for formatting and styling your display. Here are
-			some key functions you can use:
-		</p>
+				<h3>Main Loop</h3>
+				<p>The <code>loop()</code> function continuously monitors and updates the display:</p>
+				<ul>
+					<li><strong>WiFi Health Check:</strong> Verifies WiFi connection and reconnects if necessary</li>
+					<li><strong>Timing Control:</strong> Uses <code>millis()</code> to check if 60 seconds have elapsed since last fetch</li>
+					<li><strong>Balance Update:</strong> Calls <code>fetchWalletBalance()</code> at regular intervals</li>
+				</ul>
 
-		<h3 class="mt-4 text-2xl font-medium">Text Functions</h3>
-		<ul>
-			<li><i>setTextSize(size)</i> - Sets the text size (1-7)</li>
-			<li><i>setTextColor(color, background)</i> - Sets text and background colors</li>
-			<li><i>setCursor(x, y)</i> - Sets the position for text</li>
-			<li><i>println(text)</i> - Prints text and moves to next line</li>
-		</ul>
+			<h3>Fetching Stake Balance</h3>
+			<p>The <code>fetchStakeBalance()</code> function handles API communication:</p>
+			<ul>
+				<li><strong>HTTP Setup:</strong> Creates HTTP client and configures headers for JSON request</li>
+				<li><strong>Stake Address Usage:</strong> Uses <code>account_info</code> endpoint with stake address (not payment address)</li>
+				<li><strong>JSON Payload:</strong> Constructs request body with "_stake_addresses" array containing your stake address</li>
+				<li><strong>POST Request:</strong> Sends request to Koios API endpoint</li>
+				<li><strong>Response Parsing:</strong> Uses ArduinoJson to extract total_balance from response</li>
+				<li><strong>String to Number Conversion:</strong> Koios returns balance as a string, so we use <code>atoll()</code> to convert it to a long long for large Lovelace values</li>
+				<li><strong>Balance Conversion:</strong> Converts from Lovelace (1 tADA = 1,000,000 Lovelace) to tADA for display</li>
+				<li><strong>Change Detection:</strong> Only updates display if balance has changed, and logs whether it increased or decreased</li>
+				<li><strong>Serial Logging:</strong> Prints detailed information to serial monitor for debugging</li>
+			</ul>
 
-		<h3 class="mt-4 text-2xl font-medium">Drawing Functions</h3>
-		<ul>
-			<li><i>drawLine(x1, y1, x2, y2, color)</i> - Draws a line</li>
-			<li><i>drawRect(x, y, width, height, color)</i> - Draws a rectangle outline</li>
-			<li><i>fillRect(x, y, width, height, color)</i> - Draws a filled rectangle</li>
-			<li><i>drawCircle(x, y, radius, color)</i> - Draws a circle outline</li>
-			<li><i>fillCircle(x, y, radius, color)</i> - Draws a filled circle</li>
-		</ul>
+			<h3>Display Update</h3>
+			<p>The display uses a simple, clean design with all white text on a blue background:</p>
+			<ul>
+				<li><strong>Screen Background:</strong> Fills entire screen with blue for consistent appearance</li>
+				<li><strong>Title (White, Size 2):</strong> "Wallet Balance" at top of screen</li>
+				<li><strong>Balance (White, Size 4):</strong> Large, prominent display of ADA amount with 2 decimal places</li>
+				<li><strong>Unit Label (White, Size 2):</strong> "ADA" text to clearly identify the currency</li>
+				<li><strong>Timestamp (White, Size 1):</strong> Lower left corner shows "Updated Xs ago" with live counter that updates every second</li>
+			</ul>
 
-		<Card.Root>
-			<Card.Header class="mb-0 pb-0">
-				<Card.Title>Formatted Display Example</Card.Title>
-			</Card.Header>
-			<Card.Content>
-				<SyntaxHighlighter language="cpp" code={data.formattedDisplayCode} />
-			</Card.Content>
-			<Card.Footer>
-				<p class="text-xs leading-relaxed">
-					This example shows how to create a more visually appealing display with different text
-					sizes, colors, lines, and shapes. Experiment with these functions to create your own
-					unique display layout.
-				</p>
-			</Card.Footer>
-		</Card.Root>
+			<h3>Timestamp Updates</h3>
+			<p>A separate <code>updateTimestamp()</code> function efficiently updates just the timestamp:</p>
+			<ul>
+				<li><strong>Calculated Display:</strong> Shows seconds elapsed since last successful balance fetch</li>
+				<li><strong>Efficient Redraw:</strong> Only clears and redraws the small timestamp area (200×10 pixels)</li>
+				<li><strong>Live Counter:</strong> Called every second in the loop to provide real-time feedback</li>
+				<li><strong>No Flicker:</strong> Minimal screen updates prevent flickering while keeping display responsive</li>
+			</ul>
 
-		<h3 class="mt-4 text-2xl font-medium">Color Constants</h3>
-		<p class="text-lg font-thin text-white">
-			The library provides predefined color constants you can use:
-		</p>
-		<ul>
-			<li><i>TFT_BLACK</i>, <i>TFT_WHITE</i>, <i>TFT_RED</i>, <i>TFT_GREEN</i>, <i>TFT_BLUE</i></li>
-			<li><i>TFT_CYAN</i>, <i>TFT_MAGENTA</i>, <i>TFT_YELLOW</i></li>
-			<li><i>TFT_GRAY</i>, <i>TFT_ORANGE</i>, <i>TFT_PINK</i></li>
-		</ul>
-		<p class="text-lg font-thin text-white">
-			You can also create custom colors using RGB values with the <i>color565(red, green, blue)</i>
-			function, where each color component is 0-255.
-		</p>
+				<h3>Timing and Intervals</h3>
+				<p>The sketch uses non-blocking timing for efficient operation:</p>
+				<ul>
+					<li><strong>checkInterval = 60000:</strong> Fetches balance every 60 seconds (60,000 milliseconds)</li>
+					<li><strong>millis():</strong> Tracks time since device boot without blocking code execution</li>
+					<li><strong>Non-blocking:</strong> Device remains responsive during delays between updates</li>
+				</ul>
+
+				<h3>Error Handling</h3>
+				<p>The code includes basic error handling:</p>
+				<ul>
+					<li><strong>WiFi Reconnection:</strong> Automatically reconnects if connection drops</li>
+					<li><strong>HTTP Response Codes:</strong> Checks if request was successful (>0)</li>
+					<li><strong>JSON Validation:</strong> Verifies parsing succeeded and data exists before accessing</li>
+					<li><strong>Default Values:</strong> Uses safe defaults (0.0) if data extraction fails</li>
+				</ul>
+			`}
+		/>
 	</section>
 
 	<FurtherResources
@@ -320,6 +309,12 @@
 				url: 'https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display',
 				description:
 					'Community resources, examples, and documentation for the CYD (Cheap Yellow Display).'
+			},
+			{
+				title: 'LVGL - Light and Versatile Graphics Library',
+				url: 'https://github.com/lvgl/lvgl',
+				description:
+					'Popular embedded graphics library for creating beautiful UIs - an advanced alternative to TFT_eSPI with 30+ widgets and modern design features.'
 			}
 		]}
 	/>
