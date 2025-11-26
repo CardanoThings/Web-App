@@ -6,11 +6,46 @@
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
+	import CodeCard from '$lib/components/CodeCard.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
+
+	const ledHowItWorks = `
+		<h3>Overview</h3>
+		<p>This example demonstrates how to connect blockchain events to physical hardware. When your wallet balance changes (either increases or decreases), the LED turns on for 60 seconds, providing immediate visual feedback.</p>
+		
+		<h3>Key Concepts</h3>
+		<ul>
+			<li><strong>Balance Monitoring:</strong> The code checks your wallet balance every 30 seconds using the Koios API, comparing it to the previous balance to detect any changes.</li>
+			<li><strong>Change Detection:</strong> By storing the previous balance and comparing it to the current balance, we can detect both incoming and outgoing transactions.</li>
+			<li><strong>Timed LED Control:</strong> When a change is detected, the LED turns on and a timer is set. After 60 seconds, the LED automatically turns off.</li>
+			<li><strong>Non-blocking Timing:</strong> Using <code>millis()</code> instead of <code>delay()</code> allows the microcontroller to continue checking balances while the LED is on.</li>
+		</ul>
+		
+		<h3>How the Timer Works</h3>
+		<p>The code uses two timing mechanisms:</p>
+		<ul>
+			<li><strong>Balance Check Timer:</strong> Every 30 seconds, the code fetches the current wallet balance from the API.</li>
+			<li><strong>LED Off Timer:</strong> When a balance change is detected, <code>ledOnTime</code> is set to the current time. The LED stays on for 60 seconds (60,000 milliseconds) and then automatically turns off.</li>
+		</ul>
+		
+		<h3>Hardware Setup</h3>
+		<ul>
+			<li>Connect an LED with a current-limiting resistor (220Ω-1kΩ) to GPIO pin 2.</li>
+			<li>The longer leg (anode) of the LED connects to the GPIO pin through the resistor.</li>
+			<li>The shorter leg (cathode) connects to GND.</li>
+		</ul>
+		
+		<h3>Customization Ideas</h3>
+		<ul>
+			<li>Change the LED on duration by modifying the <code>60000</code> value to a different number of milliseconds.</li>
+			<li>Trigger different patterns (like blinking) instead of just turning on the LED.</li>
+			<li>Use different pins to control multiple LEDs for different types of events.</li>
+			<li>Detect only increases (incoming) or only decreases (outgoing) transactions.</li>
+		</ul>
+	`;
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
@@ -56,6 +91,34 @@
 
 <SectionNavigator>
 	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Hardware Requirements</h2>
+		<p class="text-lg font-thin text-white">
+			To complete this workshop, you will need the following hardware components:
+		</p>
+		<ul>
+			<li><strong>ESP32-C3 Microcontroller</strong> - The main controller for this project</li>
+			<li>
+				<strong>Hardware Relay Module</strong> - For controlling high-voltage devices (110V/220V)
+			</li>
+			<li><strong>Breadboard</strong> - For prototyping without soldering</li>
+			<li>
+				<strong>Jumper Cables</strong> - For making connections (male-to-male, male-to-female)
+			</li>
+			<li>
+				<strong>Soldering Iron</strong> (Optional) - For permanent connections instead of breadboard
+			</li>
+			<li>
+				<strong>LED with Resistor</strong> (Recommended for testing) - Start with LED before using relay
+			</li>
+		</ul>
+		<p class="text-lg font-thin text-white">
+			<strong>Note:</strong> You can use either a breadboard with jumper cables for prototyping, or solder
+			components directly for a permanent installation. We recommend starting with a breadboard for easier
+			troubleshooting and modifications.
+		</p>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Connecting to On-Chain Events</h2>
 		<p class="text-lg font-thin text-white">
 			Let's start by connecting blockchain events to hardware control. We'll begin with a simple LED
@@ -63,42 +126,14 @@
 			moving to more powerful hardware like relays.
 		</p>
 
-		<Card.Root>
-			<Card.Header class="mb-0 pb-0">
-				<Card.Title>LED Control Example</Card.Title>
-			</Card.Header>
-			<Card.Content>
-				<SyntaxHighlighter language="cpp" code={data.ledCode} />
-			</Card.Content>
-			<Card.Footer>
-				<p class="text-xs leading-relaxed">
-					This example shows how to connect on-chain events to hardware. When a transaction is
-					received, the LED blinks to provide visual feedback. This demonstrates the core concept
-					before moving to more complex hardware.
-				</p>
-			</Card.Footer>
-		</Card.Root>
-
-		<h3 class="mt-4 text-2xl font-medium">How it works</h3>
-		<ul>
-			<li>The code monitors your wallet balance using the same API call from previous steps.</li>
-			<li>
-				When the balance increases (new transaction received), the LED blinks to indicate the event.
-			</li>
-			<li>
-				This provides immediate visual feedback that your microcontroller is successfully detecting
-				blockchain events.
-			</li>
-			<li>
-				You can modify this logic to trigger on different conditions, such as when balance exceeds a
-				certain threshold, or when a specific token is received.
-			</li>
-		</ul>
-		<p class="text-lg font-thin text-white">
-			<strong>Testing:</strong> To test without waiting for a real transaction, you can temporarily modify
-			the code to trigger the LED based on a timer or button press. Once you confirm it works, restore
-			the blockchain-based logic.
-		</p>
+		<CodeCard
+			title="LED Balance Monitor - 60 Second Alert"
+			code={data.ledCode}
+			language="cpp"
+			howItWorksContent={ledHowItWorks}
+			githubLink="https://github.com/CardanoThings/workshops/tree/main/Workshop-02/examples/led-balance-monitor"
+			footerText="This example monitors your wallet balance and turns on an LED for 60 seconds whenever the balance changes (up or down). Perfect for testing on-chain event detection before moving to more powerful hardware like relays."
+		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
