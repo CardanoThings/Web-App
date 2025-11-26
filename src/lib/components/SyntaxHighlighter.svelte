@@ -67,7 +67,11 @@
 	});
 
 	// Optimize reactive statement to re-highlight when code, language, or comment visibility changes
-	$: if (code !== previousCode || language !== previousLanguage || showComments !== previousShowComments) {
+	$: if (
+		code !== previousCode ||
+		language !== previousLanguage ||
+		showComments !== previousShowComments
+	) {
 		previousCode = code;
 		previousLanguage = language;
 		previousShowComments = showComments;
@@ -105,7 +109,7 @@
 		// Only normalize if ALL non-empty lines have some indentation
 		// If any line starts at column 0, don't remove any indentation
 		const hasZeroIndent = indentLengths.some((length) => length === 0);
-		
+
 		if (hasZeroIndent || indentLengths.length === 0) {
 			// Some lines start at column 0, so don't remove indentation
 			// Just trim leading/trailing empty lines
@@ -113,7 +117,7 @@
 		}
 
 		const minIndent = Math.min(...indentLengths);
-		
+
 		// Safety check: don't remove more than the minimum
 		if (minIndent <= 0) {
 			return text.replace(/^\n+|\n+$/g, '');
@@ -189,8 +193,7 @@
 				if (multiLineEnd !== -1) {
 					// Multi-line comment on same line
 					processedLine =
-						processedLine.substring(0, multiLineStart) +
-						processedLine.substring(multiLineEnd + 2);
+						processedLine.substring(0, multiLineStart) + processedLine.substring(multiLineEnd + 2);
 					processedLine = processedLine.trim();
 				} else {
 					// Multi-line comment starts but doesn't end on this line
@@ -265,10 +268,10 @@
 		try {
 			// Normalize indentation first
 			let normalizedCode = normalizeIndentation(code);
-			
+
 			// Remove comments if they're toggled off
 			const codeForHighlighting = removeComments(normalizedCode, showComments);
-			
+
 			// Store the version with comments for copying (always copy full code with comments)
 			normalizedCodeForCopy = normalizedCode;
 			lineCount = codeForHighlighting.split('\n').length;
@@ -400,8 +403,7 @@
 			class:collapsed={lineCount > MAX_LINES_COLLAPSED && !isExpanded}
 			class:expanded={lineCount > MAX_LINES_COLLAPSED && isExpanded}
 			class:short-code={lineCount <= MAX_LINES_COLLAPSED}>
-			<code class={`hljs ${language}`}>{@html highlightedCode}</code
-			>
+			<code class={`hljs ${language}`}>{@html highlightedCode}</code>
 		</pre>
 	</section>
 	{#if lineCount > MAX_LINES_COLLAPSED}

@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { X } from 'lucide-svelte';
+	import { X, Info } from 'lucide-svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import TagBadge from '$lib/components/TagBadge.svelte';
 
@@ -28,51 +28,48 @@
 			</div>
 		{/if}
 		<p class="text-lg leading-relaxed font-thin text-white">{data.description}</p>
+	</header>
 
-		<div class="mt-4">
+	<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+		<div>
 			<h2 class="mb-3 text-2xl font-semibold text-white">Overview</h2>
 			<p class="leading-relaxed text-white">
 				{data.overview || 'This block provides essential functionality for your ESP32 project.'}
 			</p>
+		</div>
 
-			{#if data.features && data.features.length > 0}
-				<h3 class="mt-6 mb-2 text-xl font-semibold text-white">Features</h3>
+		{#if data.features && data.features.length > 0}
+			<div>
+				<h3 class="mb-2 text-xl font-semibold text-white">Features</h3>
 				<ul class="my-2 list-disc pl-6 text-white/90">
 					{#each data.features as feature}
 						<li class="my-2">{feature}</li>
 					{/each}
 				</ul>
-			{/if}
+			</div>
+		{/if}
+	</div>
 
-			{#if data.prerequisites}
-				<div class="mt-6 rounded-lg border-2 border-purple-600 bg-purple-600/20 p-4">
-					<h3 class="mb-2 text-xl font-semibold text-white">Before You Begin</h3>
-					<p class="mb-3 text-sm text-white/80">
-						Make sure you have the necessary setup and understanding before implementing this code
-						block.
-					</p>
-					<Button variant="outline" onclick={() => (prerequisitesOpen = true)} class="gap-2">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="16"
-							height="16"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<circle cx="12" cy="12" r="10" />
-							<path d="M12 16v-4" />
-							<path d="m12 8 .01 0" />
-						</svg>
-						Prerequisites
-					</Button>
-				</div>
-			{/if}
-		</div>
-	</header>
+	{#if data.prerequisites}
+		<aside class="mb-8 flex gap-3 rounded-md border border-white p-4 text-white sm:w-1/2">
+			<Info size="48" strokeWidth={1.5} class="-mt-2" />
+			<div class="flex flex-col gap-2">
+				<h3 class="text-lg font-normal">Before You Begin</h3>
+				<p class="text-xs leading-relaxed font-thin">
+					Make sure you have the necessary setup and understanding before implementing this code
+					block.
+				</p>
+				<Button
+					variant="secondary"
+					size="sm"
+					onclick={() => (prerequisitesOpen = true)}
+					class="mt-2 mb-1 w-fit text-xs"
+				>
+					Show Prerequisites
+				</Button>
+			</div>
+		</aside>
+	{/if}
 
 	<main class="flex flex-col gap-6">
 		{#if data.code}
@@ -136,7 +133,7 @@
 				</Card.Header>
 				<Card.Content class="mt-0 pt-0">
 					<SyntaxHighlighter
-						language="cpp"
+						language={data.language || 'cpp'}
 						code={data.code}
 						defaultShowComments={true}
 						defaultExpanded={true}
@@ -246,6 +243,12 @@
 	.prerequisites-content :global(p) {
 		margin: 0.5rem 0;
 		line-height: 1.6;
+	}
+
+	.prerequisites-content :global(ol) {
+		list-style-type: decimal;
+		padding-left: 1.5rem;
+		margin: 0.5rem 0;
 	}
 
 	.prerequisites-content :global(ul) {

@@ -5,7 +5,7 @@
 </script>
 
 <section id="introductions" class="mb-12">
-	<div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
 		<div class="text-white">
 			<h1 class="text-4xl">Introductions</h1>
 			<p class="mt-2 max-w-[90%] text-lg leading-relaxed font-thin">

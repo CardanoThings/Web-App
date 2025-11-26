@@ -20,7 +20,7 @@
 </script>
 
 <section id="blocks" class="mb-12">
-	<div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		<div class="text-white">
 			<h1 class="text-4xl">Building Blocks</h1>
 			<p class="mt-2 max-w-[90%] text-lg leading-relaxed font-thin">
@@ -82,7 +82,7 @@
 		border-radius: 0.375rem;
 		cursor: pointer;
 		background-color: white;
-		border: 1px solid white;
+		border: 1px dashed white;
 		color: black;
 		display: flex;
 		align-items: center;
