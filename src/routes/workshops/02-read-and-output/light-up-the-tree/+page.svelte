@@ -5,6 +5,7 @@
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
+	import TipBox from '$lib/components/TipBox.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -21,9 +22,36 @@
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
 		In this step of this workshop you will learn how to use your Microcontroller with external
 		hardware like a 110V/220V relais to turn a lightbulb (or the Christmas Tree for that matter) on
-		and off based on on-chain events. We will also look briefly into other options like motors, LEDs
-		and other hardware.
+		and off based on on-chain events.
 	</p>
+
+	<TipBox title="Safety Warning - High Voltage" variant="danger">
+		This workshop involves working with <strong>external hardware including 110V/220V relays</strong
+		>
+		that can control mains electricity.
+		<strong
+			>High voltage can cause serious injury, death, or damage to your equipment if handled
+			improperly.</strong
+		>
+		<br /><br />
+		<strong>Only proceed if you:</strong>
+		<ul class="mt-2 ml-4">
+			<li>Have a basic understanding of electronics and electrical safety</li>
+			<li>Know how to safely work with mains voltage (110V/220V)</li>
+			<li>Understand the risks of working with relays and high-voltage circuits</li>
+			<li>Have proper safety equipment and work in a safe environment</li>
+		</ul>
+		<br />
+		<strong>If you are unsure or lack experience with electronics, please:</strong>
+		<ul class="mt-2 ml-4">
+			<li>Start with the low-voltage LED examples provided in this workshop</li>
+			<li>Consult with someone experienced in electronics before proceeding to relays</li>
+			<li>Never work with live mains voltage without proper training and safety measures</li>
+		</ul>
+		<br />
+		We are <strong>not responsible for any injuries or damage</strong> that may occur. Proceed at your
+		own risk and always prioritize safety!
+	</TipBox>
 </section>
 
 <SectionNavigator>
