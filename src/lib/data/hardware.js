@@ -3,6 +3,10 @@ export const hardware = [
     name: "Cheap Yellow Display (CYD)",
     slug: "cheap-yellow-display-cyd",
     intro: "The Cheap Yellow Display (CYD) is an affordable ESP32-based development board featuring an integrated 2.8-inch TFT display with resistive touch capabilities, making it perfect for interactive IoT projects and GUIs.",
+    images: [
+      "/images/hardware/cyd-01.webp",
+      "/images/hardware/cyd-02.webp"
+    ],
     features: [
       "ESP32-WROOM-32 microcontroller (240 MHz dual-core)",
       "2.8\" 320x240 ILI9341 TFT LCD display",
@@ -46,10 +50,6 @@ export const hardware = [
         name: "Amazon",
         url: "https://www.amazon.com/s?k=esp32+cheap+yellow+display"
       }
-    ],
-    images: [
-      "/images/hardware/cyd-01.webp",
-      "/images/hardware/cyd-02.webp"
     ],
     libraries: [
       "TFT_eSPI (by Bodmer)",
@@ -108,6 +108,10 @@ void loop() {
     name: "ESP32-C3",
     slug: "esp32-c3",
     intro: "The ESP32-C3 is a cost-effective, RISC-V based microcontroller with Wi-Fi and Bluetooth 5 (LE) support, perfect for IoT applications requiring low power consumption and modern architecture.",
+    images: [
+      "/images/hardware/esp32c3-01.webp",
+      "/images/hardware/esp32c3-02.webp"
+    ],
     features: [
       "RISC-V 32-bit single-core processor (up to 160 MHz)",
       "400 KB SRAM, 384 KB ROM",
@@ -147,10 +151,6 @@ void loop() {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=esp32-c3+devkit"
       }
-    ],
-    images: [
-      "/images/hardware/esp32c3-01.webp",
-      "/images/hardware/esp32c3-02.webp"
     ],
     libraries: [
       "WiFi (built-in)",
@@ -210,6 +210,10 @@ void loop() {
     name: "Relay Module 3V, 1 Channel",
     slug: "relay-module-3v-1channel",
     intro: "A low-voltage 3V single-channel relay module with opto-isolation, perfect for controlling AC/DC devices safely from ESP32 or other 3.3V microcontrollers without level shifters.",
+    images: [
+      "/images/hardware/relais-01.webp",
+      "/images/hardware/relais-02.webp"
+    ],
     features: [
       "3.3V operation (compatible with ESP32)",
       "Single channel relay",
@@ -244,10 +248,6 @@ void loop() {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=3v+relay+module+1+channel"
       }
-    ],
-    images: [
-      "/images/hardware/relais-01.webp",
-      "/images/hardware/relais-02.webp"
     ],
     libraries: [
       "No external library required (uses digitalWrite)"
@@ -298,6 +298,10 @@ void loop() {
     name: "WS2812B LED Matrix 8x8",
     slug: "ws2812b-led-matrix-8x8",
     intro: "An 8x8 RGB LED matrix using WS2812B addressable LEDs, capable of displaying 64 individually controllable pixels with 24-bit color. Perfect for creating colorful displays, animations, and visual effects.",
+    images: [
+      "/images/hardware/led-matrix-01.webp",
+      "/images/hardware/led-matrix-02.webp"
+    ],
     features: [
       "64 WS2812B addressable RGB LEDs (8x8 grid)",
       "24-bit color depth (16.7 million colors)",
@@ -336,10 +340,6 @@ void loop() {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=ws2812b+8x8+matrix"
       }
-    ],
-    images: [
-      "/images/hardware/led-matrix-01.webp",
-      "/images/hardware/led-matrix-02.webp"
     ],
     libraries: [
       "FastLED (by FastLED)",
@@ -411,6 +411,10 @@ uint8_t XY(uint8_t x, uint8_t y) {
     name: "1.3 Inch OLED Display (SH1106, I2C)",
     slug: "oled-display-sh1106-13inch-i2c",
     intro: "A compact 1.3-inch monochrome OLED display using the SH1106 controller with I2C interface. Features high contrast, low power consumption, and excellent visibility even in bright light conditions.",
+    images: [
+      "/images/hardware/oled-display-01.webp",
+      "/images/hardware/oled-display-02.webp"
+    ],
     features: [
       "1.3\" diagonal display",
       "128x64 pixel resolution",
@@ -450,10 +454,6 @@ uint8_t XY(uint8_t x, uint8_t y) {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=sh1106+1.3+inch+oled"
       }
-    ],
-    images: [
-      "/images/hardware/oled-display-01.webp",
-      "/images/hardware/oled-display-02.webp"
     ],
     libraries: [
       "Adafruit SH110X (by Adafruit)",
@@ -541,6 +541,10 @@ void loop() {
     name: "SHT21 Temperature Sensor (I2C)",
     slug: "sht21-temperature-sensor-i2c",
     intro: "A high-precision digital temperature and humidity sensor from Sensirion with I2C interface. Features excellent accuracy, low power consumption, and factory-calibrated measurements.",
+    images: [
+      "/images/hardware/sht21-01.webp",
+      "/images/hardware/sht21-02.webp"
+    ],
     features: [
       "Temperature range: -40 to +125°C",
       "Temperature accuracy: ±0.3°C (typical)",
@@ -581,10 +585,6 @@ void loop() {
         name: "Amazon",
         url: "https://www.amazon.com/s?k=sht21+temperature+sensor"
       }
-    ],
-    images: [
-      "/images/hardware/sht21-01.webp",
-      "/images/hardware/sht21-02.webp"
     ],
     libraries: [
       "SparkFun SHT21 Arduino Library (by SparkFun)",

@@ -34,7 +34,20 @@ export const workshops = [
                 ],
             }
         ],
-        link: "/workshops/01-basics"
+        link: "/workshops/01-basics",
+        requirements: {
+            hardware: [
+                "ESP8266 or ESP32 based Microcontroller",
+                "Micro USB Cable to connect the Microcontroller to your PC",
+                "Computer with Arduino IDE installed",
+                "WIFI Network with Internet Access"
+            ],
+            software: [
+                "Webbrowser",
+                "Yoroi Wallet (Preprod Testnet)",
+                "Arduino IDE",
+            ]
+        }
     },
     {
         title: "Workshop 02: Read and Output",
@@ -61,7 +74,20 @@ export const workshops = [
                 link: "/workshops/02-read-and-output/epoch-clock"
             }
         ],
-        link: "/workshops/02-read-and-output"
+        link: "/workshops/02-read-and-output",
+        requirements: {
+            hardware: [
+                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
+                "Micro USB Cable to connect the Microcontroller to your PC",
+                "Computer with Arduino IDE installed",
+                "WIFI Network with Internet Access"
+            ],
+            software: [
+                "Yoroi Wallet (Preprod Testnet)",
+                "Arduino IDE",
+                "NodeJs and NPM"
+            ]
+        }
     },
     {
         title: "Workshop 03: Input and Write",
@@ -83,7 +109,21 @@ export const workshops = [
                 link: "/workshops/03-input-and-write/mint-on-nmkr"
             }
         ],
-        link: "/workshops/03-input-and-write"
+        link: "/workshops/03-input-and-write",
+        requirements: {
+            hardware: [
+                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
+                "Micro USB Cable to connect the Microcontroller to your PC",
+                "DHT-22 Temperature and Humidity Sensor",
+                "Computer with Arduino IDE installed",
+                "WIFI Network with Internet Access"
+            ],
+            software: [
+                "Yoroi Wallet (Preprod Testnet)",
+                "Arduino IDE",
+                "NodeJs and NPM"
+            ]
+        }
     },
     {
         title: "Workshop 04: Cardano Ticker",
@@ -100,11 +140,24 @@ export const workshops = [
                 link: "/workshops/04-cardano-ticker/building-the-ticker"
             }
         ],
-        link: "/workshops/04-cardano-ticker"
+        link: "/workshops/04-cardano-ticker",
+        requirements: {
+            hardware: [
+                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
+                "Micro USB Cable to connect the Microcontroller to your PC",
+                "Computer with Arduino IDE installed",
+                "WIFI Network with Internet Access"
+            ],
+            software: [
+                "Yoroi Wallet (Preprod Testnet)",
+                "Arduino IDE",
+                "NodeJs and NPM"
+            ]
+        }
     },
     {
         title: "Workshop 05: QR-Code Payments",
-        description: "In this workshop you will build a simple payment system right on your microcontroller utilising everything you have learned in former workshops. You will also learn about Cardano mobile wallets like Yoroi, Vespr, Eternl, or Begin.",
+        description: "In this workshop you will build a simple payment system right on your microcontroller utilising everything you have learned in former workshops. You will also learn about Cardano mobile wallets like Yoroi, Vespr or BeginWallet.",
         steps: [
             {
                 title: "Building the Interface",
@@ -127,6 +180,19 @@ export const workshops = [
                 link: "/workshops/05-qr-code-payments/confirming-the-payment"
             }
         ],
-        link: "/workshops/05-qr-code-payments"
+        link: "/workshops/05-qr-code-payments",
+        requirements: {
+            hardware: [
+                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
+                "Micro USB Cable to connect the Microcontroller to your PC",
+                "Computer with Arduino IDE installed",
+                "WIFI Network with Internet Access"
+            ],
+            software: [
+                "Yoroi Wallet (Preprod Testnet)",
+                "Arduino IDE",
+                "NodeJs and NPM"
+            ]
+        }
     }
 ];

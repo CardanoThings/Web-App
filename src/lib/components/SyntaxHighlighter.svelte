@@ -362,7 +362,7 @@
 	</div>
 {/if}
 
-<div class="code-wrapper">
+<div class="code-wrapper" class:default-expanded={defaultExpanded}>
 	<section class={`code-container ${$$props.class || ''}`.trim()} aria-label="Code block">
 		<div class="context">
 			<span class="language-badge" aria-label="Language: {language}">{language}</span>
@@ -468,7 +468,8 @@
 			transition: opacity 0.2s ease;
 		}
 
-		.code-wrapper:hover .context {
+		.code-wrapper:hover .context,
+		.code-wrapper.default-expanded .context {
 			opacity: 1;
 		}
 
@@ -477,7 +478,8 @@
 			transition: opacity 0.2s ease;
 		}
 
-		.code-wrapper:hover .expand-container-bottom {
+		.code-wrapper:hover .expand-container-bottom,
+		.code-wrapper.default-expanded .expand-container-bottom {
 			opacity: 1;
 		}
 	}

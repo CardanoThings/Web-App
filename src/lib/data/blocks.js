@@ -1,3 +1,38 @@
+/**
+ * Building Blocks Data
+ * 
+ * This file contains all the code block examples for ESP32-based projects.
+ * Each block represents a complete, ready-to-use code example with comprehensive
+ * documentation including prerequisites, usage instructions, and troubleshooting tips.
+ * 
+ * @typedef {Object} Block
+ * @property {string} slug - URL-friendly identifier for the block
+ * @property {string} title - Display title of the block
+ * @property {string[]} tags - Array of tags for filtering (e.g., "Arduino-IDE", "ESP32-C3", "ESP32-CYD")
+ * @property {string} description - Short description of what the block does
+ * @property {string} link - Internal link to the block's detail page
+ * @property {string} overview - Detailed explanation of the block's purpose and functionality
+ * @property {string[]} features - List of key features this block demonstrates
+ * @property {string} prerequisites - HTML string with setup instructions (optional)
+ * @property {string} code - The actual Arduino/C++ code with comprehensive inline comments
+ * @property {string} githubLink - URL to the code repository (optional)
+ * @property {Object[]} [resources] - Additional learning resources (optional)
+ * @property {string} resources[].title - Resource title
+ * @property {string} resources[].url - Resource URL
+ * @property {string} resources[].description - Resource description
+ * @property {string} usage - HTML string with step-by-step usage instructions
+ * @property {Object[]} parameters - List of important parameters/functions used in the code
+ * @property {string} parameters[].name - Parameter or function name
+ * @property {string} parameters[].type - Type (e.g., "define", "function")
+ * @property {string} parameters[].description - What the parameter/function does
+ * @property {string} notes - HTML string with additional notes, troubleshooting tips, and next steps
+ */
+
+/**
+ * Array of all available building blocks
+ * Blocks are organized by hardware platform and complexity
+ * @type {Block[]}
+ */
 export const blocks = [
   {
     slug: "blink",
@@ -46,35 +81,69 @@ export const blocks = [
           <li><strong>Linux:</strong> Look for /dev/ttyUSB* or /dev/ttyACM*</li>
         </ul>`,
     code: `
+/*
+ * ESP32-C3 Blink Example
+ * 
+ * This is the "Hello World" of microcontroller programming. It demonstrates
+ * the basics of digital output control and serial communication.
+ * 
+ * What you'll learn:
+ * - How to define constants with #define
+ * - How to configure GPIO pins as outputs
+ * - How to turn LEDs on and off
+ * - How to send debug messages to the Serial Monitor
+ * - How to create timing delays
+ */
 
-// Built-in LED pin for ESP32-C3
+// Define the GPIO pin number for the built-in LED
+// On ESP32-C3 boards, the built-in LED is typically connected to GPIO 8
 #define LED_PIN 8
 
+/**
+ * setup() function runs once when the board starts up or is reset
+ * Use this function to initialize pins, start serial communication,
+ * and perform any one-time configuration
+ */
 void setup() {
   // Initialize serial communication at 115200 baud rate
+  // This allows us to send debug messages to the Serial Monitor
   Serial.begin(115200);
   
-  // Wait for serial port to connect (needed for native USB)
+  // Wait 1 second for the serial port to initialize
+  // This ensures we don't miss any early debug messages
   delay(1000);
   
-  // Configure LED pin as output
+  // Configure the LED pin as an OUTPUT
+  // This tells the ESP32 that we want to control this pin's voltage
   pinMode(LED_PIN, OUTPUT);
   
+  // Print initialization messages to the Serial Monitor
   Serial.println("ESP32-C3 Blink Example");
   Serial.println("LED will blink every second");
   Serial.println("------------------------");
 }
 
+/**
+ * loop() function runs repeatedly after setup() completes
+ * This is where you put your main program logic
+ * The loop continues forever until the board is reset or powered off
+ */
 void loop() {
-  // Turn LED on
+  // Turn the LED ON by setting the pin to HIGH (3.3V)
   digitalWrite(LED_PIN, HIGH);
   Serial.println("LED ON");
+  
+  // Wait for 1000 milliseconds (1 second) with LED on
   delay(1000);
   
-  // Turn LED off
+  // Turn the LED OFF by setting the pin to LOW (0V)
   digitalWrite(LED_PIN, LOW);
   Serial.println("LED OFF");
+  
+  // Wait for 1000 milliseconds (1 second) with LED off
   delay(1000);
+  
+  // After this delay, the loop() function starts over from the top
 }`,
     githubLink: "https://github.com/cardanothings/examples/tree/main/blocks/blink",
     usage: `<ol>
@@ -189,35 +258,82 @@ void loop() {
           <li><strong>Linux:</strong> Look for /dev/ttyUSB* or /dev/ttyACM*</li>
         </ul>`,
     code: `
+/*
+ * Cheap Yellow Display (CYD) Blink Example
+ * 
+ * This is the "Hello World" for the CYD (ESP32-2432S028R) board.
+ * The CYD has a built-in RGB LED and a TFT touchscreen display.
+ * This example demonstrates basic LED control and serial communication.
+ * 
+ * What you'll learn:
+ * - How to define constants for GPIO pins
+ * - How to configure GPIO pins as outputs
+ * - How to control the built-in RGB LED
+ * - How to send debug messages to the Serial Monitor
+ * - How to create timing delays
+ * 
+ * Hardware: ESP32-2432S028R (Cheap Yellow Display)
+ * LED: Built-in RGB LED on GPIO 4
+ */
 
-// Built-in RGB LED pin for CYD
+// Define the GPIO pin number for the built-in RGB LED
+// On the CYD board, the RGB LED is connected to GPIO 4
 #define LED_PIN 4
 
+/**
+ * setup() function runs once when the board starts up or is reset
+ * Use this function to initialize pins, start serial communication,
+ * and perform any one-time configuration
+ */
 void setup() {
   // Initialize serial communication at 115200 baud rate
+  // This allows us to send debug messages to the Serial Monitor
+  // Make sure to set your Serial Monitor to the same baud rate
   Serial.begin(115200);
   
-  // Wait for serial port to connect (needed for native USB)
+  // Wait 1 second for the serial port to initialize
+  // This is especially important for boards with native USB
+  // It ensures we don't miss any early debug messages
   delay(1000);
   
-  // Configure LED pin as output
+  // Configure the LED pin as an OUTPUT
+  // This tells the ESP32 that we want to control this pin's voltage
+  // OUTPUT mode allows us to set the pin HIGH (3.3V) or LOW (0V)
   pinMode(LED_PIN, OUTPUT);
   
+  // Print initialization messages to the Serial Monitor
+  // These messages confirm the program has started successfully
   Serial.println("CYD Blink Example");
   Serial.println("LED will blink every second");
   Serial.println("------------------------");
 }
 
+/**
+ * loop() function runs repeatedly after setup() completes
+ * This is where you put your main program logic
+ * The loop continues forever until the board is reset or powered off
+ */
 void loop() {
-  // Turn LED on
+  // Turn the LED ON by setting the pin to HIGH (3.3V)
+  // This illuminates the RGB LED (appears as white/blue depending on the LED)
   digitalWrite(LED_PIN, HIGH);
   Serial.println("LED ON");
+  
+  // Wait for 1000 milliseconds (1 second) with LED on
+  // delay() pauses the program - nothing else happens during this time
   delay(1000);
   
-  // Turn LED off
+  // Turn the LED OFF by setting the pin to LOW (0V)
+  // This turns off the LED completely
   digitalWrite(LED_PIN, LOW);
   Serial.println("LED OFF");
+  
+  // Wait for 1000 milliseconds (1 second) with LED off
+  // This creates a complete on/off blink cycle of 2 seconds total
   delay(1000);
+  
+  // After this delay, the loop() function automatically starts over from the top
+  // This creates a continuous blinking pattern: ON -> wait -> OFF -> wait -> repeat
 }`,
     githubLink: "https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display",
     resources: [
