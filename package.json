@@ -9,7 +9,8 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "prettier --check . && eslint .",
+		"extract-blocks": "node extract-blocks.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
