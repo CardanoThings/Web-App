@@ -6,13 +6,7 @@
 
 <section id="further-resources" class="mt-8 flex flex-col gap-4 text-white">
 	<h2 class="text-4xl font-medium">Further Resources</h2>
-	<Card.Root class="sm:[calc(100%-2rem)] bg-transparent text-white">
-		<Card.Header>
-			<Card.Description>
-				Here are some additional resources to help you learn more about the topics covered in this
-				workshop.
-			</Card.Description>
-		</Card.Header>
+	<Card.Root class="sm:[calc(100%-2rem)] bg-transparent pb-4 text-white">
 		<Card.Content>
 			<ul>
 				{#each resources as resource}
