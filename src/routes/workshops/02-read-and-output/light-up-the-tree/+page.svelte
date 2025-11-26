@@ -14,11 +14,12 @@
 
 	const ledHowItWorks = `
 		<h3>Overview</h3>
-		<p>This example demonstrates how to connect blockchain events to physical hardware. When your wallet balance changes (either increases or decreases), the LED turns on for 60 seconds, providing immediate visual feedback.</p>
+		<p>This example demonstrates how to connect blockchain events to physical hardware. When your stake account balance changes (either increases or decreases), the LED turns on for 60 seconds, providing immediate visual feedback.</p>
 		
 		<h3>Key Concepts</h3>
 		<ul>
-			<li><strong>Balance Monitoring:</strong> The code checks your wallet balance every 30 seconds using the Koios API, comparing it to the previous balance to detect any changes.</li>
+			<li><strong>Balance Monitoring:</strong> The code checks your stake account balance every 30 seconds using the Koios API <code>/account_info</code> endpoint, comparing it to the previous balance to detect any changes.</li>
+			<li><strong>Stake Address:</strong> This example uses your stake address (not wallet address) to monitor the total balance including delegated amount and rewards.</li>
 			<li><strong>Change Detection:</strong> By storing the previous balance and comparing it to the current balance, we can detect both incoming and outgoing transactions.</li>
 			<li><strong>Timed LED Control:</strong> When a change is detected, the LED turns on and a timer is set. After 60 seconds, the LED automatically turns off.</li>
 			<li><strong>Non-blocking Timing:</strong> Using <code>millis()</code> instead of <code>delay()</code> allows the microcontroller to continue checking balances while the LED is on.</li>
@@ -27,7 +28,7 @@
 		<h3>How the Timer Works</h3>
 		<p>The code uses two timing mechanisms:</p>
 		<ul>
-			<li><strong>Balance Check Timer:</strong> Every 30 seconds, the code fetches the current wallet balance from the API.</li>
+			<li><strong>Balance Check Timer:</strong> Every 30 seconds, the code fetches the current stake balance from the API.</li>
 			<li><strong>LED Off Timer:</strong> When a balance change is detected, <code>ledOnTime</code> is set to the current time. The LED stays on for 60 seconds (60,000 milliseconds) and then automatically turns off.</li>
 		</ul>
 		
@@ -36,6 +37,14 @@
 			<li>Connect an LED with a current-limiting resistor (220Ω-1kΩ) to GPIO pin 2.</li>
 			<li>The longer leg (anode) of the LED connects to the GPIO pin through the resistor.</li>
 			<li>The shorter leg (cathode) connects to GND.</li>
+		</ul>
+		
+		<h3>Getting Your Stake Address</h3>
+		<ul>
+			<li>Open your Yoroi wallet extension</li>
+			<li>Make sure you're on the Preprod Testnet (orange banner at the top)</li>
+			<li>Go to the "Wallet" section and click on the "Receive" tab</li>
+			<li>Copy your stake address from the rewards section (it starts with "stake_test1...")</li>
 		</ul>
 		
 		<h3>Customization Ideas</h3>
@@ -132,7 +141,7 @@
 			language="cpp"
 			howItWorksContent={ledHowItWorks}
 			githubLink="https://github.com/CardanoThings/workshops/tree/main/Workshop-02/examples/led-balance-monitor"
-			footerText="This example monitors your wallet balance and turns on an LED for 60 seconds whenever the balance changes (up or down). Perfect for testing on-chain event detection before moving to more powerful hardware like relays."
+			footerText="This example monitors your stake account balance and turns on an LED for 60 seconds whenever the balance changes (up or down). Perfect for testing on-chain event detection before moving to more powerful hardware like relays. Don't forget to replace the WiFi credentials and stake address with your own!"
 		/>
 	</section>
 
