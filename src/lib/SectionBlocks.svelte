@@ -1,48 +1,22 @@
 <script>
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import { Badge } from '$lib/components/ui/badge/index.js';
-	import { blocks } from '$lib/data/blocks.js';
-	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import TagBadge from '$lib/components/TagBadge.svelte';
 
-	// Initialize selectedTags from URL parameter if present
-	let selectedTags = $state([]);
+	let { data } = $props();
 
-	$effect(() => {
-		const urlTags = page.url.searchParams.get('tags');
-		if (urlTags) {
-			selectedTags = urlTags.split(',').filter(Boolean);
-		}
-	});
+	let blocks = $derived(data?.blocks || []);
+	let allTags = $derived(data?.allTags || []);
+	let selectedTag = $derived(data?.selectedTag || null);
 
-	function toggleTag(tag) {
-		let newTags;
-		if (selectedTags.includes(tag)) {
-			newTags = selectedTags.filter((t) => t !== tag);
-		} else {
-			newTags = [...selectedTags, tag];
-		}
-		selectedTags = newTags;
-
-		// Update URL with selected tags
-		const url = new URL(window.location.href);
-		if (newTags.length > 0) {
-			url.searchParams.set('tags', newTags.join(','));
-		} else {
-			url.searchParams.delete('tags');
-		}
-		goto(url.pathname + url.search, { replaceState: true, noScroll: true });
+	function filterByTag(tag) {
+		goto(`/blocks?tags=${encodeURIComponent(tag)}`);
 	}
 
-	let filteredBlocks = $derived(
-		selectedTags.length === 0
-			? blocks
-			: blocks.filter((block) => selectedTags.some((tag) => block.tags.includes(tag)))
-	);
-
-	// Get all unique tags from blocks
-	let allTags = $derived([...new Set(blocks.flatMap((block) => block.tags))]);
+	function clearFilter() {
+		goto('/blocks');
+	}
 </script>
 
 <section id="blocks" class="mb-12">
@@ -51,49 +25,36 @@
 			<h1 class="text-4xl">Building Blocks</h1>
 			<p class="mt-2 max-w-[90%] text-lg leading-relaxed font-thin">
 				Easy to use building blocks for your ESP32 that will get you going with your own projects.
+				Select a tag to filter the blocks by board, topic or IDE.
 			</p>
 
-			{#if selectedTags.length > 0}
-				<div class="mt-4 flex flex-wrap gap-1">
-					{#each selectedTags as tag}
-						<Badge
-							class="cursor-pointer border border-white bg-white text-xs text-black"
-							onclick={() => toggleTag(tag)}
-						>
-							{tag}
-						</Badge>
-					{/each}
-					<Badge
-						variant="destructive"
-						class="cursor-pointer text-xs"
-						onclick={() => {
-							selectedTags = [];
-							const url = new URL(window.location.href);
-							url.searchParams.delete('tags');
-							goto(url.pathname, { replaceState: true, noScroll: true });
-						}}
-					>
-						Clear
-					</Badge>
+			{#if selectedTag}
+				<div class="mt-4">
+					<h3 class="mb-2 text-sm font-semibold tracking-wide text-slate-300 uppercase">
+						Active Filter
+					</h3>
+					<div class="flex flex-wrap gap-2">
+						<TagBadge tag={selectedTag} onclick={() => filterByTag(selectedTag)} />
+						<button class="clear-filter-badge" onclick={clearFilter}>
+							<span class="clear-icon">✕</span>Clear Filter
+						</button>
+					</div>
 				</div>
 			{/if}
 		</div>
 
-		{#each filteredBlocks as item}
-			<Card.Root class="bg-transparent text-white">
+		{#each blocks as item}
+			<Card.Root class="flex flex-col bg-transparent text-white">
 				<Card.Header>
 					<Card.Title class="mt-0 pt-0 text-xl">{item.title}</Card.Title>
-					<div class="mb-2 flex flex-wrap gap-1.5">
-						{#each item.tags as tag}
-							<Badge
-								class="cursor-pointer border border-white bg-white text-xs text-black"
-								onclick={() => toggleTag(tag)}
-							>
-								{tag}
-							</Badge>
-						{/each}
-					</div>
-					<Card.Description class="leading-6 text-slate-400">
+					{#if item.tags && item.tags.length > 0}
+						<div class="mt-2 flex flex-wrap gap-1">
+							{#each item.tags as tag}
+								<TagBadge {tag} size="small" onclick={() => filterByTag(tag)} />
+							{/each}
+						</div>
+					{/if}
+					<Card.Description class="mt-2 leading-6 text-slate-400">
 						{item.description}
 					</Card.Description>
 				</Card.Header>
@@ -103,5 +64,31 @@
 				</Card.Footer>
 			</Card.Root>
 		{/each}
+
+		{#if blocks.length === 0}
+			<div class="col-span-full py-12 text-center">
+				<p class="text-lg text-slate-400">No blocks found with the selected tag.</p>
+				<Button variant="outline" class="mt-4" onclick={clearFilter}>Clear Filter</Button>
+			</div>
+		{/if}
 	</div>
 </section>
+
+<style>
+	.clear-filter-badge {
+		padding: 0.375rem 0.75rem;
+		font-size: 0.75rem;
+		font-weight: 500;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		background-color: white;
+		border: 1px solid white;
+		color: black;
+		display: flex;
+		align-items: center;
+	}
+
+	.clear-icon {
+		margin-right: 0.25rem;
+	}
+</style>

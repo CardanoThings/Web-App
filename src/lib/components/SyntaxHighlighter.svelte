@@ -35,6 +35,16 @@
 	 */
 	export let code = '';
 
+	/**
+	 * @type {boolean} Whether to show comments by default
+	 */
+	export let defaultShowComments = false;
+
+	/**
+	 * @type {boolean} Whether to show full code by default (no collapse)
+	 */
+	export let defaultExpanded = false;
+
 	let highlightedCode = '';
 	let fullHighlightedCode = '';
 	let isCopied = false;
@@ -47,6 +57,10 @@
 	let lineCount = 0;
 	const MAX_LINES_COLLAPSED = 25;
 	let showComments = false;
+
+	// React to prop changes
+	$: isExpanded = defaultExpanded;
+	$: showComments = defaultShowComments;
 
 	onMount(async () => {
 		await highlightCode();
