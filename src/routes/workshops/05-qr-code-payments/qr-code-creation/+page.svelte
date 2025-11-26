@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -266,37 +267,27 @@
 			</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about QR codes and testing.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a
-					href="https://github.com/ricardocosme/qrcode"
-					target="_blank"
-					class="link"
-					>QRCode Library GitHub</a
-				>
-				<p class="text-sm font-thin text-white">Official QRCode library for Arduino.</p>
-			</li>
-			<li>
-				<a href="https://www.qrcode.com/en/" target="_blank" class="link">QR Code Standards</a>
-				<p class="text-sm font-thin text-white">Learn about QR code specifications and standards.</p>
-			</li>
-			<li>
-				<a href="https://cips.cardano.org/cips/cip13/" target="_blank" class="link">CIP-13 Specification</a>
-				<p class="text-sm font-thin text-white">Official CIP-13 documentation for payment URIs.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'QRCode Library GitHub',
+				url: 'https://github.com/ricardocosme/qrcode',
+				description: 'Official QRCode library for Arduino.'
+			},
+			{
+				title: 'QR Code Standards',
+				url: 'https://www.qrcode.com/en/',
+				description: 'Learn about QR code specifications and standards.'
+			},
+			{
+				title: 'CIP-13 Specification',
+				url: 'https://cips.cardano.org/cips/cip13/',
+				description: 'Official CIP-13 documentation for payment URIs.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

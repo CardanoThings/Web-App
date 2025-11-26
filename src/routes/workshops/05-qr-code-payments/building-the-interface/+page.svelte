@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -197,35 +198,22 @@
 			This familiar layout makes it easy for users to enter amounts quickly.
 		</p>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about building touch interfaces.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://github.com/Bodmer/TFT_eSPI" target="_blank" class="link"
-					>TFT_eSPI Library</a
-				>
-				<p class="text-sm font-thin text-white">Official library documentation and examples.</p>
-			</li>
-			<li>
-				<a
-					href="https://github.com/Bodmer/TFT_eSPI/wiki/Touch-Screen-Support"
-					target="_blank"
-					class="link"
-					>TFT_eSPI Touch Screen Guide</a
-				>
-				<p class="text-sm font-thin text-white">Guide on implementing touch screen support.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'TFT_eSPI Library',
+				url: 'https://github.com/Bodmer/TFT_eSPI',
+				description: 'Official library documentation and examples.'
+			},
+			{
+				title: 'TFT_eSPI Touch Screen Guide',
+				url: 'https://github.com/Bodmer/TFT_eSPI/wiki/Touch-Screen-Support',
+				description: 'Guide on implementing touch screen support.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

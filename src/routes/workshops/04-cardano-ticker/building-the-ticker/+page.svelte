@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -315,44 +316,27 @@
 			</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about advanced TFT display techniques.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://github.com/Bodmer/TFT_eSPI" target="_blank" class="link"
-					>TFT_eSPI Library GitHub</a
-				>
-				<p class="text-sm font-thin text-white">Official repository with examples and documentation.</p>
-			</li>
-			<li>
-				<a
-					href="https://github.com/Bodmer/TFT_eSPI/wiki/Using-Sprites"
-					target="_blank"
-					class="link"
-					>TFT_eSPI Sprites Guide</a
-				>
-				<p class="text-sm font-thin text-white">Learn more about using sprites for smooth animations.</p>
-			</li>
-			<li>
-				<a
-					href="https://github.com/Bodmer/TFT_eSPI/wiki/Using-Fonts"
-					target="_blank"
-					class="link"
-					>TFT_eSPI Fonts Guide</a
-				>
-				<p class="text-sm font-thin text-white">Guide on using custom fonts with TFT_eSPI.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'TFT_eSPI Library GitHub',
+				url: 'https://github.com/Bodmer/TFT_eSPI',
+				description: 'Official repository with examples and documentation.'
+			},
+			{
+				title: 'TFT_eSPI Sprites Guide',
+				url: 'https://github.com/Bodmer/TFT_eSPI/wiki/Using-Sprites',
+				description: 'Learn more about using sprites for smooth animations.'
+			},
+			{
+				title: 'TFT_eSPI Fonts Guide',
+				url: 'https://github.com/Bodmer/TFT_eSPI/wiki/Using-Fonts',
+				description: 'Guide on using custom fonts with TFT_eSPI.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

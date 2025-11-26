@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -178,37 +179,26 @@
 			function, where each color component is 0-255.
 		</p>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about TFT displays and the TFT_eSPI library.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://github.com/Bodmer/TFT_eSPI" target="_blank" class="link"
-					>TFT_eSPI Library GitHub</a
-				>
-				<p class="text-sm font-thin text-white">Official repository with documentation and examples.</p>
-			</li>
-			<li>
-				<a href="https://learn.adafruit.com/adafruit-gfx-graphics-library" target="_blank" class="link"
-					>Adafruit GFX Graphics Library</a
-				>
-				<p class="text-sm font-thin text-white">TFT_eSPI is based on this library - useful reference.</p>
-			</li>
-			<li>
-				<a href="https://www.arduino.cc/reference/en/libraries/tft-espi/" target="_blank" class="link"
-					>Arduino TFT_eSPI Reference</a
-				>
-				<p class="text-sm font-thin text-white">Official Arduino library documentation.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'TFT_eSPI Library GitHub',
+				url: 'https://github.com/Bodmer/TFT_eSPI',
+				description: 'Official repository with documentation and examples.'
+			},
+			{
+				title: 'Adafruit GFX Graphics Library',
+				url: 'https://learn.adafruit.com/adafruit-gfx-graphics-library',
+				description: 'TFT_eSPI is based on this library - useful reference.'
+			},
+			{
+				title: 'Arduino TFT_eSPI Reference',
+				url: 'https://www.arduino.cc/reference/en/libraries/tft-espi/',
+				description: 'Official Arduino library documentation.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />

@@ -2,15 +2,13 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
-	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { X, Info } from 'lucide-svelte';
-	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import CodeCard from '$lib/components/CodeCard.svelte';
 	import TagBadge from '$lib/components/TagBadge.svelte';
 
 	let { data } = $props();
 	let prerequisitesOpen = $state(false);
-	let usageOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -74,87 +72,32 @@
 
 	<main class="flex flex-col gap-6">
 		{#if data.code}
-			<Card.Root class="code-card">
-				<Card.Header class="mb-0 flex flex-row items-center justify-between pb-0">
-					<Card.Title class="text-lg">Code Example</Card.Title>
-					<div class="flex gap-2">
-						{#if data.usage}
-							<Button
-								onclick={() => (usageOpen = true)}
-								variant="outline"
-								size="sm"
-								class="gap-2 text-xs"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<circle cx="12" cy="12" r="10" />
-									<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-									<path d="M12 17h.01" />
-								</svg>
-								How to Use
-							</Button>
-						{/if}
-						{#if data.githubLink}
-							<Button
-								href={data.githubLink}
-								target="_blank"
-								variant="outline"
-								size="sm"
-								class="gap-2 text-xs"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path
-										d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
-									/>
-									<path d="M9 18c-4.51 2-5-2-7-2" />
-								</svg>
-								View on GitHub
-							</Button>
-						{/if}
-					</div>
-				</Card.Header>
-				<Card.Content class="mt-0 pt-0">
-					<SyntaxHighlighter
-						language={data.language || 'cpp'}
-						code={data.code}
-						defaultShowComments={true}
-						defaultExpanded={true}
-					/>
-					{#if data.parameters && data.parameters.length > 0}
-						<div class="mt-6">
-							<h3 class="mb-3 text-lg font-semibold text-black">Parameters</h3>
-							<div class="flex flex-col gap-3">
-								{#each data.parameters as param}
-									<div>
-										<strong class="text-purple-800">{param.name}</strong>
-										<span class="text-sm text-emerald-400">({param.type})</span>
-										<p class="mt-1 text-black">{param.description}</p>
-									</div>
-								{/each}
-							</div>
+			<CodeCard
+				title="Code Example"
+				code={data.code}
+				language={data.language || 'cpp'}
+				githubLink={data.githubLink}
+				howItWorksTitle="How to Use"
+				howItWorksContent={data.usage}
+				defaultShowComments={true}
+				defaultExpanded={true}
+			/>
+			{#if data.parameters && data.parameters.length > 0}
+				<Card.Root>
+					<Card.Content class="pt-6">
+						<h3 class="mb-3 text-lg font-semibold text-black">Parameters</h3>
+						<div class="flex flex-col gap-3">
+							{#each data.parameters as param}
+								<div>
+									<strong class="text-purple-800">{param.name}</strong>
+									<span class="text-sm text-emerald-400">({param.type})</span>
+									<p class="mt-1 text-black">{param.description}</p>
+								</div>
+							{/each}
 						</div>
-					{/if}
-				</Card.Content>
-			</Card.Root>
+					</Card.Content>
+				</Card.Root>
+			{/if}
 		{/if}
 
 		{#if data.notes || data.troubleshooting || data.nextSteps}
@@ -220,19 +163,6 @@
 			</div>
 		</Drawer.Content>
 	</Drawer.Root>
-{/if}
-
-{#if data.usage}
-	<Dialog.Root bind:open={usageOpen}>
-		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-y-auto">
-			<Dialog.Header>
-				<Dialog.Title>How to Use</Dialog.Title>
-			</Dialog.Header>
-			<div class="usage-dialog-content">
-				{@html data.usage}
-			</div>
-		</Dialog.Content>
-	</Dialog.Root>
 {/if}
 
 <style>
@@ -311,63 +241,6 @@
 	}
 
 	.prerequisites-content :global(a:hover) {
-		color: #6d28d9;
-	}
-
-	.usage-dialog-content :global(h3) {
-		font-size: 1.25rem;
-		font-weight: 600;
-		margin: 1.5rem 0 0.75rem 0;
-		color: black;
-	}
-
-	.usage-dialog-content :global(h4) {
-		font-size: 1.1rem;
-		font-weight: 600;
-		margin: 1rem 0 0.5rem 0;
-		color: black;
-	}
-
-	.usage-dialog-content :global(p) {
-		margin: 0.5rem 0;
-		line-height: 1.6;
-	}
-
-	.usage-dialog-content :global(ol) {
-		list-style-type: decimal;
-		padding-left: 1.5rem;
-		margin: 0.5rem 0;
-	}
-
-	.usage-dialog-content :global(ul) {
-		list-style-type: disc;
-		padding-left: 1.5rem;
-		margin: 0.5rem 0;
-	}
-
-	.usage-dialog-content :global(li) {
-		margin: 0.5rem 0;
-		line-height: 1.6;
-	}
-
-	.usage-dialog-content :global(strong) {
-		color: #5b21b6;
-	}
-
-	.usage-dialog-content :global(code) {
-		background: rgba(255, 255, 255, 0.1);
-		padding: 0.2rem 0.4rem;
-		border-radius: 0.25rem;
-		font-size: 0.9em;
-		color: #34d399;
-	}
-
-	.usage-dialog-content :global(a) {
-		color: #5b21b6;
-		text-decoration: underline;
-	}
-
-	.usage-dialog-content :global(a:hover) {
 		color: #6d28d9;
 	}
 

@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -254,36 +255,32 @@
 			<li>Create a marketplace or gallery for your sensor data NFTs</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about NMKR and NFT minting on Cardano.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://www.nmkr.io/" target="_blank" class="link">NMKR Website</a>
-				<p class="text-sm font-thin text-white">Official NMKR platform and documentation.</p>
-			</li>
-			<li>
-				<a href="https://docs.nmkr.io/" target="_blank" class="link">NMKR Documentation</a>
-				<p class="text-sm font-thin text-white">Complete API documentation and guides.</p>
-			</li>
-			<li>
-				<a href="https://cardanoscan.io/" target="_blank" class="link">CardanoScan</a>
-				<p class="text-sm font-thin text-white">Blockchain explorer to view your transactions and NFTs.</p>
-			</li>
-			<li>
-				<a href="https://cexplorer.io/" target="_blank" class="link">Cexplorer</a>
-				<p class="text-sm font-thin text-white">Another Cardano blockchain explorer.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'NMKR Website',
+				url: 'https://www.nmkr.io/',
+				description: 'Official NMKR platform and documentation.'
+			},
+			{
+				title: 'NMKR Documentation',
+				url: 'https://docs.nmkr.io/',
+				description: 'Complete API documentation and guides.'
+			},
+			{
+				title: 'CardanoScan',
+				url: 'https://cardanoscan.io/',
+				description: 'Blockchain explorer to view your transactions and NFTs.'
+			},
+			{
+				title: 'Cexplorer',
+				url: 'https://cexplorer.io/',
+				description: 'Another Cardano blockchain explorer.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -189,41 +190,32 @@
 			<li><strong>Maestro:</strong> Good free tier, requires API key</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about Cardano APIs and wallet addresses.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://preprod.koios.rest/" target="_blank" class="link">Koios Documentation</a>
-				<p class="text-sm font-thin text-white">Full documentation of Koios API endpoints.</p>
-			</li>
-			<li>
-				<a href="https://blockfrost.io/" target="_blank" class="link">Blockfrost</a>
-				<p class="text-sm font-thin text-white">Alternative Cardano API with free tier.</p>
-			</li>
-			<li>
-				<a href="https://www.gomaestro.org/" target="_blank" class="link">Maestro</a>
-				<p class="text-sm font-thin text-white">Another Cardano API provider.</p>
-			</li>
-			<li>
-				<a
-					href="https://docs.arduino.cc/learn/programming/arduino-json-library"
-					target="_blank"
-					class="link"
-					>ArduinoJSON Library</a
-				>
-				<p class="text-sm font-thin text-white">Learn more about parsing JSON in Arduino.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'Koios Documentation',
+				url: 'https://preprod.koios.rest/',
+				description: 'Full documentation of Koios API endpoints.'
+			},
+			{
+				title: 'Blockfrost',
+				url: 'https://blockfrost.io/',
+				description: 'Alternative Cardano API with free tier.'
+			},
+			{
+				title: 'Maestro',
+				url: 'https://www.gomaestro.org/',
+				description: 'Another Cardano API provider.'
+			},
+			{
+				title: 'ArduinoJSON Library',
+				url: 'https://docs.arduino.cc/learn/programming/arduino-json-library',
+				description: 'Learn more about parsing JSON in Arduino.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

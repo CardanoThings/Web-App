@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -197,44 +198,26 @@
 			interactive projects that respond to blockchain events in creative ways.
 		</p>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about controlling external hardware with
-			Arduino/ESP32.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a
-					href="https://www.arduino.cc/reference/en/language/functions/digital-io/digitalwrite/"
-					target="_blank"
-					class="link">Arduino digitalWrite() Reference</a
-				>
-				<p class="text-sm font-thin text-white">Learn about controlling digital pins.</p>
-			</li>
-			<li>
-				<a
-					href="https://randomnerdtutorials.com/esp32-relay-module-ac-arduino/"
-					target="_blank"
-					class="link">ESP32 Relay Module Tutorial</a
-				>
-				<p class="text-sm font-thin text-white">Detailed guide on using relays with ESP32.</p>
-			</li>
-			<li>
-				<a
-					href="https://learn.adafruit.com/adafruit-neopixel-uberguide"
-					target="_blank"
-					class="link">NeoPixel Guide</a
-				>
-				<p class="text-sm font-thin text-white">Learn about addressable RGB LEDs.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'Arduino digitalWrite() Reference',
+				url: 'https://www.arduino.cc/reference/en/language/functions/digital-io/digitalwrite/',
+				description: 'Learn about controlling digital pins.'
+			},
+			{
+				title: 'ESP32 Relay Module Tutorial',
+				url: 'https://randomnerdtutorials.com/esp32-relay-module-ac-arduino/',
+				description: 'Detailed guide on using relays with ESP32.'
+			},
+			{
+				title: 'NeoPixel Guide',
+				url: 'https://learn.adafruit.com/adafruit-neopixel-uberguide',
+				description: 'Learn about addressable RGB LEDs.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />

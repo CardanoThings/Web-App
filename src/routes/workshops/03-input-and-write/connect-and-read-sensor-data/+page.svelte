@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -195,45 +196,27 @@
 			<li>Check that the sensor is getting power (3.3V or 5V depending on your module)</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about the DHT-22 sensor and working with sensors
-			in general.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://github.com/adafruit/DHT-sensor-library" target="_blank" class="link"
-					>DHT Sensor Library</a
-				>
-				<p class="text-sm font-thin text-white">Official Adafruit DHT sensor library for Arduino.</p>
-			</li>
-			<li>
-				<a
-					href="https://learn.adafruit.com/dht/overview"
-					target="_blank"
-					class="link"
-					>Adafruit DHT Tutorial</a
-				>
-				<p class="text-sm font-thin text-white">Comprehensive guide to using DHT sensors.</p>
-			</li>
-			<li>
-				<a
-					href="https://www.arduino.cc/reference/en/libraries/dht-sensor-library/"
-					target="_blank"
-					class="link"
-					>Arduino DHT Library Reference</a
-				>
-				<p class="text-sm font-thin text-white">Official Arduino library documentation.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'DHT Sensor Library',
+				url: 'https://github.com/adafruit/DHT-sensor-library',
+				description: 'Official Adafruit DHT sensor library for Arduino.'
+			},
+			{
+				title: 'Adafruit DHT Tutorial',
+				url: 'https://learn.adafruit.com/dht/overview',
+				description: 'Comprehensive guide to using DHT sensors.'
+			},
+			{
+				title: 'Arduino DHT Library Reference',
+				url: 'https://www.arduino.cc/reference/en/libraries/dht-sensor-library/',
+				description: 'Official Arduino library documentation.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

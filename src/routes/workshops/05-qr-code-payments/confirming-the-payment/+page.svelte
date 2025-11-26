@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -322,32 +323,27 @@
 			</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about transaction monitoring and payment systems.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://preprod.koios.rest/" target="_blank" class="link">Koios API Documentation</a>
-				<p class="text-sm font-thin text-white">API endpoints for transaction monitoring.</p>
-			</li>
-			<li>
-				<a href="https://cips.cardano.org/cips/cip13/" target="_blank" class="link">CIP-13 Specification</a>
-				<p class="text-sm font-thin text-white">Payment URI standard documentation.</p>
-			</li>
-			<li>
-				<a href="https://docs.cardano.org/" target="_blank" class="link">Cardano Documentation</a>
-				<p class="text-sm font-thin text-white">Official Cardano documentation.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'Koios API Documentation',
+				url: 'https://preprod.koios.rest/',
+				description: 'API endpoints for transaction monitoring.'
+			},
+			{
+				title: 'CIP-13 Specification',
+				url: 'https://cips.cardano.org/cips/cip13/',
+				description: 'Payment URI standard documentation.'
+			},
+			{
+				title: 'Cardano Documentation',
+				url: 'https://docs.cardano.org/',
+				description: 'Official Cardano documentation.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

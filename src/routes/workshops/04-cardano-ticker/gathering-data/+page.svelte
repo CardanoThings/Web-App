@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -232,36 +233,32 @@
 			</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about the APIs used in this workshop.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://realfi.info/" target="_blank" class="link">Realfi.info</a>
-				<p class="text-sm font-thin text-white">Free Cardano token price API.</p>
-			</li>
-			<li>
-				<a href="https://jpg.store/" target="_blank" class="link">JPG.store</a>
-				<p class="text-sm font-thin text-white">Cardano NFT marketplace with API access.</p>
-			</li>
-			<li>
-				<a href="https://taptools.io/" target="_blank" class="link">Taptools</a>
-				<p class="text-sm font-thin text-white">Advanced Cardano analytics platform with paid API.</p>
-			</li>
-			<li>
-				<a href="https://preprod.koios.rest/" target="_blank" class="link">Koios API</a>
-				<p class="text-sm font-thin text-white">Free Cardano blockchain API.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'Realfi.info',
+				url: 'https://realfi.info/',
+				description: 'Free Cardano token price API.'
+			},
+			{
+				title: 'JPG.store',
+				url: 'https://jpg.store/',
+				description: 'Cardano NFT marketplace with API access.'
+			},
+			{
+				title: 'Taptools',
+				url: 'https://taptools.io/',
+				description: 'Advanced Cardano analytics platform with paid API.'
+			},
+			{
+				title: 'Koios API',
+				url: 'https://preprod.koios.rest/',
+				description: 'Free Cardano blockchain API.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 

@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -224,47 +225,32 @@
 			<li>Create multiple clocks showing different networks (Mainnet, Preprod, Preview)</li>
 		</ul>
 	</section>
-</SectionNavigator>
 
-<Card.Root class="mt-8 bg-transparent text-white sm:w-3/4">
-	<Card.Header>
-		<Card.Title>Resources</Card.Title>
-		<Card.Description>
-			Here are some resources to help you learn more about LED matrices and Cardano epochs.
-		</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<ul>
-			<li>
-				<a href="https://github.com/MajicDesigns/MD_Parola" target="_blank" class="link"
-					>MD_Parola Library</a
-				>
-				<p class="text-sm font-thin text-white">Official library for MAX7219 LED matrices.</p>
-			</li>
-			<li>
-				<a href="https://docs.cardano.org/cardano-testnets/about-testnets" target="_blank" class="link"
-					>Cardano Testnets</a
-				>
-				<p class="text-sm font-thin text-white">Learn about Cardano networks and epochs.</p>
-			</li>
-			<li>
-				<a href="https://preprod.koios.rest/#get-/tip" target="_blank" class="link"
-					>Koios Tip Endpoint</a
-				>
-				<p class="text-sm font-thin text-white">API documentation for fetching epoch data.</p>
-			</li>
-			<li>
-				<a
-					href="https://www.arduino.cc/reference/en/libraries/md_max72xx/"
-					target="_blank"
-					class="link"
-					>MD_MAX72XX Reference</a
-				>
-				<p class="text-sm font-thin text-white">Low-level library for MAX7219 control.</p>
-			</li>
-		</ul>
-	</Card.Content>
-</Card.Root>
+	<FurtherResources
+		resources={[
+			{
+				title: 'MD_Parola Library',
+				url: 'https://github.com/MajicDesigns/MD_Parola',
+				description: 'Official library for MAX7219 LED matrices.'
+			},
+			{
+				title: 'Cardano Testnets',
+				url: 'https://docs.cardano.org/cardano-testnets/about-testnets',
+				description: 'Learn about Cardano networks and epochs.'
+			},
+			{
+				title: 'Koios Tip Endpoint',
+				url: 'https://preprod.koios.rest/#get-/tip',
+				description: 'API documentation for fetching epoch data.'
+			},
+			{
+				title: 'MD_MAX72XX Reference',
+				url: 'https://www.arduino.cc/reference/en/libraries/md_max72xx/',
+				description: 'Low-level library for MAX7219 control.'
+			}
+		]}
+	/>
+</SectionNavigator>
 
 <WorkshopNavigation />
 
