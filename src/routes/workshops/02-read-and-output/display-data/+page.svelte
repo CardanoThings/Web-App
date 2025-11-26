@@ -287,6 +287,18 @@
 		/>
 	</section>
 
+	<section class="mt-16 mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">What's Next?</h2>
+
+		<p class="text-lg font-thin text-white">
+			Now that you have displayed your wallet balance, you can start to build more complex projects
+			with your Microcontroller. In the next workshop, you will learn how to connect external
+			hardware to your Microcontroller and how to use it to interact with the blockchain. Feel free
+			to explore different endpoints and build different visualizations on your Mikrocontroller
+			using the APIs you have learned about so far!
+		</p>
+	</section>
+
 	<FurtherResources
 		resources={[
 			{
