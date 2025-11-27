@@ -34,3 +34,6 @@ examples/
 
 # Blocks
 blocks/
+
+# Version file
+static/version.json
