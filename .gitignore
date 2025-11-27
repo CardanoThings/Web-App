@@ -31,8 +31,6 @@ vite.config.ts.timestamp-*
 
 # Examples
 examples/
-extract-examples.js
 
 # Blocks
 blocks/
-extract-blocks.js

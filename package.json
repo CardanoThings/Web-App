@@ -1,7 +1,7 @@
 {
 	"name": "CardanoThings-Web",
 	"private": true,
-	"version": "0.3.7",
+	"version": "0.3.8",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -10,7 +10,8 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"extract-blocks": "node extract-blocks.js"
+		"extract-blocks": "node extract-blocks.js",
+		"extract-examples": "node extract-examples.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
