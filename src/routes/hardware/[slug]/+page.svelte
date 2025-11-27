@@ -24,7 +24,7 @@
 					{#each hardware.images as image}
 						<img
 							src={image}
-							alt="{hardware.name}"
+							alt={hardware.name}
 							class="w-full rounded-lg object-cover"
 							loading="lazy"
 						/>
@@ -34,51 +34,64 @@
 		</Card.Root>
 	{/if}
 
-	<!-- Features Section -->
-	<Card.Root>
-		<Card.Header>
-			<Card.Title class="text-lg">Features</Card.Title>
-		</Card.Header>
-		<Card.Content>
-			<ul class="list-inside list-disc space-y-2">
-				{#each hardware.features as feature}
-					<li>{feature}</li>
-				{/each}
-			</ul>
-		</Card.Content>
-	</Card.Root>
+	<!-- Features and Resources Grid -->
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+		<!-- Left Column: Features -->
+		<div class="flex flex-col gap-4">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title class="text-lg">Features</Card.Title>
+				</Card.Header>
+				<Card.Content>
+					<ul class="list-inside list-disc space-y-2">
+						{#each hardware.features as feature}
+							<li>{feature}</li>
+						{/each}
+					</ul>
+				</Card.Content>
+			</Card.Root>
+		</div>
 
-	<!-- Resources Section -->
-	<Card.Root>
-		<Card.Header>
-			<Card.Title>Resources</Card.Title>
-		</Card.Header>
-		<Card.Content>
-			<div class="flex flex-wrap gap-2">
-				{#each hardware.resources as resource}
-					<Button href={resource.url} target="_blank" rel="noopener noreferrer" variant="outline">
-						{resource.name}
-					</Button>
-				{/each}
-			</div>
-		</Card.Content>
-	</Card.Root>
+		<!-- Right Column: Resources and Where to Buy -->
+		<div class="flex flex-col gap-4">
+			<!-- Resources Section -->
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Resources</Card.Title>
+				</Card.Header>
+				<Card.Content>
+					<div class="flex flex-wrap gap-2">
+						{#each hardware.resources as resource}
+							<Button
+								href={resource.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								variant="outline"
+							>
+								{resource.name}
+							</Button>
+						{/each}
+					</div>
+				</Card.Content>
+			</Card.Root>
 
-	<!-- Where to Buy Section -->
-	<Card.Root>
-		<Card.Header>
-			<Card.Title>Where to Buy</Card.Title>
-		</Card.Header>
-		<Card.Content>
-			<div class="flex flex-wrap gap-2">
-				{#each hardware.whereToBuy as store}
-					<Button href={store.url} target="_blank" rel="noopener noreferrer">
-						{store.name}
-					</Button>
-				{/each}
-			</div>
-		</Card.Content>
-	</Card.Root>
+			<!-- Where to Buy Section -->
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Where to Buy</Card.Title>
+				</Card.Header>
+				<Card.Content>
+					<div class="flex flex-wrap gap-2">
+						{#each hardware.whereToBuy as store}
+							<Button href={store.url} target="_blank" rel="noopener noreferrer">
+								{store.name}
+							</Button>
+						{/each}
+					</div>
+				</Card.Content>
+			</Card.Root>
+		</div>
+	</div>
 
 	<!-- How to Use Section -->
 	<Card.Root>
@@ -103,7 +116,8 @@
 					{/each}
 				</ul>
 				<p class="mt-4 text-sm text-slate-400">
-					Install libraries via Arduino IDE: Sketch → Include Library → Manage Libraries, then search for the library name.
+					Install libraries via Arduino IDE: Sketch → Include Library → Manage Libraries, then
+					search for the library name.
 				</p>
 			</Card.Content>
 		</Card.Root>
