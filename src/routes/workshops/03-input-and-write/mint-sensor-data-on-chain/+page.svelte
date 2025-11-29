@@ -3,10 +3,8 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
-	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
-	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
@@ -275,14 +273,10 @@
 			<li><strong>Description:</strong> What the NFT is about</li>
 			<li><strong>Your Data:</strong> The temperature, humidity, timestamp, and sensor type</li>
 		</ul>
-		<Card.Root>
-			<Card.Header>
-				<Card.Title>Example NFT Metadata Structure</Card.Title>
-			</Card.Header>
-			<Card.Content>
-				<SyntaxHighlighter
-					language="json"
-					code={`{
+		<CodeCard
+			title="Example NFT Metadata Structure"
+			language="json"
+			code={`{
   "policyId": {
     "tokenName": {
       "name": "Sensor Data NFT - 2024-01-15T10:30:00Z",
@@ -294,9 +288,7 @@
     }
   }
 }`}
-				/>
-			</Card.Content>
-		</Card.Root>
+		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
