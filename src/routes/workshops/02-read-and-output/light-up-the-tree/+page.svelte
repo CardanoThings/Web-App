@@ -401,6 +401,16 @@
 				title: 'Relays Explained',
 				url: 'https://www.youtube.com/watch?v=jXcdH1PgmMI',
 				description: 'Video tutorial explaining how relays work and how to use them.'
+			},
+			{
+				title: 'SPI Communication Tutorial',
+				url: 'https://www.youtube.com/watch?v=ZGaCXHvgcE4',
+				description: 'Learn about SPI (Serial Peripheral Interface) communication protocol.'
+			},
+			{
+				title: 'I2C Communication Tutorial',
+				url: 'https://www.youtube.com/watch?v=pxhg2Rwm_h8',
+				description: 'Learn about I2C (Inter-Integrated Circuit) communication protocol.'
 			}
 		]}
 	/>

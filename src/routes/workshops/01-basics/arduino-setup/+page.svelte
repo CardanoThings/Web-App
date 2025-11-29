@@ -5,6 +5,7 @@
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
@@ -207,6 +208,27 @@
 			API calls.
 		</p>
 	</section>
+
+	<FurtherResources
+		resources={[
+			{
+				title: 'Arduino Workshop Video Tutorial',
+				url: 'https://www.youtube.com/watch?v=EdXQUEMOfgU&list=PLPK2l9Knytg5s2dk8V09thBmNl2g5pRSr&index=2',
+				description: 'Video tutorial covering Arduino setup and basics.'
+			},
+			{
+				title: 'Arduino Documentation',
+				url: 'https://docs.arduino.cc/',
+				description:
+					'Official Arduino documentation covering hardware, software, programming, and tutorials.'
+			},
+			{
+				title: 'Arduino IDE Download',
+				url: 'https://www.arduino.cc/en/software/',
+				description: 'Download the Arduino IDE and other Arduino software tools.'
+			}
+		]}
+	/>
 </SectionNavigator>
 
 <WorkshopNavigation />
