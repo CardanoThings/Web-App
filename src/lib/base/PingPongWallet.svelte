@@ -42,8 +42,13 @@
 	<div class="flex flex-col gap-2">
 		<h1 class="text-lg font-normal">Need transactions for testing?</h1>
 		<p class="text-xs leading-relaxed font-thin">
-			The CardanoThings PingPong wallet can receive transactions and will automatically send it back
-			to you. This is perfect for testing payment flows and transactions on the Cardano testnet.
+			The CardanoThings PingPong wallet can receive transactions at the address below and will
+			automatically send it back within 60 seconds to your wallet. This is perfect for testing
+			payment flows and transactions on the Cardano Preprod testnet.
+		</p>
+		<p>
+			Please note that the PingPong wallet is only available on the Cardano Preprod testnet. It is
+			not available on the Cardano mainnet.
 		</p>
 		<div class="mt-2 flex flex-col gap-2">
 			<div class="flex items-center gap-2">

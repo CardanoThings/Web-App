@@ -5,6 +5,7 @@
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
+	import PingPongWallet from '$lib/base/PingPongWallet.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
@@ -164,6 +165,7 @@
 			<li>Updating a display (which we'll cover in the next step)</li>
 			<li>Controlling external hardware like relays (covered in step 3)</li>
 		</ul>
+		<PingPongWallet />
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
