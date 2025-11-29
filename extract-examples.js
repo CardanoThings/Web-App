@@ -42,6 +42,10 @@ const exampleInfo = {
 		description: "Formatted text display example using TFT_eSPI",
 		workshopLink: "/workshops/02-read-and-output/display-data"
 	},
+	relayBlinkCode: {
+		description: "Simple relay blink example for testing relay wiring",
+		workshopLink: "/workshops/02-read-and-output/light-up-the-tree"
+	},
 	relayCode: {
 		description: "Control relay based on wallet balance changes",
 		workshopLink: "/workshops/02-read-and-output/light-up-the-tree"
@@ -142,7 +146,7 @@ const workshopMapping = {
 	'02-read-and-output': {
 		'fetch-wallet-balance': ['walletBalanceCode', 'blockfrostCode'],
 		'display-data': ['helloWorldCode', 'tftDisplayCode', 'formattedDisplayCode'],
-		'light-up-the-tree': ['relayCode', 'ledCode'],
+		'light-up-the-tree': ['relayBlinkCode', 'relayCode', 'ledCode'],
 		'epoch-clock': ['epochClockCode', 'simpleEpochCode']
 	},
 	'03-input-and-write': {

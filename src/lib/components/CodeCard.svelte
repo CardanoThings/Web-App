@@ -20,7 +20,7 @@
 </script>
 
 <Card.Root>
-	<Card.Header class="mb-0 flex flex-row items-center justify-between pb-0">
+	<Card.Header class="mb-0 flex flex-col gap-3 md:flex-row md:items-start md:justify-between pb-0">
 		<Card.Title class="text-lg">{title}</Card.Title>
 		<div class="flex gap-2">
 			{#if howItWorksContent}
