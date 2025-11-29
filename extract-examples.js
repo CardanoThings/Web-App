@@ -54,8 +54,12 @@ const exampleInfo = {
 		description: "Control LED and relay based on balance changes",
 		workshopLink: "/workshops/02-read-and-output/light-up-the-tree"
 	},
+	ledBlinkCode: {
+		description: "Simple WS2812 LED ring blink example - test wiring with one LED at a time",
+		workshopLink: "/workshops/02-read-and-output/epoch-clock"
+	},
 	epochClockCode: {
-		description: "Display Cardano epoch and slot on LED matrix",
+		description: "Display Cardano epoch progress on circular WS2812 LED ring with blue progress indicator and white walking LED (clock second-hand effect)",
 		workshopLink: "/workshops/02-read-and-output/epoch-clock"
 	},
 	simpleEpochCode: {
@@ -64,12 +68,12 @@ const exampleInfo = {
 	},
 	
 	// Workshop 03
-	dht22Code: {
-		description: "Read temperature and humidity from DHT22 sensor with TFT display",
+	sht21Code: {
+		description: "Read temperature and humidity from SHT21 sensor with TFT display",
 		workshopLink: "/workshops/03-input-and-write/connect-and-read-sensor-data"
 	},
-	simpleDhtCode: {
-		description: "Simple DHT22 sensor reading example",
+	simpleShtCode: {
+		description: "Simple SHT21 sensor reading example with I2C",
 		workshopLink: "/workshops/03-input-and-write/connect-and-read-sensor-data"
 	},
 	arduinoApiCall: {
@@ -147,10 +151,10 @@ const workshopMapping = {
 		'fetch-wallet-balance': ['walletBalanceCode', 'blockfrostCode'],
 		'display-data': ['helloWorldCode', 'tftDisplayCode', 'formattedDisplayCode'],
 		'light-up-the-tree': ['relayBlinkCode', 'relayCode', 'ledCode'],
-		'epoch-clock': ['epochClockCode', 'simpleEpochCode']
+		'epoch-clock': ['ledBlinkCode', 'epochClockCode']
 	},
 	'03-input-and-write': {
-		'connect-and-read-sensor-data': ['dht22Code', 'simpleDhtCode'],
+		'connect-and-read-sensor-data': ['sht21Code', 'simpleShtCode'],
 		'build-your-own-api': ['arduinoApiCall', 'touchScreenCode'],
 		'mint-on-nmkr': ['nmkrApiCode']
 	},
@@ -172,15 +176,34 @@ function removeLeadingIndentation(code) {
 	const lines = code.split('\n');
 	if (lines.length === 0) return code;
 	
-	// Find minimum indentation (excluding empty lines)
-	const indentLengths = lines
+	// First, normalize tabs to spaces (assuming 4 spaces per tab)
+	const normalizedLines = lines.map(line => {
+		// Count leading tabs and spaces separately
+		let tabCount = 0;
+		let spaceCount = 0;
+		for (let i = 0; i < line.length; i++) {
+			if (line[i] === '\t') {
+				tabCount++;
+			} else if (line[i] === ' ') {
+				spaceCount++;
+			} else {
+				break;
+			}
+		}
+		// Convert tabs to 4 spaces
+		const leadingWhitespace = ' '.repeat(tabCount * 4 + spaceCount);
+		return leadingWhitespace + line.trimStart();
+	});
+	
+	// Find the minimum indentation (excluding empty lines)
+	// This will be the base level that we remove from all lines
+	const indentLengths = normalizedLines
 		.filter(line => line.trim().length > 0)
 		.map(line => {
-			// Count leading tabs and spaces
 			let indent = 0;
 			for (let i = 0; i < line.length; i++) {
-				if (line[i] === '\t' || line[i] === ' ') {
-					indent += 1;
+				if (line[i] === ' ') {
+					indent++;
 				} else {
 					break;
 				}
@@ -188,20 +211,32 @@ function removeLeadingIndentation(code) {
 			return indent;
 		});
 	
-	if (indentLengths.length === 0) return code.trim();
+	const baseIndent = indentLengths.length > 0 ? Math.min(...indentLengths) : 0;
 	
-	const minIndent = Math.min(...indentLengths);
+	// If no base indentation found, return trimmed code
+	if (baseIndent === 0) {
+		return normalizedLines.map(line => line.trim()).join('\n').trim();
+	}
 	
-	if (minIndent === 0) return code.trim();
-	
-	// Remove minimum indentation from all lines
-	const result = lines
+	// Remove base indentation from all lines (but preserve relative indentation)
+	const result = normalizedLines
 		.map(line => {
 			if (line.trim().length === 0) return '';
-			// Remove minIndent characters from start
-			if (line.length >= minIndent) {
-				return line.slice(minIndent);
+			// Count leading spaces in this line
+			let lineIndent = 0;
+			for (let i = 0; i < line.length; i++) {
+				if (line[i] === ' ') {
+					lineIndent++;
+				} else {
+					break;
+				}
 			}
+			// Remove baseIndent spaces, but preserve any additional indentation
+			if (lineIndent >= baseIndent) {
+				return line.slice(baseIndent);
+			}
+			// If line has less indentation than base, it's probably at the base level
+			// Remove all leading whitespace
 			return line.trimStart();
 		})
 		.join('\n')
@@ -224,7 +259,9 @@ function extractCodeFromFile(filePath) {
 		
 		// Find all matches and get the last one (in case there are multiple)
 		while ((match = regex.exec(content)) !== null) {
-			examples[key] = match[1].trim();
+			// Don't trim here - we need to preserve the original indentation structure
+			// The removeLeadingIndentation function will handle trimming
+			examples[key] = match[1];
 		}
 	}
 	

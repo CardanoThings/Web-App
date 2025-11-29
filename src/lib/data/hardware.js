@@ -175,6 +175,9 @@ void setup() {
   // Configure WiFi mode as Station (client mode)
   WiFi.mode(WIFI_STA);
   
+  // Set WiFi transmit power (workaround for ESP32-C3 Super Mini)
+  WiFi.setTxPower(WIFI_POWER_8_5dBm);
+  
   // Begin WiFi connection with credentials
   WiFi.begin(ssid, password);
   
@@ -295,24 +298,25 @@ void loop() {
     link: "/hardware/relay-module-3v-1channel"
   },
   {
-    name: "WS2812B LED Matrix 8x8",
-    slug: "ws2812b-led-matrix-8x8",
-    intro: "An 8x8 RGB LED matrix using WS2812B addressable LEDs, capable of displaying 64 individually controllable pixels with 24-bit color. Perfect for creating colorful displays, animations, and visual effects.",
+    name: "WS2812B LED Ring (12 LEDs)",
+    slug: "ws2812b-led-ring-12",
+    intro: "A circular RGB LED ring using WS2812B addressable LEDs with 12 individually controllable pixels with 24-bit color. Perfect for creating clock-like displays, progress indicators, and circular animations.",
     images: [
       "/images/hardware/led-matrix-01.webp",
       "/images/hardware/led-matrix-02.webp"
     ],
     features: [
-      "64 WS2812B addressable RGB LEDs (8x8 grid)",
+      "12 WS2812B addressable RGB LEDs arranged in a circle",
       "24-bit color depth (16.7 million colors)",
       "Single-wire data interface (DIN/DOUT)",
       "5V operation (3.3V logic compatible with level shifter)",
       "Cascadable via DOUT pin",
       "Refresh rate: up to 800 Hz",
       "Low power consumption per LED",
-      "No external resistors needed"
+      "No external resistors needed",
+      "Perfect for clock displays and progress indicators"
     ],
-    howToUse: "Connect VCC to 5V, GND to ground, DIN to a digital GPIO pin (e.g., GPIO 2). For ESP32, use a level shifter or connect directly (works but not recommended for long wires). Use FastLED or NeoPixel library to control individual LEDs. The matrix is addressed as a linear array of 64 LEDs (0-63).",
+    howToUse: "Connect V+ to 5V, V- to ground, IN to a digital GPIO pin (e.g., GPIO 4). For ESP32, use a level shifter or connect directly (works but not recommended for long wires). Use Adafruit NeoPixel library to control individual LEDs. The ring is addressed as a linear array of 12 LEDs (0-11). Set brightness low (5/255) when powered via USB to protect the microcontroller.",
     resources: [
       {
         name: "WS2812B Datasheet",
@@ -338,74 +342,73 @@ void loop() {
       },
       {
         name: "Amazon",
-        url: "https://www.amazon.com/s?k=ws2812b+8x8+matrix"
+        url: "https://www.amazon.com/s?k=ws2812b+led+ring+12"
       }
     ],
     libraries: [
       "FastLED (by FastLED)",
       "Adafruit NeoPixel (alternative)"
     ],
-    code: `// WS2812B 8x8 LED Matrix Example
-// This example demonstrates how to control a WS2812B LED matrix with rainbow animation
+    code: `// WS2812B LED Ring (12 LEDs) Example
+// This example demonstrates how to control a WS2812B LED ring with a simple blink pattern
 //
 // Wiring:
-//   VCC -> 5V
-//   GND -> GND
-//   DIN -> GPIO 2 (or any digital pin)
+//   V+ -> 5V
+//   V- -> GND
+//   IN -> GPIO 4 (or any digital pin)
 
-// Include FastLED library
-#include <FastLED.h>
+// Include Adafruit NeoPixel library
+#include <Adafruit_NeoPixel.h>
 
 // Configuration defines
-#define LED_PIN     2    // GPIO pin connected to matrix DIN pin
-#define NUM_LEDS    64   // Total number of LEDs (8x8 matrix = 64 LEDs)
-#define BRIGHTNESS  50   // Brightness level (0-255, lower = dimmer)
-#define LED_TYPE    WS2812B  // LED chip type
-#define COLOR_ORDER GRB       // Color order (Green, Red, Blue)
+#define LED_PIN     4    // GPIO pin connected to ring IN pin
+#define NUM_LEDS    12   // Total number of LEDs in the ring
+#define BRIGHTNESS  5    // Brightness level (0-255, very low for USB power safety)
 
-// Create array to store LED color data
-CRGB leds[NUM_LEDS];
+// Create NeoPixel object
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   // Initialize serial communication for debugging
   Serial.begin(115200);
   
-  // Configure FastLED with our settings
-  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+  // Initialize the NeoPixel ring
+  strip.begin();
   
-  // Set overall brightness (reduces power consumption and heat)
-  FastLED.setBrightness(BRIGHTNESS);
+  // Set brightness to a very low value to protect ESP32-C3
+  strip.setBrightness(BRIGHTNESS);
   
-  // Confirm initialization
-  Serial.println("WS2812B Matrix initialized");
+  // Clear all LEDs
+  strip.clear();
+  strip.show();
+  
+  Serial.println("WS2812B LED Ring initialized");
 }
 
 void loop() {
-  // Create rainbow animation effect
-  // This loops through all LEDs and assigns colors based on position and time
+  // Loop through all 12 LEDs one at a time
   for (int i = 0; i < NUM_LEDS; i++) {
-    // Calculate hue: position-based + time-based animation
-    // CHSV: Hue (0-255), Saturation (255 = full color), Value (255 = full brightness)
-    leds[i] = CHSV((i * 256 / NUM_LEDS + millis() / 10) % 256, 255, 255);
+    // Clear all LEDs first
+    strip.clear();
+    
+    // Set the current LED to white
+    strip.setPixelColor(i, strip.Color(255, 255, 255));
+    
+    // Update the ring to show the change
+    strip.show();
+    
+    // Wait 200 milliseconds before moving to next LED
+    delay(200);
   }
   
-  // Update the LED matrix with new colors
-  FastLED.show();
-  delay(10);  // Small delay for smooth animation
+  // After all LEDs have been lit, clear the display
+  strip.clear();
+  strip.show();
   
-  // Alternative example: Draw a static pattern
-  // Uncomment the lines below to draw a red dot at the center
-  // fill_solid(leds, NUM_LEDS, CRGB::Black);  // Clear all LEDs (black)
-  // leds[XY(3, 3)] = CRGB::Red;              // Set center pixel (3,3) to red
-  // FastLED.show();
-}
-
-// Helper function to convert 2D coordinates (x, y) to linear array index
-// Useful when thinking of the matrix as an 8x8 grid instead of a linear array
-uint8_t XY(uint8_t x, uint8_t y) {
-  return y * 8 + x;  // Convert row (y) and column (x) to index
+  // Wait 1 second before starting the sequence again
+  delay(1000);
 }`,
-    link: "/hardware/ws2812b-led-matrix-8x8"
+    link: "/hardware/ws2812b-led-ring-12"
   },
   {
     name: "1.3 Inch OLED Display (SH1106, I2C)",

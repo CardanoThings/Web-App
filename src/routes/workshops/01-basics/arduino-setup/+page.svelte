@@ -197,6 +197,10 @@
 			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make sure to select the correct board and port. You should see the microcontroller connect to your Wifi and print the IP address to the serial monitor."
 		/>
 
+		<TipBox title="ESP32-C3 Super Mini WiFi Workaround" variant="info">
+			If you're using an ESP32-C3 Super Mini and experiencing WiFi connection issues, the code includes <code>WiFi.setTxPower(WIFI_POWER_8_5dBm);</code> as a workaround. This sets the WiFi transmit power to 8.5 dBm, which helps resolve connectivity problems specific to this board variant.
+		</TipBox>
+
 		<TipBox title="Serial Monitor" variant="success">
 			To view the WiFi connection status and IP address, open the Serial Monitor in Arduino IDE by
 			going to <strong>Tools → Serial Monitor</strong> or pressing <strong>Ctrl+Shift+M</strong>

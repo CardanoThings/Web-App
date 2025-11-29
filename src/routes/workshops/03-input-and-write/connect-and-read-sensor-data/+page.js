@@ -1,38 +1,37 @@
 export const load = async () => {
 	return {
-		dht22Code: `
+		sht21Code: `
 			// Include necessary libraries
-			#include <WiFi.h>              // WiFi connectivity (optional for this example)
-			#include <DHT.h>               // DHT sensor library by Adafruit
+			#include <Wire.h>                // I2C communication library (built-in)
+			#include <SHT2x.h>              // SHT2x sensor library by RobTillaart
 			#include <TFT_eSPI.h>          // TFT display library
 			#include <SPI.h>               // SPI communication for display
 
-			// DHT sensor pin configuration
-			#define DHTPIN 4               // Digital GPIO pin connected to DHT22 data pin
-			#define DHTTYPE DHT22          // Sensor type: DHT22 (also known as AM2302)
-
 			// Create sensor and display objects
-			DHT dht(DHTPIN, DHTTYPE);     // Initialize DHT sensor on specified pin
-			TFT_eSPI tft = TFT_eSPI();    // Create TFT display object
-
-			// WiFi credentials - replace with your network details
-			const char* ssid = "Your SSID";
-			const char* password = "Your Password";
+			SHT2x sht;                      // Initialize SHT2x sensor
+			TFT_eSPI tft = TFT_eSPI();     // Create TFT display object
 
 			// Variables to store sensor readings
-			float temperature = 0;        // Current temperature reading
-			float humidity = 0;           // Current humidity reading
+			float temperature = 0;         // Current temperature reading
+			float humidity = 0;            // Current humidity reading
+			
+			// I2C pin configuration
+			#define SDA_PIN 3               // I2C data line (SDA)
+			#define SCL_PIN 4               // I2C clock line (SCL)
 			
 			// Variables for timing sensor reads
 			unsigned long lastRead = 0;                    // Timestamp of last sensor read
-			const unsigned long readInterval = 2000;       // Read every 2 seconds (DHT22 minimum)
+			const unsigned long readInterval = 2000;        // Read every 2 seconds
 
 			void setup() {
 				// Initialize serial communication for debugging (115200 baud rate)
 				Serial.begin(115200);
 				
-				// Initialize DHT sensor
-				dht.begin();
+				// Initialize I2C bus with custom pins (SDA pin 3, SCL pin 4)
+				Wire.begin(SDA_PIN, SCL_PIN);
+				
+				// Initialize SHT2x sensor
+				sht.begin();
 				
 				// Initialize TFT display
 				tft.init();                        // Initialize display hardware
@@ -44,21 +43,13 @@ export const load = async () => {
 				// Display startup message on screen
 				tft.setCursor(10, 10);
 				tft.println("Initializing...");
-				
-				// Start WiFi connection (optional - can be removed if not needed)
-				WiFi.begin(ssid, password);
-				while (WiFi.status() != WL_CONNECTED) {
-					delay(1000);
-					Serial.println("Connecting to WiFi...");
-				}
-				
-				Serial.println("Connected to WiFi");
+				delay(1000);
 				
 				// Clear screen and show ready message
 				tft.fillScreen(TFT_BLACK);
 				tft.setCursor(10, 10);
 				tft.println("Ready!");
-				delay(1000);
+				delay(500);
 			}
 
 			void loop() {
@@ -66,7 +57,6 @@ export const load = async () => {
 				unsigned long currentMillis = millis();
 				
 				// Check if enough time has passed since last sensor read
-				// DHT22 requires at least 2 seconds between readings
 				if (currentMillis - lastRead >= readInterval) {
 					readSensorData();  // Read from sensor
 					displayData();     // Update display
@@ -75,37 +65,29 @@ export const load = async () => {
 			}
 
 			void readSensorData() {
-				// Read humidity from sensor (takes ~250ms)
-				// Note: Sensor readings may be up to 2 seconds old
-				float h = dht.readHumidity();
+				// Read temperature from sensor (returns value in Celsius)
+				float t = sht.getTemperature();
 				
-				// Read temperature from sensor (takes ~250ms)
-				float t = dht.readTemperature();
+				// Read relative humidity from sensor (returns value as percentage)
+				float h = sht.getHumidity();
 				
-				// Check if any reads failed (returns NaN on failure)
-				if (isnan(h) || isnan(t)) {
-					Serial.println("Failed to read from DHT sensor!");
+				// Check if reads failed (getError() returns 0 for OK, non-zero for errors)
+				if (sht.getError() != 0) {
+					Serial.println("Failed to read from SHT2x sensor!");
 					return;  // Exit function if read failed
 				}
-				
-				// Compute heat index (feels-like temperature)
-				// Parameters: temperature, humidity, isFahrenheit (false = Celsius)
-				float hi = dht.computeHeatIndex(t, h, false);
 				
 				// Store readings in global variables
 				temperature = t;
 				humidity = h;
 				
 				// Print readings to serial monitor for debugging
-				Serial.print("Humidity: ");
-				Serial.print(humidity);
-				Serial.print(" %\\t");              // Tab separator
 				Serial.print("Temperature: ");
-				Serial.print(temperature);
-				Serial.print(" *C ");
-				Serial.print("Heat index: ");
-				Serial.print(hi);
-				Serial.println(" *C");
+				Serial.print(temperature, 2);  // Print with 2 decimal places
+				Serial.print(" °C\\t");
+				Serial.print("Humidity: ");
+				Serial.print(humidity, 2);      // Print with 2 decimal places
+				Serial.println(" %RH");
 			}
 
 			void displayData() {
@@ -135,7 +117,7 @@ export const load = async () => {
 				// Display temperature unit in yellow
 				tft.setTextSize(2);
 				tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-				tft.println(" *C");
+				tft.println(" °C");
 				
 				// Display humidity label in yellow
 				tft.setTextSize(2);
@@ -151,54 +133,63 @@ export const load = async () => {
 				// Display humidity unit in yellow
 				tft.setTextSize(2);
 				tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-				tft.println(" %");
+				tft.println(" %RH");
 			}`,
-		simpleDhtCode: `
-			// Include DHT sensor library
-			#include <DHT.h>
+		simpleShtCode: `
+			// Include required libraries
+			#include <Wire.h>                // I2C communication library (built-in)
+			#include <SHT2x.h>              // SHT2x sensor library by RobTillaart
 
-			// DHT sensor pin configuration
-			#define DHTPIN 4               // Digital GPIO pin connected to DHT22 data pin
-			#define DHTTYPE DHT22          // Sensor type: DHT22 (also known as AM2302)
+			// I2C pin configuration
+			#define SDA_PIN 3               // I2C data line (SDA)
+			#define SCL_PIN 4               // I2C clock line (SCL)
 
-			// Create DHT sensor object
-			DHT dht(DHTPIN, DHTTYPE);
+			// Create sensor object
+			SHT2x sht;
 
 			void setup() {
 				// Initialize serial communication for debugging (115200 baud rate)
 				Serial.begin(115200);
 				
-				// Initialize DHT sensor
-				dht.begin();
+				// Initialize I2C bus with custom pins (SDA pin 3, SCL pin 4)
+				Wire.begin(SDA_PIN, SCL_PIN);
+				
+				// Initialize SHT2x sensor
+				sht.begin();
+				
+				// Print header information
+				Serial.println("SHT2x Temperature & Humidity Sensor");
+				Serial.println("-----------------------------------");
 			}
 
 			void loop() {
-				// Wait 2 seconds between measurements
-				// DHT22 requires at least 2 seconds between readings for accurate data
-				delay(2000);
+				// Read temperature from sensor (returns value in Celsius)
+				float temperature = sht.getTemperature();
 				
-				// Read humidity from sensor (takes ~250ms)
-				float h = dht.readHumidity();
+				// Read relative humidity from sensor (returns value as percentage)
+				float humidity = sht.getHumidity();
 				
-				// Read temperature from sensor (takes ~250ms)
-				float t = dht.readTemperature();
-				
-				// Check if any reads failed (returns NaN on failure)
-				if (isnan(h) || isnan(t)) {
-					Serial.println("Failed to read from DHT sensor!");
-					return;  // Exit function if read failed
+				// Check if reads failed (getError() returns 0 for OK, non-zero for errors)
+				if (sht.getError() != 0) {
+					Serial.println("Failed to read from SHT2x sensor!");
+				} else {
+					// Print temperature reading with 2 decimal places
+					Serial.print("Temperature: ");
+					Serial.print(temperature, 2);  // Print with 2 decimal places
+					Serial.print(" °C\\t");
+					
+					// Print humidity reading with 2 decimal places
+					Serial.print("Humidity: ");
+					Serial.print(humidity, 2);      // Print with 2 decimal places
+					Serial.println(" %RH");        // %RH = Percentage Relative Humidity
 				}
 				
-				// Print humidity to serial monitor
-				Serial.print("Humidity: ");
-				Serial.print(h);
-				Serial.print(" %\\t");              // Tab separator
+				// Print separator line
+				Serial.println("-----------------------------------");
 				
-				// Print temperature to serial monitor
-				Serial.print("Temperature: ");
-				Serial.print(t);
-				Serial.println(" *C");
+				// Wait 2 seconds before next reading
+				// This prevents excessive sensor queries and reduces power consumption
+				delay(2000);
 			}`
 	};
 };
-

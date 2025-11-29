@@ -17,15 +17,20 @@ export const links = [
     {
         title: "Glossary",
         link: "/glossary",
-        headerNav: true
+        headerNav: false
     },
     {
         title: "Hardware",
         link: "/hardware",
-        headerNav: true
+        headerNav: false
     },
     {
-        title: "About",
+        title: "Troubleshooting",
+        link: "/troubleshooting",
+        headerNav: false
+    },
+    {
+        title: "About CardanoThings.io",
         link: "/about",
         headerNav: false
     }

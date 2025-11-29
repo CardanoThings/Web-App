@@ -42,7 +42,7 @@
 			<SearchBox />
 			<!-- Mobile Menu Button -->
 			<Drawer.Root bind:open={drawerOpen} direction="right">
-				<Drawer.Trigger class="md:hidden">
+				<Drawer.Trigger class="">
 					<Menu size={24} class="text-white" />
 				</Drawer.Trigger>
 				<Drawer.Content class="px-4 py-6">
@@ -54,7 +54,7 @@
 						<X size={24} />
 					</button>
 					<nav class="mt-4 flex flex-col gap-4">
-						{#each links.filter((link) => link.headerNav) as link}
+						{#each links as link}
 							<a
 								href={link.link}
 								rel="noopener noreferrer"

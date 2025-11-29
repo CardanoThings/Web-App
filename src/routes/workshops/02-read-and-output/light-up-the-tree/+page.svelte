@@ -6,6 +6,7 @@
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import ESP32C3Pinout from '$lib/components/ESP32C3Pinout.svelte';
+	import PingPongWallet from '$lib/base/PingPongWallet.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
@@ -347,6 +348,7 @@
 			howItWorksContent={relayIntegrationHowItWorks}
 			footerText="Copy and paste the code into your Arduino IDE. Make sure to set the correct GPIO pin for your relay module. Replace WiFi credentials and wallet address with your own. Upload it to your microcontroller. When you receive a transaction to your wallet, the relay should activate and turn on your light. Make sure you're using a Preprod Testnet wallet address (starting with 'addr_test1...')."
 		/>
+		<PingPongWallet />
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">

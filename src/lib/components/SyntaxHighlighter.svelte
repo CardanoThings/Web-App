@@ -38,7 +38,7 @@
 	/**
 	 * @type {boolean} Whether to show comments by default
 	 */
-	export let defaultShowComments = false;
+	export let defaultShowComments = true;
 
 	/**
 	 * @type {boolean} Whether to show full code by default (no collapse)

@@ -2,64 +2,71 @@ export const load = async () => {
 	return {
 		epochClockCode: `
 			// Include necessary libraries
-			#include <WiFi.h>              // WiFi connectivity
-			#include <HTTPClient.h>       // HTTP client for API calls
-			#include <ArduinoJson.h>      // JSON parsing
-			#include <MD_Parola.h>         // LED matrix text display library
-			#include <MD_MAX72XX.h>       // LED matrix hardware control
-			#include <SPI.h>               // SPI communication for LED matrix
+			#include <WiFi.h>
+			#include <HTTPClient.h>
+			#include <ArduinoJson.h>
+			#include <Adafruit_NeoPixel.h>
+			#include <WiFiClientSecure.h>
 
-			// LED Matrix hardware configuration
-			#define HARDWARE_TYPE MD_MAX72XX::FC16_HW  // Hardware type (FC16 is common)
-			#define MAX_DEVICES 4                      // Number of 8x8 matrix modules (4 = 32x8 display)
-			#define CS_PIN 5                            // Chip Select pin
-			#define DATA_PIN 23                         // Data pin (MOSI)
-			#define CLK_PIN 18                          // Clock pin (SCK)
+			// Pin connected to the WS2812 data input
+			#define LED_PIN 4
+			
+			// Number of LEDs in the ring (12 LEDs)
+			#define NUM_LEDS 12
+			
+			// Total slots in an epoch (approximately 432,000 on Mainnet)
+			#define SLOTS_PER_EPOCH 432000
+			
+			// Create NeoPixel object
+			Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-			// Create display object with hardware configuration
-			MD_Parola myDisplay = MD_Parola(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
-
-			// WiFi credentials - replace with your network details
+			// WiFi credentials
 			const char* ssid = "Your SSID";
 			const char* password = "Your Password";
 			
-			// Koios API endpoint for fetching chain tip (epoch information)
+			// Koios API endpoint
 			const char* apiUrl = "https://preprod.koios.rest/api/v1/tip";
 			
 			// Variables for timing API calls
-			unsigned long lastCheck = 0;                    // Timestamp of last API call
-			const unsigned long checkInterval = 60000;      // Check every minute (60000 milliseconds)
+			unsigned long lastCheck = 0;
+			const unsigned long checkInterval = 60000;  // Check every minute
+			
+			// Variables for walking LED - creates a clock-like second hand effect
+			// The white LED moves around the ring every 5 seconds
+			// 12 LEDs × 5 seconds = 60 seconds (1 minute) for a full rotation
+			unsigned long lastWalkUpdate = 0;
+			const unsigned long walkInterval = 5000;  // Move to next LED every 5 seconds
+			int walkPosition = 0;  // Current position of walking LED (0-11)
 			
 			// Store current epoch data
-			int currentEpoch = 0;        // Current epoch number
-			int currentEpochSlot = 0;    // Current slot within epoch
+			int currentEpoch = 0;
+			int currentEpochSlot = 0;
+			int lastEpoch = -1;
 
 			void setup() {
-				// Initialize serial communication for debugging
 				Serial.begin(115200);
 				
-				// Initialize LED Matrix display
-				myDisplay.begin();
-				myDisplay.setIntensity(5);              // Set brightness (0-15)
-				myDisplay.displayClear();                // Clear display
+				// Initialize LED ring
+				strip.begin();
+				strip.setBrightness(5);  // Low brightness for safety
+				strip.clear();
+				strip.show();
 				
-				// Display initialization message
-				myDisplay.displayText("INIT", PA_CENTER, 0, 0, PA_NO_EFFECT, PA_NO_EFFECT);
-				
-				// Start WiFi connection
+				// Connect to WiFi
 				WiFi.begin(ssid, password);
+				WiFi.setTxPower(WIFI_POWER_8_5dBm);  // Workaround for ESP32-C3 Super Mini
+				
 				while (WiFi.status() != WL_CONNECTED) {
 					delay(1000);
-					Serial.println("Connecting to WiFi...");
 				}
-				Serial.println("Connected to WiFi");
 				
-				// Perform initial epoch data fetch
+				// Initial fetch
 				fetchEpochData();
+				displayProgress();
 			}
 
 			void loop() {
-				// Check if WiFi connection is still active
+				// Check WiFi connection
 				if (WiFi.status() != WL_CONNECTED) {
 					WiFi.reconnect();
 					while (WiFi.status() != WL_CONNECTED) {
@@ -67,85 +74,93 @@ export const load = async () => {
 					}
 				}
 				
-				// Get current time in milliseconds
+				// Check if enough time has passed for API call
 				unsigned long currentMillis = millis();
-				
-				// Check if enough time has passed since last API call
 				if (currentMillis - lastCheck >= checkInterval) {
 					fetchEpochData();
-					lastCheck = currentMillis;  // Update last check timestamp
+					displayProgress();
+					lastCheck = currentMillis;
 				}
 				
-				// Update display animation (required for MD_Parola library)
-				// Returns true when animation is complete
-				if (myDisplay.displayAnimate()) {
-					displayEpoch();  // Update display with new data
+				// Update walking LED every 5 seconds (creates second-hand effect)
+				if (currentMillis - lastWalkUpdate >= walkInterval) {
+					updateWalkingLED();
+					lastWalkUpdate = currentMillis;
 				}
 			}
 
 			void fetchEpochData() {
-				// Only proceed if WiFi is connected
 				if (WiFi.status() == WL_CONNECTED) {
 					HTTPClient http;
+					WiFiClientSecure client;
 					
-					// Initialize HTTP client with API URL
-					http.begin(apiUrl);
+					client.setInsecure();
+					http.begin(client, apiUrl);
 					
-					// Send GET request (tip endpoint doesn't need POST)
 					int httpResponseCode = http.GET();
 					
-					// Check if request was successful
 					if (httpResponseCode > 0) {
-						// Get response body as string
 						String response = http.getString();
 						
-						// Create JSON document to parse response
-						DynamicJsonDocument doc(1024);
+						JsonDocument doc;
 						DeserializationError error = deserializeJson(doc, response);
 						
-						// Check if JSON parsing was successful and response has data
 						if (!error && doc.is<JsonArray>() && doc.size() > 0) {
-							// Get first tip object from array
 							JsonObject tip = doc[0];
-							
-							// Extract epoch number and slot (default to 0 if not found)
 							currentEpoch = tip["epoch_no"] | 0;
 							currentEpochSlot = tip["epoch_slot"] | 0;
 							
-							// Print to serial monitor for debugging
-							Serial.print("Epoch: ");
-							Serial.print(currentEpoch);
-							Serial.print(" Slot: ");
-							Serial.println(currentEpochSlot);
+							// Reset display if epoch changed
+							if (currentEpoch != lastEpoch) {
+								lastEpoch = currentEpoch;
+								strip.clear();
+								strip.show();
+								delay(500);
+							}
 						}
 					}
 					
-					// Close HTTP connection
 					http.end();
 				}
 			}
 
-			void displayEpoch() {
-				// Create text string for epoch number (e.g., "E252")
-				String epochText = "E" + String(currentEpoch);
+			void displayProgress() {
+				// Calculate epoch progress percentage
+				int progressPercent = (currentEpochSlot * 100) / SLOTS_PER_EPOCH;
+				if (progressPercent > 100) progressPercent = 100;
 				
-				// Display epoch text centered with no animation effects
-				myDisplay.displayText(epochText.c_str(), PA_CENTER, 0, 0, PA_NO_EFFECT, PA_NO_EFFECT);
+				// Calculate how many LEDs should be lit
+				int ledsToLight = (progressPercent * NUM_LEDS) / 100;
 				
-				// Wait 2 seconds before showing slot
-				delay(2000);
+				// Clear all LEDs
+				strip.clear();
 				
-				// Create text string for epoch slot (e.g., "S12345")
-				String slotText = "S" + String(currentEpochSlot);
+				// Light up LEDs based on progress in blue
+				for (int i = 0; i < ledsToLight; i++) {
+					strip.setPixelColor(i, strip.Color(0, 0, 255));  // Blue
+				}
 				
-				// Display slot text centered with no animation effects
-				myDisplay.displayText(slotText.c_str(), PA_CENTER, 0, 0, PA_NO_EFFECT, PA_NO_EFFECT);
+				strip.show();
+			}
+
+			void updateWalkingLED() {
+				// Display epoch progress first (blue LEDs showing epoch completion)
+				displayProgress();
+				
+				// Add white walking LED at current position (creates clock second-hand effect)
+				// This LED blinks white for 5 seconds at each position before moving
+				strip.setPixelColor(walkPosition, strip.Color(255, 255, 255));  // White
+				strip.show();
+				
+				// Move to next position (wrap around after LED 11 to complete 60-second cycle)
+				walkPosition = (walkPosition + 1) % NUM_LEDS;
 			}`,
 		simpleEpochCode: `
 			// Include necessary libraries for WiFi, HTTP requests, and JSON parsing
 			#include <WiFi.h>
 			#include <HTTPClient.h>
 			#include <ArduinoJson.h>
+			#include <WiFiClientSecure.h>
 
 			// WiFi credentials - replace with your network details
 			const char* ssid = "Your SSID";
@@ -198,9 +213,14 @@ export const load = async () => {
 				// Only proceed if WiFi is connected
 				if (WiFi.status() == WL_CONNECTED) {
 					HTTPClient http;
+					WiFiClientSecure client;
 					
-					// Initialize HTTP client with API URL
-					http.begin(apiUrl);
+					// For HTTPS, we need to skip certificate validation (simplest approach)
+					// In production, you should use proper certificate validation
+					client.setInsecure();
+					
+					// Initialize HTTP client with API URL and secure client
+					http.begin(client, apiUrl);
 					
 					// Send GET request (tip endpoint doesn't need POST)
 					int httpResponseCode = http.GET();
@@ -231,6 +251,68 @@ export const load = async () => {
 					// Close HTTP connection
 					http.end();
 				}
+			}`,
+		ledBlinkCode: `
+			// Include the Adafruit NeoPixel library
+			#include <Adafruit_NeoPixel.h>
+
+			// Pin connected to the WS2812 data input
+			#define LED_PIN 4
+			
+			// Number of LEDs in the ring (12 LEDs)
+			#define NUM_LEDS 12
+			
+			// Create NeoPixel object
+			// Parameter 1 = number of pixels
+			// Parameter 2 = pin number
+			// Parameter 3 = pixel type flags (NEO_GRB + NEO_KHZ800 for WS2812)
+			Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+			void setup() {
+				// Initialize serial communication for debugging
+				Serial.begin(115200);
+				
+				// Initialize the NeoPixel ring
+				strip.begin();
+				
+				// Set brightness to a very low value (5 out of 255) to protect ESP32-C3
+				// This is approximately 2% brightness - safe for USB power
+				strip.setBrightness(5);
+				
+				// Clear all LEDs (turn them all off)
+				strip.clear();
+				
+				// Update the strip to apply changes
+				strip.show();
+				
+				Serial.println("LED Ring initialized. Starting blink sequence...");
+			}
+
+			void loop() {
+				// Loop through all 12 LEDs one at a time
+				for (int i = 0; i < NUM_LEDS; i++) {
+					// Clear all LEDs first
+					strip.clear();
+					
+					// Set the current LED to white (R=255, G=255, B=255)
+					// The brightness is already limited by setBrightness(5) in setup()
+					strip.setPixelColor(i, strip.Color(255, 255, 255));
+					
+					// Update the strip to show the change
+					strip.show();
+					
+					// Print which LED is lit
+					Serial.print("LED ");
+					Serial.print(i);
+					Serial.println(" ON");
+					
+					// Wait 200 milliseconds before moving to next LED
+					delay(200);
+				}
+				
+				// After all LEDs have been lit, clear the display
+				strip.clear();
+				strip.show();
 			}`
 	};
 };
