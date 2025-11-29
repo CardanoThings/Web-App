@@ -131,7 +131,7 @@ export let glossary = [
         term: "NFT",
         definition: "Non-Fungible Token. A unique digital asset on the blockchain that cannot be replaced or exchanged one-for-one like cryptocurrency. Each NFT has unique properties and ownership records. On Cardano, NFTs can represent digital art, collectibles, sensor data, or any unique digital item.",
         links: [
-            { title: "Minting NFTs Workshop", url: "/workshops/03-input-and-write/mint-on-nmkr" }
+            { title: "Minting NFTs Workshop", url: "/workshops/03-input-and-write/mint-sensor-data-on-chain" }
         ]
     },
     {
@@ -368,7 +368,7 @@ export let glossary = [
         definition: "A platform (formerly NFT-MAKER) that simplifies minting NFTs on Cardano. NMKR provides a simple API that handles all the complex transaction building, making it easy for beginners to mint NFTs without deep knowledge of Cardano's technical details. Perfect for rapid prototyping and projects focused on application logic.",
         links: [
             { title: "NMKR Website", url: "https://www.nmkr.io/" },
-            { title: "Mint on NMKR Workshop", url: "/workshops/03-input-and-write/mint-on-nmkr" }
+            { title: "Mint Sensor Data On-Chain Workshop", url: "/workshops/03-input-and-write/mint-sensor-data-on-chain" }
         ]
     },
     {

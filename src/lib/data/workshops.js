@@ -104,9 +104,9 @@ export const workshops = [
                 link: "/workshops/03-input-and-write/build-your-own-api"
             },
             {
-                title: "Mint on NMKR",
-                description: "If building your own API to mint NFTs seems to complex for you, no worries. You will get a short introduction into NMKR and how to set it up to use their API to mint an NFT with data from your Microcontroller.",
-                link: "/workshops/03-input-and-write/mint-on-nmkr"
+                title: "Mint sensor data on-chain",
+                description: "Learn how to post temperature sensor data from your microcontroller to your API and mint it as an NFT on-chain using Mesh SDK. This workshop combines sensor data collection with blockchain minting.",
+                link: "/workshops/03-input-and-write/mint-sensor-data-on-chain"
             }
         ],
         link: "/workshops/03-input-and-write",

@@ -1,11 +1,8 @@
 export const load = async () => {
 	return {
-		nodeApiCode: `
+		basicApiCode: `
 			// Import required Node.js packages
-			const express = require('express');              // Web framework for building API
-			const cors = require('cors');                   // Enable Cross-Origin Resource Sharing
-			const axios = require('axios');                  // HTTP client for making requests
-			const { BlockFrostAPI } = require('@blockfrost/blockfrost-js');  // Blockfrost SDK
+			import express from 'express';              // Web framework for building API
 
 			// Create Express application instance
 			const app = express();
@@ -13,12 +10,31 @@ export const load = async () => {
 			// Server port number
 			const PORT = 3000;
 
-			// Initialize Blockfrost API client
-			// Get your API key from blockfrost.io (free tier available)
-			const API = new BlockFrostAPI({
-				projectId: 'your-blockfrost-api-key',  // Your Blockfrost project API key
-				network: 'preprod'                      // Use 'preprod' for testnet, 'mainnet' for mainnet
+			// GET endpoint for health check
+			// Useful for testing if server is running
+			// URL: http://localhost:3000/health
+			app.get('/health', (req, res) => {
+				res.json({ status: 'ok', timestamp: new Date().toISOString() });
 			});
+
+			// Start server and listen on specified port
+			app.listen(PORT, () => {
+				console.log(\`Server running on http://localhost:\${PORT}\`);
+			});`,
+		enhancedApiCode: `
+			// Import required Node.js packages
+			import express from 'express';              // Web framework for building API
+			import cors from 'cors';                   // Enable Cross-Origin Resource Sharing
+
+			// Create Express application instance
+			const app = express();
+			
+			// Server port number
+			const PORT = 3000;
+
+			// Store received data in memory
+			// In a production app, you would use a database instead
+			let storedData = null;
 
 			// Middleware: Enable CORS to allow requests from different origins
 			app.use(cors());
@@ -26,29 +42,47 @@ export const load = async () => {
 			// Middleware: Parse JSON request bodies
 			app.use(express.json());
 
-			// POST endpoint to receive sensor data from microcontroller
-			// URL: http://your-server-ip:3000/sensor-data
-			app.post('/sensor-data', async (req, res) => {
+			// POST endpoint to receive and store data
+			// URL: http://localhost:3000/data
+			app.post('/data', async (req, res) => {
 				try {
-					// Extract sensor data from request body
-					const { temperature, humidity, timestamp } = req.body;
+					// Extract data from request body
+					const data = req.body;
+					
+					// Store the data in a variable
+					storedData = data;
 					
 					// Log received data to console for debugging
-					console.log('Received sensor data:', { temperature, humidity, timestamp });
+					console.log('Received and stored data:', data);
 					
-					// NOTE: This is a simplified example
-					// Actual NFT minting requires:
-					// 1. Building a Cardano transaction
-					// 2. Creating metadata for the NFT
-					// 3. Signing the transaction with a wallet or private key
-					// 4. Submitting the signed transaction to the network
-					// This is complex and requires Cardano serialization libraries
-					
-					// Return success response to microcontroller
+					// Return success response
 					res.json({ 
 						success: true, 
-						message: 'Data received. Mint transaction will be created.',
-						data: { temperature, humidity, timestamp }
+						message: 'Data received and stored successfully.',
+						data: data
+					});
+				} catch (error) {
+					// Handle errors and return error response
+					console.error('Error:', error);
+					res.status(500).json({ success: false, error: error.message });
+				}
+			});
+
+			// GET endpoint to retrieve stored data
+			// URL: http://localhost:3000/data
+			app.get('/data', (req, res) => {
+				try {
+					if (storedData === null) {
+						return res.status(404).json({ 
+							success: false, 
+							message: 'No data has been stored yet. Send a POST request to /data first.' 
+						});
+					}
+					
+					// Return the stored data
+					res.json({ 
+						success: true, 
+						data: storedData 
 					});
 				} catch (error) {
 					// Handle errors and return error response
@@ -59,7 +93,7 @@ export const load = async () => {
 
 			// GET endpoint for health check
 			// Useful for testing if server is running
-			// URL: http://your-server-ip:3000/health
+			// URL: http://localhost:3000/health
 			app.get('/health', (req, res) => {
 				res.json({ status: 'ok', timestamp: new Date().toISOString() });
 			});
@@ -68,11 +102,359 @@ export const load = async () => {
 			app.listen(PORT, () => {
 				console.log(\`Server running on http://localhost:\${PORT}\`);
 			});`,
-		packageJson: `
+		basicPackageJson: `
 			{
-				"name": "cardano-sensor-api",
+				"name": "simple-api",
 				"version": "1.0.0",
-				"description": "API to mint NFTs with sensor data",
+				"description": "Simple Node.js API server",
+				"type": "module",
+				"main": "server.js",
+				"scripts": {
+					"start": "node server.js"
+				},
+				"dependencies": {
+					"express": "^4.18.2"
+				}
+			}`,
+		enhancedPackageJson: `
+			{
+				"name": "simple-api",
+				"version": "1.0.0",
+				"description": "Simple Node.js API server",
+				"type": "module",
+				"main": "server.js",
+				"scripts": {
+					"start": "node server.js"
+				},
+				"dependencies": {
+					"express": "^4.18.2",
+					"cors": "^2.8.5"
+				}
+			}`,
+		meshWalletCode: `
+			// Import Mesh SDK components
+			import { KoiosProvider, MeshWallet } from '@meshsdk/core';
+
+			// Initialize Koios provider for Preprod Testnet
+			// Koios is free to use and doesn't require an API key
+			const provider = new KoiosProvider('preprod');
+
+			// Initialize wallet using mnemonic from environment variable
+			// IMPORTANT: Store your mnemonic in an environment variable, never in code!
+			const mnemonic = process.env.WALLET_MNEMONIC?.split(' ') || [];
+			
+			if (mnemonic.length === 0) {
+				console.error('Error: WALLET_MNEMONIC environment variable not set!');
+				process.exit(1);
+			}
+
+			const wallet = new MeshWallet({
+				networkId: 0,  // 0 = testnet
+				fetcher: provider,
+				submitter: provider,
+				key: {
+					type: 'mnemonic',
+					words: mnemonic
+				}
+			});
+
+			// Function to fetch and log wallet balance
+			async function fetchWalletBalance() {
+				try {
+					// Get wallet address
+					const address = await wallet.getChangeAddress();
+					console.log('Wallet Address:', address);
+					
+					// Get UTXOs for the wallet
+					const utxos = await wallet.getUtxos();
+					
+					// Calculate total balance in Lovelace
+					let totalLovelace = 0;
+					utxos.forEach(utxo => {
+						totalLovelace += parseInt(utxo.output.amount[0].quantity);
+					});
+					
+					// Convert Lovelace to ADA (1 ADA = 1,000,000 Lovelace)
+					const balanceADA = totalLovelace / 1000000;
+					
+					// Log wallet information to console
+					console.log('Wallet Balance:', balanceADA, 'ADA');
+					console.log('Balance in Lovelace:', totalLovelace);
+					console.log('Number of UTXOs:', utxos.length);
+				} catch (error) {
+					console.error('Error fetching wallet balance:', error);
+				}
+			}
+
+			// Call the function to fetch and log wallet balance
+			fetchWalletBalance();`,
+		meshTransactionCode: `
+			// Import Mesh SDK components
+			import { KoiosProvider, MeshWallet, MeshTxBuilder } from '@meshsdk/core';
+
+			// Initialize Koios provider for Preprod Testnet
+			// Koios is free to use and doesn't require an API key
+			const provider = new KoiosProvider('preprod');
+
+			// Initialize wallet using mnemonic from environment variable
+			// IMPORTANT: Store your mnemonic in an environment variable, never in code!
+			const mnemonic = process.env.WALLET_MNEMONIC?.split(' ') || [];
+			
+			if (mnemonic.length === 0) {
+				console.error('Error: WALLET_MNEMONIC environment variable not set!');
+				process.exit(1);
+			}
+
+			const wallet = new MeshWallet({
+				networkId: 0,  // 0 = testnet
+				fetcher: provider,
+				submitter: provider,
+				key: {
+					type: 'mnemonic',
+					words: mnemonic
+				}
+			});
+
+			// Function to create and submit a transaction with metadata
+			async function sendTransaction() {
+				try {
+					// Recipient address (replace with actual testnet address)
+					const recipientAddress = 'addr_test1q...';  // Replace with recipient address
+					
+					// Amount to send in ADA (convert to Lovelace: 1 ADA = 1,000,000 Lovelace)
+					const amountADA = 1.0;  // Send 1 ADA
+					const amountLovelace = Math.floor(amountADA * 1000000);
+					
+					// Transaction metadata
+					// Metadata labels must be numbers (0-65535)
+					// Label 674 = Message (CIP-20 standard)
+					const metadata = {
+						674: {  // Message label (CIP-20 standard)
+							msg: ['Hello from CardanoThings!', 'This is a test transaction with metadata.']
+						}
+					};
+					
+					console.log('Creating transaction...');
+					console.log('Recipient:', recipientAddress);
+					console.log('Amount:', amountADA, 'ADA');
+					console.log('Metadata:', JSON.stringify(metadata, null, 2));
+					
+					// Get wallet UTXOs and change address
+					const utxos = await wallet.getUtxos();
+					const changeAddress = await wallet.getChangeAddress();
+					
+					// Initialize MeshTxBuilder
+					// MeshTxBuilder provides low-level APIs for building transactions
+					const txBuilder = new MeshTxBuilder({
+						fetcher: provider,
+						verbose: true  // Enable verbose logging for debugging
+					});
+					
+					// Build the transaction using MeshTxBuilder
+					// This approach gives you more control over the transaction structure
+					const unsignedTx = await txBuilder
+						.txOut(recipientAddress, [{ unit: 'lovelace', quantity: amountLovelace.toString() }])  // Output: send lovelace to recipient
+						.changeAddress(changeAddress)  // Address to receive change (remaining funds)
+						.metadataValue(674, metadata[674])  // Attach message metadata (label 674, CIP-20 standard)
+						.selectUtxosFrom(utxos)  // Automatically select UTXOs to fund the transaction
+						.complete();  // Finalize the transaction structure
+					
+					// Sign the transaction with your wallet
+					const signedTx = await wallet.signTx(unsignedTx);
+					
+					// Submit the transaction to the network
+					const txHash = await wallet.submitTx(signedTx);
+					
+					console.log('Transaction submitted successfully!');
+					console.log('Transaction Hash:', txHash);
+					console.log('View on Cardano Explorer:', \`https://preprod.cardanoscan.io/transaction/\${txHash}\`);
+					console.log('Metadata will be visible on the blockchain explorer');
+				} catch (error) {
+					console.error('Error creating or submitting transaction:', error);
+				}
+			}
+
+			// Call the function to create and submit transaction
+			sendTransaction();`,
+		meshApiCode: `
+			// Import required Node.js packages
+			import express from 'express';
+			import cors from 'cors';
+			import { KoiosProvider, MeshWallet, MeshTxBuilder } from '@meshsdk/core';
+
+			// Create Express application instance
+			const app = express();
+			
+			// Server port number
+			const PORT = 3000;
+
+			// Initialize Koios provider for Preprod Testnet
+			// Koios is free to use and doesn't require an API key
+			const provider = new KoiosProvider(
+				'preprod'  // Network: 'preprod' for testnet, 'api' for mainnet
+			);
+
+			// Initialize wallet using mnemonic from environment variable
+			// IMPORTANT: Store your mnemonic in an environment variable, never in code!
+			const mnemonic = process.env.WALLET_MNEMONIC?.split(' ') || [];
+			
+			if (mnemonic.length === 0) {
+				console.warn('Warning: WALLET_MNEMONIC not set. Wallet functionality will not work.');
+			}
+
+			const wallet = new MeshWallet({
+				networkId: 0,  // 0 = testnet
+				fetcher: provider,
+				submitter: provider,
+				key: {
+					type: 'mnemonic',
+					words: mnemonic
+				}
+			});
+
+			// Middleware: Enable CORS to allow requests from different origins
+			app.use(cors());
+			
+			// Middleware: Parse JSON request bodies
+			app.use(express.json());
+
+			// GET endpoint to retrieve wallet information
+			// Uses the wallet instance initialized from environment variable
+			app.get('/wallet', async (req, res) => {
+				try {
+					if (mnemonic.length === 0) {
+						return res.status(400).json({ 
+							success: false, 
+							error: 'Wallet mnemonic not configured. Set WALLET_MNEMONIC environment variable.' 
+						});
+					}
+
+					// Get wallet address
+					const address = await wallet.getChangeAddress();
+					
+					// Get UTXOs for the wallet
+					const utxos = await wallet.getUtxos();
+					
+					// Calculate total balance in Lovelace
+					let totalLovelace = 0;
+					utxos.forEach(utxo => {
+						totalLovelace += parseInt(utxo.output.amount[0].quantity);
+					});
+					
+					// Convert Lovelace to ADA (1 ADA = 1,000,000 Lovelace)
+					const balanceADA = totalLovelace / 1000000;
+					
+					res.json({ 
+						success: true, 
+						address: address,
+						balance: {
+							lovelace: totalLovelace,
+							ada: balanceADA
+						},
+						utxos: utxos.length,
+						network: 'preprod'
+					});
+				} catch (error) {
+					console.error('Error:', error);
+					res.status(500).json({ success: false, error: error.message });
+				}
+			});
+
+			// POST endpoint to create and submit a transaction
+			// URL: http://localhost:3000/transaction
+			// Body: { recipientAddress: "addr_test1...", amount: 1.0, metadata?: { msg: [...] } }
+			app.post('/transaction', async (req, res) => {
+				try {
+					if (mnemonic.length === 0) {
+						return res.status(400).json({ 
+							success: false, 
+							error: 'Wallet mnemonic not configured. Set WALLET_MNEMONIC environment variable.' 
+						});
+					}
+
+					const { recipientAddress, amount, metadata } = req.body;
+					
+					// Validate required fields
+					if (!recipientAddress || !amount) {
+						return res.status(400).json({ 
+							success: false, 
+							error: 'recipientAddress and amount are required' 
+						});
+					}
+
+					// Convert amount from ADA to Lovelace (1 ADA = 1,000,000 Lovelace)
+					const amountLovelace = Math.floor(parseFloat(amount) * 1000000);
+					
+					if (amountLovelace <= 0) {
+						return res.status(400).json({ 
+							success: false, 
+							error: 'Amount must be greater than 0' 
+						});
+					}
+
+					// Prepare metadata (default to empty if not provided)
+					const transactionMetadata = metadata || {
+						674: {  // Message label (CIP-20 standard)
+							msg: ['Transaction from CardanoThings API']
+						}
+					};
+
+					// Get wallet UTXOs and change address
+					const utxos = await wallet.getUtxos();
+					const changeAddress = await wallet.getChangeAddress();
+					
+					// Initialize MeshTxBuilder
+					const txBuilder = new MeshTxBuilder({
+						fetcher: provider,
+						verbose: true
+					});
+					
+					// Build the transaction using MeshTxBuilder
+					const unsignedTx = await txBuilder
+						.txOut(recipientAddress, [{ unit: 'lovelace', quantity: amountLovelace.toString() }])
+						.changeAddress(changeAddress)
+						.metadataValue(674, transactionMetadata[674])
+						.selectUtxosFrom(utxos)
+						.complete();
+					
+					// Sign the transaction with your wallet
+					const signedTx = await wallet.signTx(unsignedTx);
+					
+					// Submit the transaction to the network
+					const txHash = await wallet.submitTx(signedTx);
+					
+					res.json({ 
+						success: true, 
+						message: 'Transaction submitted successfully',
+						txHash: txHash,
+						explorerUrl: \`https://preprod.cardanoscan.io/transaction/\${txHash}\`,
+						recipientAddress: recipientAddress,
+						amount: {
+							ada: amount,
+							lovelace: amountLovelace
+						}
+					});
+				} catch (error) {
+					console.error('Error creating or submitting transaction:', error);
+					res.status(500).json({ success: false, error: error.message });
+				}
+			});
+
+			// GET endpoint for health check
+			app.get('/health', (req, res) => {
+				res.json({ status: 'ok', timestamp: new Date().toISOString() });
+			});
+
+			// Start server and listen on specified port
+			app.listen(PORT, () => {
+				console.log(\`Server running on http://localhost:\${PORT}\`);
+			});`,
+		meshPackageJson: `
+			{
+				"name": "mesh-api",
+				"version": "1.0.0",
+				"description": "Node.js API with Mesh.js integration",
+				"type": "module",
 				"main": "server.js",
 				"scripts": {
 					"start": "node server.js"
@@ -80,199 +462,8 @@ export const load = async () => {
 				"dependencies": {
 					"express": "^4.18.2",
 					"cors": "^2.8.5",
-					"axios": "^1.6.0",
-					"@blockfrost/blockfrost-js": "^6.0.0"
+					"@meshsdk/core": "^1.7.0"
 				}
-			}`,
-		arduinoApiCall: `
-			// Include necessary libraries
-			#include <WiFi.h>              // WiFi connectivity
-			#include <HTTPClient.h>       // HTTP client for API calls
-			#include <ArduinoJson.h>      // JSON parsing and creation
-			#include <DHT.h>               // DHT sensor library
-
-			// DHT sensor pin configuration
-			#define DHTPIN 4               // Digital GPIO pin connected to DHT22 data pin
-			#define DHTTYPE DHT22          // Sensor type: DHT22
-
-			// Create DHT sensor object
-			DHT dht(DHTPIN, DHTTYPE);
-
-			// WiFi credentials - replace with your network details
-			const char* ssid = "Your SSID";
-			const char* password = "Your Password";
-			
-			// Your Node.js API server URL
-			// Replace 'your-server-ip' with your computer's IP address on local network
-			const char* apiUrl = "http://your-server-ip:3000/sensor-data";
-
-			// Variables for timing data sends
-			unsigned long lastSend = 0;                    // Timestamp of last data send
-			const unsigned long sendInterval = 60000;      // Send every minute (60000 milliseconds)
-
-			void setup() {
-				// Initialize serial communication for debugging
-				Serial.begin(115200);
-				
-				// Initialize DHT sensor
-				dht.begin();
-				
-				// Start WiFi connection
-				WiFi.begin(ssid, password);
-				while (WiFi.status() != WL_CONNECTED) {
-					delay(1000);
-					Serial.println("Connecting to WiFi...");
-				}
-				Serial.println("Connected to WiFi");
-			}
-
-			void loop() {
-				// Check if WiFi connection is still active
-				if (WiFi.status() != WL_CONNECTED) {
-					WiFi.reconnect();
-					while (WiFi.status() != WL_CONNECTED) {
-						delay(1000);
-					}
-				}
-				
-				// Get current time in milliseconds
-				unsigned long currentMillis = millis();
-				
-				// Check if enough time has passed since last send
-				if (currentMillis - lastSend >= sendInterval) {
-					sendSensorData();  // Send data to API
-					lastSend = currentMillis;  // Update last send timestamp
-				}
-			}
-
-			void sendSensorData() {
-				// Read humidity from DHT sensor
-				float h = dht.readHumidity();
-				
-				// Read temperature from DHT sensor
-				float t = dht.readTemperature();
-				
-				// Check if sensor reads failed
-				if (isnan(h) || isnan(t)) {
-					Serial.println("Failed to read from DHT sensor!");
-					return;  // Exit function if read failed
-				}
-				
-				// Only proceed if WiFi is connected
-				if (WiFi.status() == WL_CONNECTED) {
-					HTTPClient http;
-					
-					// Initialize HTTP client with API URL
-					http.begin(apiUrl);
-					
-					// Set content type header for JSON request
-					http.addHeader("Content-Type", "application/json");
-					
-					// Create JSON document to build payload
-					DynamicJsonDocument doc(256);
-					doc["temperature"] = t;           // Add temperature value
-					doc["humidity"] = h;              // Add humidity value
-					doc["timestamp"] = millis();      // Add current time in milliseconds
-					
-					// Serialize JSON document to string
-					String jsonPayload;
-					serializeJson(doc, jsonPayload);
-					
-					// Send POST request with JSON payload
-					int httpResponseCode = http.POST(jsonPayload);
-					
-					// Check if request was successful
-					if (httpResponseCode > 0) {
-						// Get response body
-						String response = http.getString();
-						Serial.println("HTTP Response Code: " + String(httpResponseCode));
-						Serial.println("Response: " + response);
-					} else {
-						Serial.println("Error in HTTP request");
-					}
-					
-					// Close HTTP connection
-					http.end();
-				}
-			}`,
-		touchScreenCode: `
-			// Include TFT display library and SPI communication
-			#include <TFT_eSPI.h>
-			#include <SPI.h>
-
-			// Create TFT display object
-			TFT_eSPI tft = TFT_eSPI();
-
-			// Touch screen pin configuration (adjust for your specific display)
-			#define TOUCH_CS 2    // Chip Select pin for touch controller
-			#define TOUCH_IRQ 15  // Interrupt pin for touch controller
-
-			// Track button press state to prevent multiple triggers
-			bool mintButtonPressed = false;
-
-			void setup() {
-				// Initialize serial communication for debugging
-				Serial.begin(115200);
-				
-				// Initialize TFT display
-				tft.init();
-				tft.setRotation(1);        // Set to landscape orientation
-				tft.fillScreen(TFT_BLACK);  // Clear screen with black background
-				
-				// Draw the mint button on screen
-				drawMintButton();
-			}
-
-			void loop() {
-				// Variables to store touch coordinates
-				uint16_t x, y;
-				
-				// Check if screen is being touched
-				// getTouch() returns true if touch detected and fills x, y with coordinates
-				bool pressed = tft.getTouch(&x, &y);
-				
-				if (pressed) {
-					// Check if touch coordinates are within button area
-					// Button area: x from 50 to 190, y from 100 to 140
-					if (x > 50 && x < 190 && y > 100 && y < 140) {
-						// Only trigger if button wasn't already pressed (debouncing)
-						if (!mintButtonPressed) {
-							mintButtonPressed = true;
-							triggerMint();  // Call mint function
-							delay(500);     // Debounce delay to prevent multiple triggers
-						}
-					}
-				} else {
-					// Reset button state when touch is released
-					mintButtonPressed = false;
-				}
-			}
-
-			void drawMintButton() {
-				// Draw button background (filled blue rectangle)
-				// Parameters: x, y, width, height, color
-				tft.fillRect(50, 100, 140, 40, TFT_BLUE);
-				
-				// Draw button border (white rectangle outline)
-				tft.drawRect(50, 100, 140, 40, TFT_WHITE);
-				
-				// Draw button text "MINT NFT"
-				tft.setTextSize(2);                    // Medium text size
-				tft.setTextColor(TFT_WHITE, TFT_BLUE);  // White text on blue background
-				tft.setCursor(70, 110);                // Position text in center of button
-				tft.println("MINT NFT");
-			}
-
-			void triggerMint() {
-				// This function is called when the mint button is pressed
-				Serial.println("Mint button pressed!");
-				
-				// TODO: Add your API call here to send mint request
-				// You would typically:
-				// 1. Read sensor data
-				// 2. Create JSON payload with sensor data
-				// 3. Send POST request to your API or NMKR
-				// 4. Display success/error message on screen
 			}`
 	};
 };

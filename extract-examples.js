@@ -84,9 +84,13 @@ const exampleInfo = {
 		description: "Touch screen button example for minting",
 		workshopLink: "/workshops/03-input-and-write/build-your-own-api"
 	},
-	nmkrApiCode: {
-		description: "Mint NFT directly from Arduino using NMKR API",
-		workshopLink: "/workshops/03-input-and-write/mint-on-nmkr"
+	arduinoPostSensorCode: {
+		description: "Post sensor data from Arduino to Node.js API",
+		workshopLink: "/workshops/03-input-and-write/mint-sensor-data-on-chain"
+	},
+	meshMintCode: {
+		description: "Mint NFT with sensor data using Mesh SDK",
+		workshopLink: "/workshops/03-input-and-write/mint-sensor-data-on-chain"
 	},
 	
 	// Workshop 04
@@ -156,7 +160,7 @@ const workshopMapping = {
 	'03-input-and-write': {
 		'connect-and-read-sensor-data': ['sht21Code', 'simpleShtCode'],
 		'build-your-own-api': ['arduinoApiCall', 'touchScreenCode'],
-		'mint-on-nmkr': ['nmkrApiCode']
+		'mint-sensor-data-on-chain': ['arduinoPostSensorCode', 'meshMintCode']
 	},
 	'04-cardano-ticker': {
 		'gathering-data': ['arduinoFetchCode'],
