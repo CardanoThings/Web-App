@@ -94,6 +94,22 @@ export let glossary = [
         definition: "A record of value transfer on the blockchain. A transaction takes inputs (UTXOs) and creates outputs (new UTXOs). Transactions can transfer ADA, mint tokens, or execute smart contracts. All transactions are recorded permanently on the blockchain."
     },
     {
+        term: "Transaction Hash",
+        definition: "A unique identifier (also called txhash or transaction ID) for a specific transaction on the blockchain. It's a long string of characters that acts like a fingerprint for that transaction. Every transaction on Cardano has a unique transaction hash that can be used to look up all the details about that transaction on blockchain explorers like CardanoScan.",
+        links: [
+            { title: "Cardano Setup Workshop", url: "/workshops/01-basics/cardano-setup" },
+            { title: "Preprod CardanoScan", url: "https://preprod.cardanoscan.io/" }
+        ]
+    },
+    {
+        term: "txHash",
+        definition: "Short for transaction hash, a unique identifier for a specific transaction on the blockchain. It's a long string of characters that acts like a fingerprint for that transaction. Every transaction on Cardano has a unique txhash that can be used to look up all the details about that transaction on blockchain explorers like CardanoScan.",
+        links: [
+            { title: "Cardano Setup Workshop", url: "/workshops/01-basics/cardano-setup" },
+            { title: "Preprod CardanoScan", url: "https://preprod.cardanoscan.io/" }
+        ]
+    },
+    {
         term: "Wallet",
         definition: "A software application or hardware device that stores your cryptocurrency and allows you to send and receive transactions. A wallet contains your private keys (which prove ownership) and your public addresses (where others can send you funds). Popular Cardano wallets include Yoroi, Vespr, Eternl, and Begin.",
         links: [
