@@ -34,20 +34,7 @@ export const workshops = [
                 ],
             }
         ],
-        link: "/workshops/01-basics",
-        requirements: {
-            hardware: [
-                "ESP8266 or ESP32 based Microcontroller",
-                "Micro USB Cable to connect the Microcontroller to your PC",
-                "Computer with Arduino IDE installed",
-                "WIFI Network with Internet Access"
-            ],
-            software: [
-                "Webbrowser",
-                "Yoroi Wallet (Preprod Testnet)",
-                "Arduino IDE",
-            ]
-        }
+        link: "/workshops/01-basics"
     },
     {
         title: "Workshop 02: Read and Output",
@@ -65,29 +52,16 @@ export const workshops = [
             },
             {
                 title: "Light up the tree",
-                description: "In this step of this workshop you will learn how to use your Microcontroller with external hardware like a 110V/220V relais to turn a lightbulb (or the Christmas Tree for that matter) on and off based on on-chain events. We will also look briefly into other options like motors, LEDs and other hardware.",
+                description: "In this step of this workshop you will learn how to use your Microcontroller with external hardware like a 110V/220V relais to turn a lightbulb (or the Christmas Tree for that matter) on and off based on on-chain events.",
                 link: "/workshops/02-read-and-output/light-up-the-tree"
             },
             {
                 title: "Epoch Clock",
-                description: "Based on what you have learned in former steps and workshops, you will learn how to build a physical Epoch Clock with an ESP32-C3 Microcontroller and a circular WS2812 LED ring.",
+                description: "In this final step of Workshop 02, you'll combine everything you've learned to create a physical Epoch Clock that visually displays epoch progress on a circular WS2812 LED ring. The 12 LEDs light up progressively around the ring to show how far the current epoch has progressed based on blocks from the API, creating a tangible visual connection to the blockchain.",
                 link: "/workshops/02-read-and-output/epoch-clock"
             }
         ],
-        link: "/workshops/02-read-and-output",
-        requirements: {
-            hardware: [
-                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
-                "Micro USB Cable to connect the Microcontroller to your PC",
-                "Computer with Arduino IDE installed",
-                "WIFI Network with Internet Access"
-            ],
-            software: [
-                "Yoroi Wallet (Preprod Testnet)",
-                "Arduino IDE",
-                "NodeJs and NPM"
-            ]
-        }
+        link: "/workshops/02-read-and-output"
     },
     {
         title: "Workshop 03: Input and Write",
@@ -100,38 +74,24 @@ export const workshops = [
             },
             {
                 title: "Build your own API to put data on chain",
-                description: "You will learn how to setup a really simple API with NodeJs and how to create and submit a mint transaction on chain using Blockfrost using the data from your Microcontroller. We will also look into how to utilize the touch screen capabilities of your microcontroller.",
+                description: "You will learn how to setup a really simple API with NodeJs and how to create and submit a transaction on chain using Koios and Mesh SDK.",
                 link: "/workshops/03-input-and-write/build-your-own-api"
             },
             {
                 title: "Mint sensor data on-chain",
-                description: "Learn how to post temperature sensor data from your microcontroller to your API and mint it as an NFT on-chain using Mesh SDK. This workshop combines sensor data collection with blockchain minting.",
+                description: "Learn how to send temperature sensor data from your microcontroller to your API, then turn it into an NFT on the Cardano blockchain. You'll create a system that permanently stores your sensor readings as unique digital items that can never be deleted or changed.",
                 link: "/workshops/03-input-and-write/mint-sensor-data-on-chain"
             }
         ],
-        link: "/workshops/03-input-and-write",
-        requirements: {
-            hardware: [
-                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
-                "Micro USB Cable to connect the Microcontroller to your PC",
-                "DHT-22 Temperature and Humidity Sensor",
-                "Computer with Arduino IDE installed",
-                "WIFI Network with Internet Access"
-            ],
-            software: [
-                "Yoroi Wallet (Preprod Testnet)",
-                "Arduino IDE",
-                "NodeJs and NPM"
-            ]
-        }
+        link: "/workshops/03-input-and-write"
     },
     {
         title: "Workshop 04: Cardano Ticker",
-        description: "With all the basic building blocks in place, lets start with some (more) real world use cases: In this workshop you will learn how to fetch Cardano token prices from the realfi.info API and display them neatly on your Microcontroller. We will also briefly introduce you to the Taptools.io API and include a quick way to fetch NFT prices from JPG.store.",
+        description: "With all the basic building blocks in place, lets start with some (more) real world use cases: In this workshop you will learn how to fetch Cardano token prices from MinSwap and display them neatly on your Microcontroller. We will also briefly introduce you to the Taptools.io API and include a quick way to fetch NFT prices from JPG.store. Good news: This workshop does not require any soldering or external Hardware, all you'll need is you ESP32 Cheap Yellow Display.",
         steps: [
             {
                 title: "Gathering data",
-                description: "We will go through the process of fetching and setting up all the data on your own API: First we check your own (or any other) wallet, see what is in there, fetch token prices from the Realfi.info API and some NFT floors from JPG.store and put it all together to be requested by your microcontroller. We will also introduce you to the paid Taptools API.",
+                description: "We will go through the process of fetching and setting up all the data: First we check your own (or any other) wallet, see what is in there, fetch token prices from MinSwap and some NFT floors from JPG.store. We will also introduce you to the paid Taptools API.",
                 link: "/workshops/04-cardano-ticker/gathering-data"
             },
             {
@@ -140,20 +100,7 @@ export const workshops = [
                 link: "/workshops/04-cardano-ticker/building-the-ticker"
             }
         ],
-        link: "/workshops/04-cardano-ticker",
-        requirements: {
-            hardware: [
-                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
-                "Micro USB Cable to connect the Microcontroller to your PC",
-                "Computer with Arduino IDE installed",
-                "WIFI Network with Internet Access"
-            ],
-            software: [
-                "Yoroi Wallet (Preprod Testnet)",
-                "Arduino IDE",
-                "NodeJs and NPM"
-            ]
-        }
+        link: "/workshops/04-cardano-ticker"
     },
     {
         title: "Workshop 05: QR-Code Payments",
@@ -180,19 +127,6 @@ export const workshops = [
                 link: "/workshops/05-qr-code-payments/confirming-the-payment"
             }
         ],
-        link: "/workshops/05-qr-code-payments",
-        requirements: {
-            hardware: [
-                "D1 Mini Microcontroller (ESP8266 based) with TFT Display and Touchscreen",
-                "Micro USB Cable to connect the Microcontroller to your PC",
-                "Computer with Arduino IDE installed",
-                "WIFI Network with Internet Access"
-            ],
-            software: [
-                "Yoroi Wallet (Preprod Testnet)",
-                "Arduino IDE",
-                "NodeJs and NPM"
-            ]
-        }
+        link: "/workshops/05-qr-code-payments"
     }
 ];

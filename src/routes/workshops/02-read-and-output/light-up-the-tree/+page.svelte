@@ -94,13 +94,11 @@
 <section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 02: Read and Output</h1>
+		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">Light up the tree</h2>
+	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		In this step of this workshop you will learn how to use your Microcontroller with external
-		hardware like a 110V/220V relais to turn a lightbulb (or the Christmas Tree for that matter) on
-		and off based on on-chain events.
+		{data.step.description}
 	</p>
 
 	<TipBox title="Safety Warning - High Voltage" variant="danger">

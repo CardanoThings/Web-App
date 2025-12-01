@@ -1,5 +1,11 @@
-export const load = async () => {
+import { findWorkshopStep } from '$lib/utils/workshop-utils.js';
+
+export const load = async ({ url }) => {
+	const { workshop, step } = findWorkshopStep(url.pathname);
+
 	return {
+		workshop,
+		step,
 		nodeApiCode: `
 			// Import required Node.js packages
 			const express = require('express');              // Web framework for building API

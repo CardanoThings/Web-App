@@ -365,13 +365,13 @@
 <section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 03: Input and Write</h1>
+		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
 	</a>
 	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">
-		Build your own API to put data on chain
+		{data.step.title}
 	</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		You will learn how to setup a really simple API with NodeJs to receive and process data.
+		{data.step.description}
 	</p>
 </section>
 

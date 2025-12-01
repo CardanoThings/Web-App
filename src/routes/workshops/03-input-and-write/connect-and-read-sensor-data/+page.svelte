@@ -124,14 +124,11 @@
 <section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 03: Input and Write</h1>
+		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">Connect and Read Sensor Data</h2>
+	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		In this workshop step, you'll learn how to connect an SHT21 temperature and humidity sensor to
-		your microcontroller using I2C communication, read sensor data, and display it both in the
-		serial console and on a TFT display. The SHT21 provides high-precision measurements with factory
-		calibration, making it ideal for environmental monitoring projects.
+		{data.step.description}
 	</p>
 </section>
 

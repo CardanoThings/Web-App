@@ -14,13 +14,11 @@
 <section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 02: Read and Output</h1>
+		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">Fetch your Stake Address Balance</h2>
+	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		You will learn how to fetch your stake address balance in intervals using your Microcontroller
-		and an API, output the fetched data to the Arduino console and listen for changes. We will also
-		introduce you to other API endpoints and look into different APIs like Blockfrost or Maestro.
+		{data.step.description}
 	</p>
 </section>
 

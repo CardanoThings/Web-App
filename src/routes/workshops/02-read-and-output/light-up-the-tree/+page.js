@@ -1,5 +1,11 @@
-export const load = async () => {
+import { findWorkshopStep } from '$lib/utils/workshop-utils.js';
+
+export const load = async ({ url }) => {
+	const { workshop, step } = findWorkshopStep(url.pathname);
+
 	return {
+		workshop,
+		step,
 		relayBlinkCode: `
 			// Simple Relay Blink Example
 			// This example demonstrates basic relay control without any network connectivity

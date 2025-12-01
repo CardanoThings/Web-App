@@ -1,5 +1,11 @@
-export const load = async () => {
+import { findWorkshopStep } from '$lib/utils/workshop-utils.js';
+
+export const load = async ({ url }) => {
+	const { workshop, step } = findWorkshopStep(url.pathname);
+
 	return {
+		workshop,
+		step,
 		sht21Code: `
 			// Include necessary libraries
 			#include <Wire.h>                // I2C communication library (built-in)

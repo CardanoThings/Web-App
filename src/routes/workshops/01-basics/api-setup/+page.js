@@ -1,5 +1,11 @@
-export const load = async () => {
-    return {
+import { findWorkshopStep } from '$lib/utils/workshop-utils.js';
+
+export const load = async ({ url }) => {
+	const { workshop, step } = findWorkshopStep(url.pathname);
+
+	return {
+		workshop,
+		step,
         tip: JSON.stringify([
             {
                 "hash": "14c6413b8df915c58d9da162cf22ad58dc52834c8ce7105fe91d08e804cb5a36",

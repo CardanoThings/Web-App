@@ -54,14 +54,11 @@
 <section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 01: The Basics</h1>
+		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">Arduino Setup</h2>
+	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		We will now install the Arduino IDE, connect your microcontroller to Wifi and install the
-		infamous blink sketch on it. Once this works, we'll continue to connect it to your
-		Wifi/Internet. In this workshop we will use the ESP32-C3 Microcontroller, the setup for other
-		microcontrollers might be slightly different.
+		{data.step.description}
 	</p>
 	<div class="mt-4 sm:w-1/2">
 		<IntroContainer topic="Arduino" />

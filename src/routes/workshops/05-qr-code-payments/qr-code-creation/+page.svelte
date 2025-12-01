@@ -4,17 +4,17 @@
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
+	let { data } = $props();
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 05: QR-Code Payments</h1>
+		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">QR-Code Creation</h2>
+	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		You will learn how to create and display a QR-Code with a CIP-13 Payment URI on your microcontroller
-		display that can be scanned to send a transaction by using your smartphone and a mobile wallet (tbd).
+		{data.step.description}
 	</p>
 </section>
 

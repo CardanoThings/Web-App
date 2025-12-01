@@ -67,13 +67,11 @@
 <section class="mb-8 flex flex-col gap-4 text-white">
 	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">Workshop 03: Input and Write</h1>
+		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">Mint sensor data on-chain</h2>
+	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
-		Learn how to send temperature sensor data from your microcontroller to your computer, then turn
-		it into an NFT on the Cardano blockchain. You'll create a system that permanently stores your
-		sensor readings as unique digital items that can never be deleted or changed.
+		{data.step.description}
 	</p>
 </section>
 

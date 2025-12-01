@@ -1,5 +1,11 @@
-export const load = async () => {
+import { findWorkshopStep } from '$lib/utils/workshop-utils.js';
+
+export const load = async ({ url }) => {
+	const { workshop, step } = findWorkshopStep(url.pathname);
+
 	return {
+		workshop,
+		step,
 		walletBalanceCode: `
 			// Include necessary libraries for WiFi, HTTP requests, and JSON parsing
 			#include <WiFi.h>
