@@ -36,7 +36,7 @@
 			<li><strong>Set Transaction Details:</strong> Defines the recipient address and amount to send (in ADA, then converted to Lovelace).</li>
 			<li><strong>Create Metadata:</strong> Defines metadata with label 674 (CIP-20 standard for messages) containing an array of message strings.</li>
 			<li><strong>Get Wallet Data:</strong> Fetches UTXOs (unspent transaction outputs) and the change address from the wallet. UTXOs are needed to fund the transaction, and the change address receives any remaining funds after the transaction.</li>
-			<li><strong>Initialize MeshTxBuilder:</strong> Creates a <code>MeshTxBuilder</code> instance with the provider. <code>MeshTxBuilder</code> provides low-level APIs for building transactions with more control than the higher-level <code>wallet.buildTx()</code> method.</li>
+			<li><strong>Initialize MeshTxBuilder:</strong> Creates a <code>MeshTxBuilder</code> instance with the provider. <code>MeshTxBuilder</code> provides low-level APIs for building transactions with more control than the higher-level <code>wallet.buildTx()</code> method. The <code>verbose</code> option is set to <code>false</code> by default, but you can set it to <code>true</code> for detailed debugging information during transaction building.</li>
 			<li><strong>Build Transaction:</strong> Uses <code>MeshTxBuilder</code> to construct the transaction:
 				<ul>
 					<li><code>.txOut()</code> - Specifies the output: recipient address and amount in lovelace</li>
@@ -164,7 +164,7 @@
 
 	const meshHowItWorks = `
 		<h3>Overview</h3>
-		<p>This complete API server combines Express.js with Mesh to create a REST API that can interact with Cardano wallets and submit transactions. It includes endpoints to retrieve wallet information and create/submit transactions with metadata using the wallet instance initialized from your mnemonic.</p>
+		<p>This complete API server combines Express.js with Mesh to create a REST API that can interact with Cardano wallets and submit transactions. It includes endpoints to retrieve wallet information and receive sensor data that automatically creates and submits transactions to the blockchain. The wallet instance is initialized once at startup from your mnemonic, making it efficient for handling multiple requests.</p>
 		
 		<h3>Key Concepts</h3>
 		<ul>
@@ -173,12 +173,12 @@
 			<li><strong>MeshWallet:</strong> Wallet instance created from your mnemonic passphrase, initialized once at server startup.</li>
 			<li><strong>MeshTxBuilder:</strong> Low-level transaction builder that provides fine-grained control over transaction construction.</li>
 			<li><strong>GET /wallet:</strong> API endpoint that uses the wallet instance to fetch and return wallet information.</li>
-			<li><strong>POST /transaction:</strong> API endpoint that accepts transaction parameters, builds a transaction with metadata, signs it, and submits it to the blockchain.</li>
+			<li><strong>POST /data:</strong> API endpoint that receives sensor data, automatically creates a transaction with the data as metadata, and submits it to the blockchain using the same transaction building code from earlier examples.</li>
 		</ul>
 		
 		<h3>How the API Works</h3>
 		<ol>
-			<li><strong>Server Initialization:</strong> The server starts and initializes the Koios provider and Mesh wallet from the environment variable.</li>
+			<li><strong>Server Initialization:</strong> The server starts and initializes the Koios provider and Mesh wallet from the mnemonic array in the code.</li>
 			<li><strong>Wallet Setup:</strong> The wallet is created once at startup, not per request, making it efficient.</li>
 			<li><strong>GET /wallet Endpoint:</strong> When a GET request is made to <code>/wallet</code>:
 				<ul>
@@ -190,17 +190,25 @@
 					<li>Returns JSON response with wallet information</li>
 				</ul>
 			</li>
-			<li><strong>POST /transaction Endpoint:</strong> When a POST request is made to <code>/transaction</code>:
+			<li><strong>POST /data Endpoint:</strong> When a POST request is made to <code>/data</code> with sensor data:
 				<ul>
-					<li>Validates the request body (recipientAddress, amount, optional metadata)</li>
-					<li>Converts the amount from ADA to Lovelace</li>
-					<li>Gets wallet UTXOs and change address</li>
-					<li>Initializes MeshTxBuilder to build the transaction</li>
-					<li>Adds transaction output, change address, and metadata</li>
-					<li>Selects UTXOs to fund the transaction</li>
-					<li>Signs the transaction with the wallet</li>
-					<li>Submits the transaction to the Cardano network</li>
-					<li>Returns the transaction hash and explorer URL</li>
+					<li>Validates the request body (temperature and humidity are required)</li>
+					<li>Extracts sensor data (temperature, humidity) from the request</li>
+					<li>Generates a timestamp server-side when the data is received</li>
+					<li>Sets the recipient address to the PingPong wallet address (same as in the transaction example earlier) - this wallet automatically refunds transactions minus fees within 60 seconds</li>
+					<li>Sets the transaction amount to 10 ADA</li>
+					<li>Creates transaction metadata with the sensor data formatted as messages (label 674, CIP-20 standard)</li>
+					<li>Uses the same transaction building code from earlier examples:
+						<ul>
+							<li>Gets wallet UTXOs and change address</li>
+							<li>Initializes MeshTxBuilder with verbose set to false</li>
+							<li>Builds the transaction with output, change address, and metadata</li>
+							<li>Selects UTXOs to fund the transaction</li>
+							<li>Signs the transaction with the wallet</li>
+							<li>Submits the transaction to the Cardano network</li>
+						</ul>
+					</li>
+					<li>Returns the transaction hash, explorer URL, and the sensor data that was stored</li>
 				</ul>
 			</li>
 		</ol>
@@ -208,51 +216,27 @@
 		<h3>API Endpoints</h3>
 		<ul>
 			<li><strong>GET /wallet:</strong> Retrieves wallet information including address and balance. Uses the wallet instance initialized from the mnemonic array in the code.</li>
-			<li><strong>POST /transaction:</strong> Creates and submits a transaction. Requires <code>recipientAddress</code> and <code>amount</code> in the request body. Optional <code>metadata</code> can be included. Returns transaction hash and explorer URL.</li>
+			<li><strong>POST /data:</strong> Receives sensor data (temperature, humidity) and automatically generates a timestamp server-side. Creates and submits a transaction with the data and timestamp as metadata. Uses the same transaction building code from the transaction example earlier. The transaction is sent to the PingPong wallet address. Returns transaction hash, explorer URL, and sensor data including the server-generated timestamp.</li>
 			<li><strong>GET /health:</strong> Health check endpoint to verify the server is running.</li>
 		</ul>
 		
-		<h3>POST /transaction Request Body</h3>
-		<p>The POST /transaction endpoint expects a JSON body with the following structure:</p>
+		<h3>POST /data Request Body</h3>
+		<p>The POST /data endpoint expects a JSON body with the following structure:</p>
 		<pre><code>{
-  "recipientAddress": "addr_test1...",  // Required: Cardano testnet address
-  "amount": 1.0,                        // Required: Amount in ADA
-  "metadata": {                          // Optional: Transaction metadata
-    "674": {
-      "msg": ["Your message here"]
-    }
-  }
+  "temperature": 23.5,  // Required: Temperature in Celsius
+  "humidity": 65.2      // Required: Humidity in %RH
 }</code></pre>
+		<p><strong>Note:</strong> The timestamp is automatically generated server-side when the data is received. You don't need to include it in the request.</p>
 		
 		<h3>Testing with Insomnia</h3>
 		<ol>
 			<li>Start your server with <code>node server.js</code></li>
-			<li>Make sure your <code>WALLET_MNEMONIC</code> environment variable is set</li>
+			<li>Make sure you've replaced the example mnemonic words in the code with your actual testnet wallet mnemonic</li>
 			<li><strong>Test GET /wallet:</strong>
 				<ul>
 					<li>Open Insomnia and create a new GET request to <code>http://localhost:3000/wallet</code></li>
 					<li>Click Send to get your wallet information</li>
 					<li>You should receive a response with your wallet address and balance in Lovelace and ADA</li>
-				</ul>
-			</li>
-			<li><strong>Test POST /transaction:</strong>
-				<ul>
-					<li>Create a new POST request to <code>http://localhost:3000/transaction</code></li>
-					<li>In the Body tab, select JSON format</li>
-					<li>Enter the transaction data:
-						<pre><code>{
-  "recipientAddress": "addr_test1...",
-  "amount": 1.0,
-  "metadata": {
-    "674": {
-      "msg": ["Hello from API!"]
-    }
-  }
-}</code></pre>
-					</li>
-					<li>Click Send to submit the transaction</li>
-					<li>You should receive a response with the transaction hash and explorer URL</li>
-					<li>Use the explorer URL to view your transaction on the blockchain</li>
 				</ul>
 			</li>
 		</ol>
@@ -289,7 +273,7 @@
 		
 		<h3>Testing the Server</h3>
 		<ol>
-			<li>Start the server: <code>node server.js</code></li>
+			<li>Start the server: <code>node basic-api.js</code></li>
 			<li>Open your browser or use Insomnia to send a GET request to <code>http://localhost:3000/health</code></li>
 			<li>You should receive a JSON response: <code>{"status": "ok", "timestamp": "..."}</code></li>
 		</ol>
@@ -341,7 +325,7 @@
 		
 		<h3>Testing with Insomnia</h3>
 		<ol>
-			<li>Start your server: <code>node server.js</code></li>
+			<li>Start your server: <code>node basic-api.js</code></li>
 			<li><strong>Store Data:</strong>
 				<ul>
 					<li>Open Insomnia and create a new POST request to <code>http://localhost:3000/data</code></li>
@@ -421,16 +405,14 @@
 				>
 			</li>
 		</ol>
-		<p class="text-lg font-thin text-white">
-			<strong>Basic API Structure:</strong>
-		</p>
+
 		<CodeCard
 			title="Basic Node.js API Server"
 			code={data.basicApiCode}
 			language="javascript"
 			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
 			howItWorksContent={basicApiHowItWorks}
-			footerText="This is a minimal Express.js server with a health check endpoint. Save this as server.js in your project directory. Make sure your package.json includes 'type: module' to use ESM syntax."
+			footerText="This is a minimal Express.js server with a health check endpoint. Save this as basic-api.js in your project directory. Make sure your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
 			<strong>Important:</strong> Make sure your
@@ -440,7 +422,7 @@
 		</p>
 		<p class="text-lg font-thin text-white">
 			To start the server, run <code class="rounded bg-gray-800 px-2 py-1 text-white"
-				>node server.js</code
+				>node basic-api.js</code
 			>
 			or
 			<code class="rounded bg-gray-800 px-2 py-1 text-white">npm start</code> in your project
@@ -480,16 +462,14 @@
 				>npm install cors</code
 			>
 		</p>
-		<p class="text-lg font-thin text-white">
-			<strong>Enhanced API with POST Endpoint:</strong>
-		</p>
+
 		<CodeCard
 			title="Enhanced Node.js API with POST Endpoint"
 			code={data.enhancedApiCode}
 			language="javascript"
 			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
 			howItWorksContent={enhancedApiHowItWorks}
-			footerText="This enhanced API includes CORS support and a POST endpoint to receive data. Save this as server.js. Make sure to install express and cors, and that your package.json includes 'type: module' to use ESM syntax."
+			footerText="This enhanced API includes CORS support and a POST endpoint to receive data. Save this as basic-api.js. Make sure to install express and cors, and that your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
 			<strong>Testing the POST Endpoint:</strong>
@@ -497,7 +477,7 @@
 		<ol>
 			<li>
 				Start your server: <code class="rounded bg-gray-800 px-2 py-1 text-white"
-					>node server.js</code
+					>node basic-api.js</code
 				>
 			</li>
 			<li>
@@ -695,7 +675,8 @@
 					rel="noopener noreferrer"
 					class="link">CardanoScan.io</a
 				> link in the output to view your transaction on the blockchain explorer or just paste the transaction
-				hash into the search bar
+				hash into the search bar. If you don't see the transaction, wait a few seconds and refresh the
+				page.
 			</li>
 		</ol>
 		<div class="mt-2">
@@ -720,35 +701,18 @@
 		<p class="text-lg font-thin text-white">
 			Now let's combine everything we've learned into a complete API server. This example includes
 			Express.js for the API, Mesh for wallet integration, and the Koios provider for blockchain
-			data access. The server includes endpoints to retrieve wallet information and submit
-			transactions with metadata.
+			data access. The server includes endpoints to retrieve wallet information, submit transactions
+			with metadata, and receive sensor data that automatically creates and submits transactions to
+			the blockchain.
 		</p>
-		<p class="text-lg font-thin text-white">
-			<strong>Installing All Dependencies:</strong>
-		</p>
-		<p class="text-lg font-thin text-white">Install all required packages:</p>
-		<ol>
-			<li>
-				Express and CORS: <code class="rounded bg-gray-800 px-2 py-1 text-white"
-					>npm install express cors</code
-				>
-			</li>
-			<li>
-				Mesh SDK: <code class="rounded bg-gray-800 px-2 py-1 text-white"
-					>npm install @meshsdk/core</code
-				>
-			</li>
-		</ol>
-		<p class="text-lg font-thin text-white">
-			<strong>Complete API Server:</strong>
-		</p>
+
 		<CodeCard
 			title="Complete Node.js API with Mesh Integration"
 			code={data.meshApiCode}
 			language="javascript"
 			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
 			howItWorksContent={meshHowItWorks}
-			footerText="This complete API includes Express.js server, Mesh integration with Koios provider, GET /wallet endpoint, and POST /transaction endpoint for submitting transactions. Save this as server.js. Make sure to install express, cors, and @meshsdk/core. Add your mnemonic phrase to the mnemonic array in the code. Ensure your package.json includes 'type: module' to use ESM syntax."
+			footerText="This complete API includes Express.js server, Mesh integration with Koios provider, GET /wallet endpoint, and POST /data endpoint that receives sensor data and automatically creates transactions using the same transaction building code from earlier examples. Save this as server.js. Make sure to install express, cors, and @meshsdk/core. Add your mnemonic phrase to the mnemonic array in the code. Ensure your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
 			<strong>Testing the API:</strong>
@@ -760,9 +724,8 @@
 				>
 			</li>
 			<li>
-				Make sure your <code class="rounded bg-gray-800 px-2 py-1 text-white">WALLET_MNEMONIC</code>
-				environment variable is set in your
-				<code class="rounded bg-gray-800 px-2 py-1 text-white">.env</code> file
+				Make sure you've replaced the example mnemonic words in the code with your actual testnet
+				wallet mnemonic
 			</li>
 			<li>
 				<strong>Test GET /wallet:</strong> Use Insomnia or curl to send a GET request to
@@ -770,24 +733,76 @@
 			</li>
 			<li>You'll receive your wallet information including address and balance</li>
 			<li>
-				<strong>Test POST /transaction:</strong> Create a POST request to
+				<strong>Test POST /data:</strong> Create a POST request to
+				<code class="rounded bg-gray-800 px-2 py-1 text-white">http://localhost:3000/data</code>
+				with sensor data in the body (e.g.,
 				<code class="rounded bg-gray-800 px-2 py-1 text-white"
-					>http://localhost:3000/transaction</code
-				>
+					>{'{'}"temperature": 23.5, "humidity": 65.2{'}'}</code
+				>). The timestamp will be automatically generated server-side when the data is received.
 			</li>
 			<li>
-				In the Body tab, select JSON format and enter:
-				<code class="rounded bg-gray-800 px-2 py-1 text-white"
-					>{'{'}"recipientAddress": "addr_test1...", "amount": 1.0{'}'}</code
-				>
+				The POST /data endpoint will automatically create and submit a transaction with the sensor
+				data as metadata to the PingPong wallet address
 			</li>
-			<li>Click Send - you should receive a response with the transaction hash and explorer URL</li>
-			<li>Use the explorer URL to view your transaction on the blockchain</li>
+			<li>
+				Click Send - you should receive a response with the transaction hash, explorer URL, and
+				sensor data
+			</li>
+			<li>
+				Use the <a
+					href="https://preprod.cardanoscan.io/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link">CardanoScan.io</a
+				> link in the output to view your transaction on the blockchain explorer or just paste the transaction
+				hash into the search bar. If you don't see the transaction, wait a few seconds and refresh the
+				page.
+			</li>
 		</ol>
 		<TipBox type="warning">
 			<strong>Important:</strong> Make sure your wallet has enough tADA to cover the transaction amount
 			plus fees (usually around 0.2 ADA). Transactions are irreversible once submitted.
 		</TipBox>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">What's Next?</h2>
+		<p class="text-lg font-thin text-white">
+			Congratulations! You've successfully built a complete API server that can interact with the
+			Cardano blockchain. In this workshop, you've learned:
+		</p>
+		<ul class="text-lg font-thin text-white">
+			<li>
+				<strong>Building REST APIs:</strong> Created Express.js servers with GET and POST endpoints to
+				handle HTTP requests
+			</li>
+			<li>
+				<strong>Wallet Integration:</strong> Used Mesh SDK to initialize wallets, fetch balances, and
+				interact with the Cardano blockchain
+			</li>
+			<li>
+				<strong>Transaction Building:</strong> Learned how to create, sign, and submit transactions using
+				MeshTxBuilder with metadata
+			</li>
+			<li>
+				<strong>Sensor Data Processing:</strong> Built an endpoint that receives sensor data and automatically
+				creates blockchain transactions with that data as metadata
+			</li>
+			<li>
+				<strong>Blockchain Integration:</strong> Connected your API to the Cardano Preprod testnet using
+				the Koios provider
+			</li>
+		</ul>
+		<p class="text-lg font-thin text-white">
+			You now have a working API that can receive sensor data and store it on the blockchain as
+			transaction metadata. But what if you want to turn that sensor data into actual NFTs that can
+			be collected, traded, and displayed?
+		</p>
+		<p class="text-lg font-thin text-white">
+			In the next workshop, <strong>"Mint sensor data on-chain"</strong>, you'll learn how to post
+			sensor data from your microcontroller to your API and mint it as an NFT on-chain using Mesh
+			SDK.
+		</p>
 	</section>
 
 	<FurtherResources

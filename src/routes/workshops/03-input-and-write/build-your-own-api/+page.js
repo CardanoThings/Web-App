@@ -260,7 +260,7 @@ export const load = async () => {
 					// This gives you more control than the higher-level wallet.buildTx() method
 					const txBuilder = new MeshTxBuilder({
 						fetcher: provider,  // Provider for fetching blockchain data needed for transaction building
-						verbose: true  // Enable verbose logging for debugging transaction building
+						verbose: false  // Set to true for detailed debugging information during transaction building
 					});
 					
 					// Build the transaction using MeshTxBuilder
@@ -347,7 +347,7 @@ export const load = async () => {
 					
 					// Get wallet balance using Mesh's built-in method
 					// Returns an array of assets: [{ unit: 'lovelace', quantity: '...' }, ...]
-					// The first item is always lovelace (ADA), followed by any native tokens
+					// The first item is always lovelace (ADA)
 					const balanceArray = await wallet.getBalance();
 					
 					// Extract lovelace from the balance array
@@ -359,9 +359,6 @@ export const load = async () => {
 					// 1 ADA = 1,000,000 Lovelace
 					const balanceADA = balanceLovelace / 1000000;
 					
-					// Get native tokens (all assets except lovelace)
-					const nativeTokens = balanceArray.filter(asset => asset.unit !== 'lovelace');
-					
 					// Return wallet information as JSON response
 					res.json({ 
 						success: true, 
@@ -370,7 +367,6 @@ export const load = async () => {
 							lovelace: balanceLovelace,  // Balance in Lovelace
 							ada: balanceADA  // Balance in ADA
 						},
-						nativeTokens: nativeTokens,  // Array of native tokens (if any)
 						network: 'preprod'  // Network: preprod testnet
 					});
 				} catch (error) {
@@ -380,40 +376,43 @@ export const load = async () => {
 				}
 			});
 
-			// POST endpoint to create and submit a transaction
-			// URL: http://localhost:3000/transaction
-			// Request Body: { recipientAddress: "addr_test1...", amount: 1.0, metadata?: { msg: [...] } }
-			app.post('/transaction', async (req, res) => {
+			// POST endpoint to receive sensor data and create a transaction
+			// URL: http://localhost:3000/data
+			// Request Body: { temperature: 23.5, humidity: 65.2 }
+			app.post('/data', async (req, res) => {
 				try {
-					// Extract transaction parameters from request body
-					const { recipientAddress, amount, metadata } = req.body;
+					// Extract sensor data from request body
+					const { temperature, humidity } = req.body;
 					
 					// Validate required fields
-					if (!recipientAddress || !amount) {
+					if (temperature === undefined || humidity === undefined) {
 						return res.status(400).json({ 
 							success: false, 
-							error: 'recipientAddress and amount are required' 
+							error: 'temperature and humidity are required' 
 						});
 					}
 
-					// Convert amount from ADA to Lovelace
-					// 1 ADA = 1,000,000 Lovelace
-					const amountLovelace = Math.floor(parseFloat(amount) * 1000000);
-					
-					// Validate amount is positive
-					if (amountLovelace <= 0) {
-						return res.status(400).json({ 
-							success: false, 
-							error: 'Amount must be greater than 0' 
-						});
-					}
+					// Generate timestamp server-side when data is received
+					const timestamp = Date.now();
 
-					// Prepare transaction metadata
-					// If metadata is provided in request, use it; otherwise use default message
+					console.log('Received sensor data:', { temperature, humidity, timestamp });
+
+					// PingPong wallet address - this wallet will automatically refund the transaction minus fees within 60 seconds
+					// Perfect for testing transactions on the Cardano Preprod testnet
+					const recipientAddress = 'addr_test1qpvla0l6zgkl4ufzur0wal0uny5lyqsg4rw7g6gxj08lzacth0hnd66lz6uqqz7kwkmx07xyppsk2cddvxnqvfd05reqf7p26w';
+
+					// Amount to send in ADA (convert to Lovelace: 1 ADA = 1,000,000 Lovelace)
+					const amountADA = 10.0;  // Send 10 ADA
+					const amountLovelace = Math.floor(amountADA * 1000000);
+
+					// Create transaction metadata with sensor data
 					// Label 674 = Message (CIP-20 standard for transaction messages)
-					const transactionMetadata = metadata || {
+					const transactionMetadata = {
 						674: {  // Message label (CIP-20 standard)
-							msg: ['Transaction from CardanoThings API']
+							msg: [
+								\`Sensor Data: Temperature \${temperature}°C, Humidity \${humidity}%RH\`,
+								\`Timestamp: \${timestamp}\`
+							]
 						}
 					};
 
@@ -429,14 +428,15 @@ export const load = async () => {
 					// MeshTxBuilder provides low-level APIs for building transactions
 					const txBuilder = new MeshTxBuilder({
 						fetcher: provider,  // Provider for fetching blockchain data
-						verbose: true  // Enable verbose logging for debugging
+						verbose: false  // Set to true for detailed debugging information during transaction building
 					});
 					
 					// Build the transaction using MeshTxBuilder
+					// This uses the same code pattern as the POST /transaction endpoint
 					const unsignedTx = await txBuilder
 						.txOut(recipientAddress, [{ unit: 'lovelace', quantity: amountLovelace.toString() }])  // Output: send lovelace to recipient
 						.changeAddress(changeAddress)  // Address to receive change
-						.metadataValue(674, transactionMetadata[674])  // Attach metadata (label 674)
+						.metadataValue(674, transactionMetadata[674])  // Attach metadata with sensor data (label 674)
 						.selectUtxosFrom(utxos)  // Automatically select UTXOs to fund the transaction
 						.complete();  // Finalize the transaction structure
 					
@@ -451,18 +451,18 @@ export const load = async () => {
 					// Return success response with transaction details
 					res.json({ 
 						success: true, 
-						message: 'Transaction submitted successfully',
+						message: 'Sensor data received and transaction submitted successfully',
 						txHash: txHash,  // Transaction hash (unique identifier)
 						explorerUrl: \`https://preprod.cardanoscan.io/transaction/\${txHash}\`,  // Link to view transaction on explorer
-						recipientAddress: recipientAddress,  // Recipient address
-						amount: {
-							ada: amount,  // Amount in ADA
-							lovelace: amountLovelace  // Amount in Lovelace
+						sensorData: {
+							temperature: temperature,
+							humidity: humidity,
+							timestamp: timestamp  // Timestamp generated server-side when data was received
 						}
 					});
 				} catch (error) {
 					// Handle errors and return error response
-					console.error('Error creating or submitting transaction:', error);
+					console.error('Error processing sensor data or submitting transaction:', error);
 					res.status(500).json({ success: false, error: error.message });
 				}
 			});
