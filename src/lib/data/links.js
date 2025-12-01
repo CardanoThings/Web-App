@@ -20,13 +20,8 @@ export const links = [
         headerNav: false
     },
     {
-        title: "Hardware",
+        title: "Hardware List",
         link: "/hardware",
-        headerNav: false
-    },
-    {
-        title: "Troubleshooting",
-        link: "/troubleshooting",
         headerNav: false
     },
     {

@@ -6,6 +6,7 @@
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
+	import PingPongWallet from '$lib/base/PingPongWallet.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
@@ -126,22 +127,21 @@
 			<li><strong>KoiosProvider:</strong> A data provider that connects to Koios API to fetch blockchain data. Koios is free to use and doesn't require an API key.</li>
 			<li><strong>MeshWallet:</strong> A wallet instance created from your mnemonic passphrase. It provides methods to interact with your wallet.</li>
 			<li><strong>getChangeAddress():</strong> Returns the wallet's change address (the address where change from transactions is sent).</li>
-			<li><strong>getUtxos():</strong> Fetches all Unspent Transaction Outputs (UTXOs) for your wallet, which represent available funds.</li>
-			<li><strong>UTXOs:</strong> Unspent Transaction Outputs represent available funds in a wallet. Each UTXO contains ADA or tokens that can be spent.</li>
+			<li><strong>getBalance():</strong> Fetches the wallet balance as an array of assets. Returns <code>[{ unit: 'lovelace', quantity: '...' }, ...]</code> where the first item is always lovelace (ADA). This is a convenient method that automatically calculates the balance from all available funds.</li>
 		</ul>
 		
 		<h3>How the Code Works</h3>
 		<ol>
 			<li><strong>Initialize Provider:</strong> Creates a KoiosProvider instance for the Preprod testnet.</li>
-			<li><strong>Load Mnemonic:</strong> Reads the mnemonic from the WALLET_MNEMONIC environment variable and splits it into an array of words.</li>
+			<li><strong>Load Mnemonic:</strong> Reads the mnemonic from the mnemonic array in the code.</li>
 			<li><strong>Create Wallet:</strong> Initializes a MeshWallet instance with the mnemonic and provider.</li>
 			<li><strong>Fetch Balance:</strong> The <code>fetchWalletBalance()</code> function:
 				<ul>
 					<li>Gets the wallet address using <code>getChangeAddress()</code></li>
-					<li>Fetches all UTXOs using <code>getUtxos()</code></li>
-					<li>Calculates the total balance by summing all UTXO amounts</li>
+					<li>Fetches the wallet balance using <code>getBalance()</code> which returns an array of assets</li>
+					<li>Extracts the lovelace amount from the array by finding the asset with <code>unit === 'lovelace'</code></li>
 					<li>Converts from Lovelace to ADA (1 ADA = 1,000,000 Lovelace)</li>
-					<li>Logs all information to the console</li>
+					<li>Logs the wallet address and balance to the console</li>
 				</ul>
 			</li>
 		</ol>
@@ -151,7 +151,7 @@
 			<li>Make sure you have <code>@meshsdk/core</code> installed: <code>npm install @meshsdk/core</code></li>
 			<li>Set your <code>WALLET_MNEMONIC</code> environment variable in a <code>.env</code> file</li>
 			<li>Run the script: <code>node wallet-balance.js</code></li>
-			<li>You should see your wallet address, balance in ADA and Lovelace, and UTXO count printed to the console</li>
+			<li>You should see your wallet address and balance in ADA and Lovelace printed to the console</li>
 		</ol>
 		
 		<h3>Security Notes</h3>
@@ -183,8 +183,10 @@
 			<li><strong>GET /wallet Endpoint:</strong> When a GET request is made to <code>/wallet</code>:
 				<ul>
 					<li>The endpoint uses the pre-initialized wallet instance</li>
-					<li>Fetches the wallet address and UTXOs</li>
-					<li>Calculates the balance</li>
+					<li>Fetches the wallet address using <code>getChangeAddress()</code></li>
+					<li>Fetches the wallet balance using <code>getBalance()</code> which returns an array of assets</li>
+					<li>Extracts the lovelace amount from the balance array</li>
+					<li>Converts from Lovelace to ADA</li>
 					<li>Returns JSON response with wallet information</li>
 				</ul>
 			</li>
@@ -205,7 +207,7 @@
 		
 		<h3>API Endpoints</h3>
 		<ul>
-			<li><strong>GET /wallet:</strong> Retrieves wallet information including address, balance, and UTXO count. Uses the wallet instance initialized from the WALLET_MNEMONIC environment variable.</li>
+			<li><strong>GET /wallet:</strong> Retrieves wallet information including address and balance. Uses the wallet instance initialized from the mnemonic array in the code.</li>
 			<li><strong>POST /transaction:</strong> Creates and submits a transaction. Requires <code>recipientAddress</code> and <code>amount</code> in the request body. Optional <code>metadata</code> can be included. Returns transaction hash and explorer URL.</li>
 			<li><strong>GET /health:</strong> Health check endpoint to verify the server is running.</li>
 		</ul>
@@ -230,7 +232,7 @@
 				<ul>
 					<li>Open Insomnia and create a new GET request to <code>http://localhost:3000/wallet</code></li>
 					<li>Click Send to get your wallet information</li>
-					<li>You should receive a response with your wallet address, balance in Lovelace and ADA, and UTXO count</li>
+					<li>You should receive a response with your wallet address and balance in Lovelace and ADA</li>
 				</ul>
 			</li>
 			<li><strong>Test POST /transaction:</strong>
@@ -525,21 +527,19 @@
 	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Adding Mesh for Blockchain Interaction</h2>
 		<p class="text-lg font-thin text-white">
-			Now let's enhance your API with Mesh to interact with Cardano testnet wallets and the
-			blockchain. Mesh is an open-source TypeScript SDK that simplifies Cardano development by
-			providing easy-to-use APIs for wallet operations, transaction building, and blockchain data
-			access.
+			Now let's enhance your API with <a
+				href="https://meshjs.dev/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">Mesh SDK</a
+			>
+			to interact with the blockchain.
+			<a href="https://meshjs.dev/" target="_blank" rel="noopener noreferrer" class="link"
+				>Mesh SDK</a
+			> is an open-source TypeScript SDK that simplifies Cardano development by providing easy-to-use
+			APIs for wallet operations, transaction building, and blockchain data access.
 		</p>
-		<p class="text-lg font-thin text-white">
-			<strong>What is Mesh?</strong>
-		</p>
-		<ul>
-			<li>Open-source TypeScript SDK for Cardano development</li>
-			<li>Less than 60kB in size, making it lightweight and fast</li>
-			<li>Supports multiple wallet types (browser wallets, seed phrases, private keys)</li>
-			<li>Works with various data providers (Blockfrost, Koios, Maestro, etc.)</li>
-			<li>Includes React and Svelte components for frontend integration</li>
-		</ul>
+
 		<p class="text-lg font-thin text-white">
 			<strong>Setting up Mesh:</strong>
 		</p>
@@ -550,7 +550,13 @@
 				>
 			</li>
 			<li>
-				No API key required! Koios is free to use and doesn't require registration or API keys
+				No API key required! Koios is free to use and doesn't require registration or API keys. If
+				you run into rate limiting issues, sign up for the free tier at <a
+					href="https://koios.rest/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link">Koios.rest</a
+				>.
 			</li>
 			<li>Simply use 'preprod' for testnet or 'api' for mainnet when initializing the provider</li>
 		</ol>
@@ -559,42 +565,28 @@
 		</p>
 		<p class="text-lg font-thin text-white">
 			To use the wallet functionality, you'll need to add your mnemonic passphrase (seed phrase) to
-			your wallet. The code example uses an environment variable <code
-				class="rounded bg-gray-800 px-2 py-1 text-white">WALLET_MNEMONIC</code
-			> to securely store your passphrase. This is a 12 or 24-word phrase that you should have saved
-			when you created your wallet. Make sure to use a testnet wallet for development and testing.
+			the code. The code example uses a <code class="rounded bg-gray-800 px-2 py-1 text-white"
+				>mnemonic</code
+			> array where you can directly add your 12 or 24-word phrase. This is for example purposes only
+			- in production, always use environment variables to store your passphrase securely. Make sure
+			to use a testnet wallet for development and testing.
 		</p>
-		<TipBox title="Security Warning - Never Commit Secrets to GitHub" variant="danger">
-			<strong
-				>Never upload code containing your wallet passphrase or mnemonic to GitHub or any public
-				repository!</strong
-			>
-			If someone gains access to your passphrase, they can steal all funds from your wallet.
-			<br /><br />
-			<strong>Always use environment variables (.env files) to store sensitive information:</strong>
-			<ul class="mt-2 ml-4">
-				<li>Create a <code>.env</code> file in your project root</li>
-				<li>Add your mnemonic: <code>WALLET_MNEMONIC="word1 word2 word3 ..."</code></li>
-				<li>Add <code>.env</code> to your <code>.gitignore</code> file</li>
-				<li>Never commit <code>.env</code> files to version control</li>
-			</ul>
-			<br />
-			Learn more about using environment variables securely in this{' '}
-			<a
-				href="https://www.youtube.com/watch?v=hZUNMYU4Kzo"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="link">tutorial</a
-			>.
-		</TipBox>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Fetching Wallet Balance with Mesh</h2>
 		<p class="text-lg font-thin text-white">
-			Let's start with a simple example that uses Mesh and the Koios provider to fetch your wallet
-			balance and log it to the console. This will help you understand how Mesh works before
-			building a full API.
+			Let's start with a simple example that uses <a
+				href="https://meshjs.dev/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">Mesh SDK</a
+			>
+			and the
+			<a href="https://koios.rest/" target="_blank" rel="noopener noreferrer" class="link">
+				Koios</a
+			> provider to fetch your wallet balance and log it to the console. This will help you understand
+			how Mesh works before building a full API.
 		</p>
 		<CodeCard
 			title="Fetch Wallet Balance with Mesh"
@@ -602,7 +594,7 @@
 			language="javascript"
 			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
 			howItWorksContent={meshWalletHowItWorks}
-			footerText="Save this as wallet-balance.js. Make sure to install @meshsdk/core and set your WALLET_MNEMONIC environment variable. Run it with 'node wallet-balance.js' to see your wallet balance logged to the console."
+			footerText="Save this as wallet-balance.js. Make sure to install @meshsdk/core and add your mnemonic phrase to the mnemonic array in the code. Run it with 'node wallet-balance.js' to see your wallet balance logged to the console."
 		/>
 		<p class="text-lg font-thin text-white">
 			<strong>Running the Example:</strong>
@@ -614,17 +606,17 @@
 				>
 			</li>
 			<li>
-				Set your <code class="rounded bg-gray-800 px-2 py-1 text-white">WALLET_MNEMONIC</code>
-				environment variable in your
-				<code class="rounded bg-gray-800 px-2 py-1 text-white">.env</code>
-				file
+				Add your mnemonic phrase to the <code class="rounded bg-gray-800 px-2 py-1 text-white"
+					>mnemonic</code
+				>
+				array in the code (replace the empty array with your 12 or 24 word phrase)
 			</li>
 			<li>
 				Run the script: <code class="rounded bg-gray-800 px-2 py-1 text-white"
 					>node wallet-balance.js</code
 				>
 			</li>
-			<li>You should see your wallet address, balance, and UTXO count printed to the console</li>
+			<li>You should see your wallet address and balance in ADA printed to the console</li>
 		</ol>
 		<TipBox type="info">
 			<strong>Important Notes:</strong>
@@ -639,10 +631,14 @@
 	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Creating and Submitting Transactions with Mesh</h2>
 		<p class="text-lg font-thin text-white">
-			Now let's learn how to create and submit transactions using Mesh. This example demonstrates
-			how to send ADA from your wallet to another address on the Cardano testnet, including
-			metadata. You'll learn how to build, sign, and submit transactions with additional data
-			permanently stored on the blockchain.
+			Now let's learn how to create and submit transactions using <a
+				href="https://meshjs.dev/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">Mesh.js</a
+			>. This example demonstrates how to send ADA from your wallet to another address on the
+			Cardano testnet, including metadata. You'll learn how to build, sign, and submit transactions
+			with additional data permanently stored on the blockchain.
 		</p>
 		<p class="text-lg font-thin text-white">
 			This example uses <code class="rounded bg-gray-800 px-2 py-1 text-white">MeshTxBuilder</code>,
@@ -673,14 +669,14 @@
 				>
 			</li>
 			<li>
-				Set your <code class="rounded bg-gray-800 px-2 py-1 text-white">WALLET_MNEMONIC</code>
-				environment variable in your
-				<code class="rounded bg-gray-800 px-2 py-1 text-white">.env</code>
-				file
+				Add your mnemonic phrase to the <code class="rounded bg-gray-800 px-2 py-1 text-white"
+					>mnemonic</code
+				>
+				array in the code (replace the empty array with your 12 or 24 word phrase)
 			</li>
 			<li>
-				Update the <code class="rounded bg-gray-800 px-2 py-1 text-white">recipientAddress</code>
-				variable in the code with a valid testnet address
+				The <code class="rounded bg-gray-800 px-2 py-1 text-white">recipientAddress</code>
+				is already set to the PingPong wallet address for testing
 			</li>
 			<li>
 				Make sure your wallet has enough tADA to cover the transaction amount plus fees (usually
@@ -693,9 +689,18 @@
 			</li>
 			<li>You should see the transaction hash printed to the console</li>
 			<li>
-				Use the Cardano Explorer link in the output to view your transaction on the blockchain
+				Use the <a
+					href="https://preprod.cardanoscan.io/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link">CardanoScan.io</a
+				> link in the output to view your transaction on the blockchain explorer or just paste the transaction
+				hash into the search bar
 			</li>
 		</ol>
+		<div class="mt-2">
+			<PingPongWallet />
+		</div>
 		<TipBox type="warning">
 			<strong>Important Notes:</strong>
 			<ul class="mt-2 ml-4">
@@ -743,7 +748,7 @@
 			language="javascript"
 			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
 			howItWorksContent={meshHowItWorks}
-			footerText="This complete API includes Express.js server, Mesh integration with Koios provider, GET /wallet endpoint, and POST /transaction endpoint for submitting transactions. Save this as server.js. Make sure to install express, cors, and @meshsdk/core. Set your WALLET_MNEMONIC environment variable with your testnet wallet passphrase. Ensure your package.json includes 'type: module' to use ESM syntax."
+			footerText="This complete API includes Express.js server, Mesh integration with Koios provider, GET /wallet endpoint, and POST /transaction endpoint for submitting transactions. Save this as server.js. Make sure to install express, cors, and @meshsdk/core. Add your mnemonic phrase to the mnemonic array in the code. Ensure your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
 			<strong>Testing the API:</strong>
@@ -763,7 +768,7 @@
 				<strong>Test GET /wallet:</strong> Use Insomnia or curl to send a GET request to
 				<code class="rounded bg-gray-800 px-2 py-1 text-white">http://localhost:3000/wallet</code>
 			</li>
-			<li>You'll receive your wallet information including address, balance, and UTXO count</li>
+			<li>You'll receive your wallet information including address and balance</li>
 			<li>
 				<strong>Test POST /transaction:</strong> Create a POST request to
 				<code class="rounded bg-gray-800 px-2 py-1 text-white"

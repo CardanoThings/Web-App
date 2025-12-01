@@ -12,7 +12,7 @@
 		howItWorksTitle = 'How it Works',
 		howItWorksContent = null,
 		footerText = null,
-		defaultShowComments = false,
+		defaultShowComments = true,
 		defaultExpanded = false
 	} = $props();
 
