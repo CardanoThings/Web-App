@@ -38,7 +38,7 @@ export const workshops = [
     },
     {
         title: "Workshop 02: Read and Output",
-        description: "This workshop will teach you how to read data from the blockchain in intervals and use this data to trigger an action on your Microcontroller. You will learn about two other Cardano APIs and how to set them up and get a short introduction into connecting external hardware to your microcontroller.",
+        description: "This workshop will teach you how to read data from the blockchain in intervals and use this data to trigger an action on your Microcontroller. You will learn about two other Cardano APIs and how to set them up and how to connect external hardware to your microcontroller.",
         steps: [
             {
                 title: "Fetch your Wallet Balance",
@@ -87,7 +87,7 @@ export const workshops = [
     },
     {
         title: "Workshop 04: Cardano Ticker",
-        description: "With all the basic building blocks in place, lets start with some (more) real world use cases: In this workshop you will learn how to fetch Cardano token prices from MinSwap and display them neatly on your Microcontroller. We will also briefly introduce you to the Taptools.io API and include a quick way to fetch NFT prices from JPG.store. Good news: This workshop does not require any soldering or external Hardware, all you'll need is you ESP32 Cheap Yellow Display.",
+        description: "In this workshop you will learn how to fetch Cardano token & NFT prices and display them neatly on your Microcontroller. We will introduce you to various APIs needed to fetch the data and build a simple Ticker.",
         steps: [
             {
                 title: "Gathering data",
