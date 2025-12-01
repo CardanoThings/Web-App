@@ -85,7 +85,7 @@
 
 {#if howItWorksContent}
 	<Dialog.Root bind:open={howItWorksOpen}>
-		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-y-auto">
+		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-y-auto overflow-x-hidden">
 			<Dialog.Header>
 				<Dialog.Title>{howItWorksTitle}</Dialog.Title>
 			</Dialog.Header>
@@ -148,9 +148,18 @@
 	.how-it-works-content :global(a) {
 		color: #5b21b6;
 		text-decoration: underline;
+		word-break: break-all;
+		overflow-wrap: break-word;
 	}
 
 	.how-it-works-content :global(a:hover) {
 		color: #6d28d9;
+	}
+
+	.how-it-works-content {
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		overflow-x: hidden;
+		max-width: 100%;
 	}
 </style>
