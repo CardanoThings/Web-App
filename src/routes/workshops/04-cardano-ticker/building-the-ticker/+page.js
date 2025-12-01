@@ -802,7 +802,750 @@ export const load = async ({ url }) => {
 				
 				// Draw filled circle as indicator
 				sprite.fillCircle(220, 65, 5, TFT_GREEN);
-			}`
-	};
-};
+			}`,
+		startScreenCode: `
+			// Include TFT display library
+			#include <TFT_eSPI.h>
+			#include <SPI.h>
 
+			// Create TFT display object
+			TFT_eSPI tft = TFT_eSPI();
+
+			void setup() {
+				// Initialize serial communication for debugging
+				Serial.begin(115200);
+				
+				// Initialize TFT display
+				tft.init();
+				
+				// Set display rotation (1 = landscape)
+				tft.setRotation(1);
+				
+				// Invert display colors (required for some CYD displays)
+				tft.invertDisplay(true);
+				
+				// Display the start screen
+				displayStartScreen();
+				
+				Serial.println("Start screen displayed!");
+			}
+
+			void loop() {
+				// Nothing to do in the loop - static display
+			}
+
+			// Function to display the start screen
+			// This function can be extracted to its own file later
+			void displayStartScreen() {
+				// Fill entire screen with black background
+				tft.fillScreen(TFT_BLACK);
+				
+				// Set text properties for main title
+				tft.setTextColor(TFT_WHITE, TFT_BLACK);  // White text on black background
+				tft.setTextSize(3);                      // Large text size
+				
+				// Calculate main title position to center it on screen
+				String mainText = "CardanoTicker";
+				int mainTextWidth = mainText.length() * 6 * 3;   // Approximate width (6 pixels per char * text size)
+				int mainTextHeight = 8 * 3;                      // Approximate height (8 pixels * text size)
+				int mainTextX = (320 - mainTextWidth) / 2;       // Center horizontally (320 is screen width)
+				int mainTextY = (240 - mainTextHeight) / 2 - 15; // Center vertically, slightly above center
+				
+				// Display the centered main title
+				tft.setCursor(mainTextX, mainTextY);
+				tft.println("CardanoTicker");
+				
+				// Set text properties for website URL (smaller text)
+				tft.setTextSize(1);                      // Smaller text size
+				
+				// Calculate website URL position to center it below the main title
+				String urlText = "www.cardanothings.io";
+				int urlTextWidth = urlText.length() * 6 * 1;   // Approximate width (6 pixels per char * text size)
+				int urlTextX = (320 - urlTextWidth) / 2;      // Center horizontally
+				int urlTextY = mainTextY + mainTextHeight + 10; // Position below main title with spacing
+				
+				// Display the centered website URL
+				tft.setCursor(urlTextX, urlTextY);
+				tft.println("www.cardanothings.io");
+			}`,
+		statusPageCode: `
+			// Include necessary libraries for WiFi and TFT display
+			#include <WiFi.h>              // WiFi connectivity library
+			#include <TFT_eSPI.h>         // TFT display library
+			#include <SPI.h>               // SPI communication
+
+			// Create TFT display object
+			TFT_eSPI tft = TFT_eSPI();
+			
+			// Create small sprite for updating values (reduces flicker)
+			TFT_eSprite valueSprite = TFT_eSprite(&tft);
+
+			// WiFi credentials - replace with your network details
+			const char* ssid = "Your SSID";           // Your WiFi network name
+			const char* password = "Your Password";   // Your WiFi password
+
+			// Table configuration
+			const int tableBottomMargin = 50;         // Bottom margin (50px from bottom)
+			const int numRows = 6;                    // Number of data rows
+			const int headerHeight = 30;              // Height for header row
+			const int labelColumnWidth = 140;         // Width of label column
+			const int valueColumnMargin = 10;          // Margin from vertical line and right border
+			
+			// Store calculated positions
+			int tableHeight = 0;
+			int tableWidth = 0;
+			int rowHeight = 0;
+			int textOffsetY = 0;
+			int valueColumnWidth = 0;                  // Calculated width for value column
+			bool tableDrawn = false;
+
+			void setup() {
+				// Initialize serial communication for debugging
+				Serial.begin(115200);
+				delay(1000);
+				
+				Serial.println("\\n=== Status Page Example ===");
+				
+				// Initialize TFT display
+				tft.init();
+				tft.setRotation(1);                   // Landscape orientation
+				tft.invertDisplay(true);              // Invert colors for CYD displays
+				tft.fillScreen(TFT_BLACK);
+				
+				// Calculate table dimensions
+				tableWidth = tft.width();                        // Full width
+				tableHeight = tft.height() - tableBottomMargin;  // Full height minus 50px
+				rowHeight = (tableHeight - headerHeight) / numRows;  // Height of each data row
+				textOffsetY = (rowHeight - 8) / 2;  // Vertical text offset for centering (text size 1 is ~8px tall)
+				
+				// Calculate value column width (table width - label column - margins)
+				valueColumnWidth = tableWidth - labelColumnWidth - (valueColumnMargin * 2);
+				
+				// Create small sprite for value updates (one row height, slightly smaller to avoid overlapping lines)
+				valueSprite.createSprite(valueColumnWidth, rowHeight - 2);
+				
+				// Connect to WiFi
+				connectToWiFi();
+				
+				// Draw static table structure once
+				drawTableStructure();
+				
+				// Display initial status values
+				updateStatusValues();
+				
+				Serial.println("Status page displayed!");
+			}
+
+			void loop() {
+				// Update status values every 1 second
+				static unsigned long lastUpdate = 0;
+				unsigned long currentTime = millis();
+				
+				if (currentTime - lastUpdate >= 1000) {
+					updateStatusValues();
+					lastUpdate = currentTime;
+				}
+				
+				delay(100);
+			}
+
+			// Connect to WiFi
+			void connectToWiFi() {
+				Serial.println("\\n--- Connecting to WiFi ---");
+				Serial.print("SSID: ");
+				Serial.println(ssid);
+				
+				WiFi.begin(ssid, password);
+				
+				int attempts = 0;
+				while (WiFi.status() != WL_CONNECTED) {
+					delay(1000);
+					attempts++;
+					Serial.print(".");
+					
+					if (attempts > 30) {
+						Serial.println("\\nWiFi connection failed!");
+						return;
+					}
+				}
+				
+				Serial.println("\\nWiFi Connected!");
+				Serial.print("IP Address: ");
+				Serial.println(WiFi.localIP());
+			}
+
+			// Draw static table structure (borders, header, labels) - called once
+			// This function can be extracted to its own file later
+			void drawTableStructure() {
+				
+				// Draw table border (outer rectangle)
+				tft.drawRect(0, 0, tableWidth, tableHeight, TFT_WHITE);
+				
+				// Draw header bottom border
+				tft.drawLine(0, headerHeight, tableWidth, headerHeight, TFT_WHITE);
+				
+				// Draw "Status" header text (left aligned, vertically centered)
+				tft.setTextSize(2);
+				tft.setTextColor(TFT_WHITE, TFT_BLACK);
+				int headerTextY = (headerHeight - 16) / 2;  // Vertically center (text size 2 is ~16px tall)
+				tft.setCursor(10, headerTextY);
+				tft.print("Status");
+				
+				// Draw vertical line separating label and value columns (full height from header to bottom)
+				tft.drawLine(labelColumnWidth, headerHeight, labelColumnWidth, tableHeight, TFT_WHITE);
+				
+				// Draw horizontal lines between rows (not after last row - that's the bottom border)
+				for (int i = 1; i < numRows; i++) {
+					int yPos = headerHeight + (i * rowHeight);
+					tft.drawLine(0, yPos, tableWidth, yPos, TFT_WHITE);
+				}
+				
+				// Draw static labels (left column)
+				tft.setTextSize(1);
+				tft.setTextColor(TFT_WHITE, TFT_BLACK);
+				
+				// Row 1: WiFi Status
+				int row1Y = headerHeight + (0 * rowHeight) + textOffsetY;
+				tft.setCursor(10, row1Y);
+				tft.print("WiFi Status:");
+				
+				// Row 2: WiFi Name (SSID)
+				int row2Y = headerHeight + (1 * rowHeight) + textOffsetY;
+				tft.setCursor(10, row2Y);
+				tft.print("WiFi Name:");
+				
+				// Row 3: IP Address
+				int row3Y = headerHeight + (2 * rowHeight) + textOffsetY;
+				tft.setCursor(10, row3Y);
+				tft.print("IP Address:");
+				
+				// Row 4: Signal Strength (RSSI)
+				int row4Y = headerHeight + (3 * rowHeight) + textOffsetY;
+				tft.setCursor(10, row4Y);
+				tft.print("Signal:");
+				
+				// Row 5: MAC Address
+				int row5Y = headerHeight + (4 * rowHeight) + textOffsetY;
+				tft.setCursor(10, row5Y);
+				tft.print("MAC Address:");
+				
+				// Row 6: Uptime
+				int row6Y = headerHeight + (5 * rowHeight) + textOffsetY;
+				tft.setCursor(10, row6Y);
+				tft.print("Uptime:");
+				
+				tableDrawn = true;
+			}
+
+			// Update only the values in the table using a small sprite
+			// This function can be extracted to its own file later
+			void updateStatusValues() {
+				// Set text properties for values
+				valueSprite.setTextSize(1);
+				
+				// Calculate vertical offset to center text in sprite (sprite is rowHeight-2, text is 8px)
+				int spriteTextY = (rowHeight - 2 - 8) / 2;
+				
+				// Row 1: WiFi Status
+				valueSprite.fillSprite(TFT_BLACK);
+				valueSprite.setCursor(0, spriteTextY);
+				if (WiFi.status() == WL_CONNECTED) {
+					valueSprite.setTextColor(TFT_GREEN, TFT_BLACK);
+					valueSprite.print("Connected");
+				} else {
+					valueSprite.setTextColor(TFT_RED, TFT_BLACK);
+					valueSprite.print("Disconnected");
+				}
+				valueSprite.pushSprite(labelColumnWidth + valueColumnMargin, headerHeight + (0 * rowHeight) + 1);
+				
+				// Row 2: WiFi Name (SSID)
+				valueSprite.fillSprite(TFT_BLACK);
+				valueSprite.setCursor(0, spriteTextY);
+				valueSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+				if (WiFi.status() == WL_CONNECTED) {
+					valueSprite.print(WiFi.SSID());
+				} else {
+					valueSprite.print("---");
+				}
+				valueSprite.pushSprite(labelColumnWidth + valueColumnMargin, headerHeight + (1 * rowHeight) + 1);
+				
+				// Row 3: IP Address
+				valueSprite.fillSprite(TFT_BLACK);
+				valueSprite.setCursor(0, spriteTextY);
+				valueSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+				if (WiFi.status() == WL_CONNECTED) {
+					valueSprite.print(WiFi.localIP());
+				} else {
+					valueSprite.print("---");
+				}
+				valueSprite.pushSprite(labelColumnWidth + valueColumnMargin, headerHeight + (2 * rowHeight) + 1);
+				
+				// Row 4: Signal Strength (RSSI)
+				valueSprite.fillSprite(TFT_BLACK);
+				valueSprite.setCursor(0, spriteTextY);
+				valueSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+				if (WiFi.status() == WL_CONNECTED) {
+					int rssi = WiFi.RSSI();
+					valueSprite.print(rssi);
+					valueSprite.print(" dBm");
+				} else {
+					valueSprite.print("---");
+				}
+				valueSprite.pushSprite(labelColumnWidth + valueColumnMargin, headerHeight + (3 * rowHeight) + 1);
+				
+				// Row 5: MAC Address
+				valueSprite.fillSprite(TFT_BLACK);
+				valueSprite.setCursor(0, spriteTextY);
+				valueSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+				valueSprite.print(WiFi.macAddress());
+				valueSprite.pushSprite(labelColumnWidth + valueColumnMargin, headerHeight + (4 * rowHeight) + 1);
+				
+				// Row 6: Uptime
+				valueSprite.fillSprite(TFT_BLACK);
+				valueSprite.setCursor(0, spriteTextY);
+				valueSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+				unsigned long uptimeSeconds = millis() / 1000;
+				unsigned long uptimeMinutes = uptimeSeconds / 60;
+				unsigned long uptimeHours = uptimeMinutes / 60;
+				valueSprite.print(uptimeHours);
+				valueSprite.print("h ");
+				valueSprite.print(uptimeMinutes % 60);
+				valueSprite.print("m ");
+				valueSprite.print(uptimeSeconds % 60);
+				valueSprite.print("s");
+				valueSprite.pushSprite(labelColumnWidth + valueColumnMargin, headerHeight + (5 * rowHeight) + 1);
+			}`,
+		statusBarCode: `
+			// Include TFT display library
+			#include <TFT_eSPI.h>
+			#include <SPI.h>
+
+			// Create TFT display object
+			TFT_eSPI tft = TFT_eSPI();
+
+			// Dummy data for status bar (will be replaced with real data later)
+			bool wifiConnected = true;                    // WiFi connection status
+			String ipAddress = "192.168.1.100";          // IP address
+			unsigned long lastFetchTime = 0;               // Timestamp of last data fetch
+			unsigned long currentTime = 0;                 // Current time in milliseconds
+
+			void setup() {
+				// Initialize serial communication for debugging
+				Serial.begin(115200);
+				
+				// Initialize TFT display
+				tft.init();
+				
+				// Set display rotation (1 = landscape)
+				tft.setRotation(1);
+				
+				// Invert display colors (required for some CYD displays)
+				tft.invertDisplay(true);
+				
+				// Fill screen with black background
+				tft.fillScreen(TFT_BLACK);
+				
+				// Initialize dummy data
+				lastFetchTime = millis() - 30000;  // 30 seconds ago
+				currentTime = millis();
+				
+				// Display status bar
+				displayStatusBar();
+				
+				Serial.println("Status bar displayed!");
+			}
+
+			void loop() {
+				// Update current time
+				currentTime = millis();
+				
+				// Update status bar periodically (every second)
+				static unsigned long lastUpdate = 0;
+				if (currentTime - lastUpdate >= 1000) {
+					displayStatusBar();
+					lastUpdate = currentTime;
+				}
+				
+				delay(100);  // Small delay to prevent excessive updates
+			}
+
+			// Function to display the status bar at the top of the screen
+			// This function can be extracted to its own file later
+			void displayStatusBar() {
+				// Status bar dimensions
+				const int statusBarHeight = 20;           // Height of status bar in pixels
+				const int statusBarY = 0;                  // Y position (top of screen)
+				
+				// Clear status bar area (draw black rectangle to erase previous content)
+				tft.fillRect(0, statusBarY, 320, statusBarHeight, TFT_BLACK);
+				
+				// Draw a line separator below the status bar
+				tft.drawLine(0, statusBarHeight, 320, statusBarHeight, TFT_WHITE);
+				
+				// Set text properties for status bar
+				tft.setTextSize(1);                        // Small text size
+				tft.setTextColor(TFT_WHITE, TFT_BLACK);    // White text on black background
+				
+				// Calculate positions for status elements
+				int xPos = 5;                             // Starting X position
+				int yPos = 5;                             // Y position (centered vertically in status bar)
+				
+				// 1. Display WiFi Status
+				tft.setCursor(xPos, yPos);
+				tft.print("WiFi: ");
+				if (wifiConnected) {
+					tft.setTextColor(TFT_GREEN, TFT_BLACK);  // Green for connected
+					tft.print("ON");
+				} else {
+					tft.setTextColor(TFT_RED, TFT_BLACK);    // Red for disconnected
+					tft.print("OFF");
+				}
+				tft.setTextColor(TFT_WHITE, TFT_BLACK);     // Reset to white
+				
+				// 2. Display IP Address (positioned in the middle)
+				xPos = 80;                                 // Position for IP address
+				tft.setCursor(xPos, yPos);
+				tft.print("IP: ");
+				tft.print(ipAddress);
+				
+				// 3. Display Last Fetch Time (positioned on the right)
+				// Calculate seconds since last fetch
+				unsigned long secondsAgo = (currentTime - lastFetchTime) / 1000;
+				
+				// Calculate position for time display (right-aligned)
+				String timeText = "Updated: ";
+				timeText += String(secondsAgo);
+				timeText += "s ago";
+				int timeTextWidth = timeText.length() * 6;  // Approximate width
+				xPos = 320 - timeTextWidth - 5;              // Right-aligned with 5px margin
+				
+				tft.setCursor(xPos, yPos);
+				tft.print(timeText);
+			}`,
+		walletBalanceCode: `
+			// Include TFT display library
+			#include <TFT_eSPI.h>
+			#include <SPI.h>
+
+			// Create TFT display object
+			TFT_eSPI tft = TFT_eSPI();
+
+			// Dummy data for wallet balance display (will be replaced with real data later)
+			float walletBalance = 1234.56;              // Wallet balance in ADA
+			float adaPriceUsd = 0.3864;                // ADA price in USD
+			float adaChange24h = -7.89;                 // 24h price change in percentage
+
+			// Status bar height (to position content below it)
+			const int statusBarHeight = 20;
+
+			void setup() {
+				// Initialize serial communication for debugging
+				Serial.begin(115200);
+				
+				// Initialize TFT display
+				tft.init();
+				
+				// Set display rotation (1 = landscape)
+				tft.setRotation(1);
+				
+				// Invert display colors (required for some CYD displays)
+				tft.invertDisplay(true);
+				
+				// Fill screen with black background
+				tft.fillScreen(TFT_BLACK);
+				
+				// Display wallet balance information
+				displayWalletBalance();
+				
+				Serial.println("Wallet balance displayed!");
+			}
+
+			void loop() {
+				// Update display periodically (every 5 seconds)
+				static unsigned long lastUpdate = 0;
+				unsigned long currentTime = millis();
+				
+				if (currentTime - lastUpdate >= 5000) {
+					displayWalletBalance();
+					lastUpdate = currentTime;
+				}
+				
+				delay(100);
+			}
+
+			// Function to display wallet balance, ADA price, and 24h change
+			// This function can be extracted to its own file later
+			// Optimized to reduce flicker by only updating changed areas
+			void displayWalletBalance() {
+				// Starting Y position (below status bar)
+				int yPos = statusBarHeight + 20;
+				int xPos = 10;
+				
+				// Store previous values to detect changes (static variables persist between calls)
+				static float prevWalletBalance = -1;
+				static float prevAdaPriceUsd = -1;
+				static float prevAdaChange24h = -1;
+				static bool firstDraw = true;
+				
+				// 1. Display "Wallet Balance" label (only on first draw)
+				if (firstDraw) {
+					tft.setTextSize(2);
+					tft.setTextColor(TFT_DARKGREY, TFT_BLACK);  // Grey color for label
+					tft.setCursor(xPos, yPos);
+					tft.println("Wallet Balance");
+				}
+				
+				yPos += 30;
+				
+				// 2. Display wallet balance in ADA (only update if value changed)
+				if (walletBalance != prevWalletBalance || firstDraw) {
+					// Clear previous value area (large enough for the number)
+					tft.fillRect(xPos, yPos, 200, 32, TFT_BLACK);
+					
+					tft.setTextSize(4);
+					tft.setTextColor(TFT_WHITE, TFT_BLACK);  // White color for wallet balance
+					tft.setCursor(xPos, yPos);
+					tft.print(walletBalance, 2);  // Display with 2 decimal places
+					
+					// Display "ADA" unit
+					tft.setTextSize(2);
+					tft.setTextColor(TFT_WHITE, TFT_BLACK);  // White color for ADA label
+					tft.print(" ADA");
+					
+					prevWalletBalance = walletBalance;
+				}
+				
+				yPos += 50;
+				
+				// 3. Display ADA price in USD (only update if value changed)
+				if (adaPriceUsd != prevAdaPriceUsd || firstDraw) {
+					// Clear previous value area (label + value)
+					tft.fillRect(xPos, yPos, 200, 24, TFT_BLACK);
+					
+					tft.setTextSize(2);
+					tft.setTextColor(TFT_WHITE, TFT_BLACK);  // White instead of yellow
+					tft.setCursor(xPos, yPos);
+					tft.print("ADA Price: $");
+					tft.setTextColor(TFT_WHITE, TFT_BLACK);
+					tft.print(adaPriceUsd, 4);  // Display with 4 decimal places
+					
+					prevAdaPriceUsd = adaPriceUsd;
+				}
+				
+				yPos += 30;
+				
+				// 4. Display 24h price change (only update if value changed)
+				if (adaChange24h != prevAdaChange24h || firstDraw) {
+					// Clear previous value area (label + value)
+					tft.fillRect(xPos, yPos, 200, 24, TFT_BLACK);
+					
+					tft.setTextSize(2);
+					tft.setTextColor(TFT_WHITE, TFT_BLACK);  // White instead of yellow
+					tft.setCursor(xPos, yPos);
+					tft.print("24h Change: ");
+					
+					// Color code based on change (green for positive, red for negative)
+					if (adaChange24h >= 0) {
+						tft.setTextColor(TFT_GREEN, TFT_BLACK);
+						tft.print("+");
+					} else {
+						tft.setTextColor(TFT_RED, TFT_BLACK);
+					}
+					
+					tft.print(adaChange24h, 2);  // Display with 2 decimal places
+					tft.print("%");
+					
+					prevAdaChange24h = adaChange24h;
+				}
+				
+				firstDraw = false;
+			}`,
+		tokenScrollCode: `
+			// Include TFT display library
+			#include <TFT_eSPI.h>
+			#include <SPI.h>
+
+			// Create TFT display object
+			TFT_eSPI tft = TFT_eSPI();
+			
+			// Create sprite for smooth scrolling (reduces flicker)
+			// Sprite is an off-screen buffer that can be drawn to screen
+			TFT_eSprite scrollSprite = TFT_eSprite(&tft);
+
+			// Scroll area configuration
+			const int scrollAreaHeight = 30;  // Height of the scrolling area at bottom
+			const int yPos = 4;               // Y position within the sprite (vertical offset)
+			const int scrollSpeed = 2;        // Pixels to scroll per update
+
+			// Data structures for tokens and NFTs
+			struct TokenData {
+				String ticker;
+				float price;
+				float change24h;
+			};
+			
+			struct NFTData {
+				String name;
+				float floorPrice;
+			};
+
+			// Token data array
+			TokenData tokens[] = {
+				{"ADA", 0.3864, -7.89},
+				{"MIN", 0.0123, 2.45},
+				{"HOSKY", 0.0001, -15.23},
+				{"IAG", 0.0456, 5.67}
+			};
+
+			// NFT data array
+			NFTData nfts[] = {
+				{"ADA Handle", 5.0},
+				{"SpaceBudz", 300.0},
+				{"HOSKY C(ash grab)NFT", 8.0}
+			};
+
+			// Scrolling variables
+			int scrollX = 0;           // Current scroll position in pixels
+			int contentWidth = 0;      // Total width of all content for seamless looping
+
+			void setup() {
+				// Initialize serial communication for debugging
+				Serial.begin(115200);
+				
+				// Initialize TFT display
+				tft.init();
+				
+				// Set display rotation (1 = landscape)
+				tft.setRotation(1);
+				
+				// Invert display colors (required for some CYD displays)
+				tft.invertDisplay(true);
+				
+				// Fill screen with black background
+				tft.fillScreen(TFT_BLACK);
+
+				// Configure sprite for smooth scrolling
+				// 16-bit color depth for full color support
+				scrollSprite.setColorDepth(16);
+				
+				// Create sprite with full screen width and scroll area height
+				// This creates an off-screen buffer for the scrolling content
+				scrollSprite.createSprite(tft.width(), scrollAreaHeight);
+
+				// Calculate total content width for seamless scrolling
+				calculateContentWidth();
+				
+				Serial.println("Token scroll display initialized!");
+			}
+
+			void loop() {
+				// Clear the sprite with black background
+				scrollSprite.fillSprite(TFT_BLACK);
+
+				// Draw first copy of content at current scroll position
+				drawContentLine(-scrollX);
+
+				// Draw second copy for seamless endless scrolling
+				// Offset by contentWidth to create continuous loop
+				drawContentLine(-scrollX + contentWidth);
+
+				// Push sprite to display at bottom of screen
+				// This updates the display in one operation, reducing flicker
+				scrollSprite.pushSprite(0, tft.height() - scrollAreaHeight);
+
+				// Update scroll position
+				scrollX += scrollSpeed;
+				
+				// Reset scroll position when content has scrolled completely
+				// This creates endless scrolling effect
+				if (scrollX >= contentWidth) {
+					scrollX = 0;
+				}
+
+				// Delay to control scroll speed
+				delay(30);
+			}
+
+			// Calculate total width of all content dynamically
+			// This function uses actual text width measurements for accurate spacing
+			// This function can be extracted to its own file later
+			void calculateContentWidth() {
+				contentWidth = 0;
+
+				// Calculate width for all tokens
+				for (int i = 0; i < sizeof(tokens) / sizeof(tokens[0]); i++) {
+					// Ticker width (size 2)
+					tft.setTextSize(2);
+					contentWidth += tft.textWidth(tokens[i].ticker) + 4;  // Add 4px spacing
+					
+					// Price width (size 1)
+					tft.setTextSize(1);
+					String priceStr = "$" + String(tokens[i].price, 4);
+					contentWidth += tft.textWidth(priceStr) + 4;  // Add 4px spacing
+					
+					// 24h change width (size 1)
+					String changeStr = (tokens[i].change24h >= 0 ? "+" : "") + String(tokens[i].change24h, 2) + "%";
+					contentWidth += tft.textWidth(changeStr) + 8;  // Add 8px spacing after change
+				}
+
+				// Calculate width for all NFTs
+				for (int i = 0; i < sizeof(nfts) / sizeof(nfts[0]); i++) {
+					// NFT name width (size 2)
+					tft.setTextSize(2);
+					contentWidth += tft.textWidth(nfts[i].name) + 4;  // Add 4px spacing
+					
+					// Floor price width (size 1)
+					tft.setTextSize(1);
+					String floorStr = "Floor: " + String(nfts[i].floorPrice, 2) + " ADA";
+					contentWidth += tft.textWidth(floorStr) + 8;  // Add 8px spacing after floor price
+				}
+			}
+
+			// Draw all tokens and NFTs at a given x position
+			// This function draws content into the sprite buffer
+			// This function can be extracted to its own file later
+			void drawContentLine(int xPos) {
+				// Draw all tokens
+				for (int i = 0; i < sizeof(tokens) / sizeof(tokens[0]); i++) {
+					// Draw token ticker (larger text)
+					scrollSprite.setTextSize(2);
+					scrollSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+					scrollSprite.drawString(tokens[i].ticker, xPos, yPos);
+					xPos += scrollSprite.textWidth(tokens[i].ticker) + 4;  // Advance position with spacing
+
+					// Draw token price (smaller text, slightly offset vertically)
+					scrollSprite.setTextSize(1);
+					String priceStr = "$" + String(tokens[i].price, 4);
+					scrollSprite.drawString(priceStr, xPos, yPos + 2);  // +2 for vertical alignment
+					xPos += scrollSprite.textWidth(priceStr) + 4;  // Advance position with spacing
+
+					// Draw 24h change with color coding
+					String changeStr = (tokens[i].change24h >= 0 ? "+" : "") + String(tokens[i].change24h, 2) + "%";
+					
+					// Color: green for positive, red for negative
+					if (tokens[i].change24h >= 0) {
+						scrollSprite.setTextColor(TFT_GREEN, TFT_BLACK);
+					} else {
+						scrollSprite.setTextColor(TFT_RED, TFT_BLACK);
+					}
+					scrollSprite.drawString(changeStr, xPos, yPos + 2);  // +2 for vertical alignment
+					xPos += scrollSprite.textWidth(changeStr) + 8;  // Advance position with spacing
+				}
+
+				// Draw all NFTs
+				for (int i = 0; i < sizeof(nfts) / sizeof(nfts[0]); i++) {
+					// Draw NFT name (larger text)
+					scrollSprite.setTextSize(2);
+					scrollSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+					scrollSprite.drawString(nfts[i].name, xPos, yPos);
+					xPos += scrollSprite.textWidth(nfts[i].name) + 4;  // Advance position with spacing
+
+					// Draw floor price (smaller text, slightly offset vertically)
+					scrollSprite.setTextSize(1);
+					String floorStr = "Floor: " + String(nfts[i].floorPrice, 2) + " ADA";
+					scrollSprite.drawString(floorStr, xPos, yPos + 2);  // +2 for vertical alignment
+					xPos += scrollSprite.textWidth(floorStr) + 8;  // Advance position with spacing
+				}
+			}`
+		};
+};
