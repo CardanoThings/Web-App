@@ -6,21 +6,9 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import { MoveLeft } from 'lucide-svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
-	let parentPage = $derived(page.url.pathname.split('/')[2]);
-</script>
 
-<script>
-	import { page } from '$app/state';
-	import IntroContainer from '$lib/base/IntroContainer.svelte';
-	import PingPongWallet from '$lib/base/PingPongWallet.svelte';
-	import FurtherResources from '$lib/components/FurtherResources.svelte';
-	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
-	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
-	import { MoveLeft } from 'lucide-svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
-	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
+	let parentPage = $derived(page.url.pathname.split('/')[2]);
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
