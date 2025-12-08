@@ -119,7 +119,7 @@
 
 		// Generate key for current files
 		const currentKey = getFilesKey(filesToFetch);
-		
+
 		// Prevent duplicate fetches for the same files
 		if (currentKey === lastFetchKey && filesData.length > 0) {
 			return;
@@ -224,7 +224,7 @@
 		}
 
 		const currentKey = getFilesKey(files);
-		
+
 		// Only fetch if files have changed or haven't been fetched yet
 		if (currentKey !== lastFetchKey) {
 			fetchFromGitHub();
@@ -232,7 +232,7 @@
 	});
 </script>
 
-<Card.Root>
+<Card.Root class="rounded-tl-none">
 	<Card.Header class="mb-0 flex flex-col gap-3 pb-0 md:flex-row md:items-start md:justify-between">
 		<Card.Title class="text-lg">{title}</Card.Title>
 		<div class="flex gap-2">
