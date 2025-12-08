@@ -3,52 +3,13 @@
 	import IntroContainer from '$lib/base/IntroContainer.svelte';
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
-	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
-
-	const blinkHowItWorks = `
-		<ul>
-			<li>
-				The <code>#define LED_PIN 8</code> statement creates a constant that maps pin 8 to LED_PIN. This makes
-				the code more readable and easier to modify.
-			</li>
-			<li>The <code>setup()</code> function is called once when the microcontroller starts up.</li>
-			<li>The <code>loop()</code> function is called repeatedly.</li>
-			<li>The <code>setup()</code> function is used to initialize the microcontroller.</li>
-			<li>The <code>loop()</code> function is used to run the main program.</li>
-			<li>
-				The <code>digitalWrite()</code> function is used to set the state of the pin. The HIGH state is 3.3V
-				(for ESP32) and the LOW state is 0V. The delay function is used to pause the program for the
-				specified number of milliseconds.
-			</li>
-			<li>
-				Pin 8 is used to control an external LED. You'll need to connect an LED with a
-				current-limiting resistor (220Ω-1kΩ) to this pin.
-			</li>
-		</ul>
-	`;
-
-	const wifiHowItWorks = `
-		<ul>
-			<li>The <code>#include &lt;WiFi.h&gt;</code> library is used to connect to your Wifi.</li>
-			<li>
-				The <code>ssid</code> and <code>password</code> variables are used to store your Wifi credentials.
-			</li>
-			<li>The <code>WiFi.begin()</code> function is used to connect to your Wifi.</li>
-			<li>The <code>while</code> loop is used to wait for the connection to be established.</li>
-			<li>
-				The <code>delay()</code> function is used to pause the program for the specified number of milliseconds.
-			</li>
-			<li>
-				The <code>Serial.println()</code> function is used to print the connection status to the serial monitor.
-			</li>
-		</ul>
-	`;
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
@@ -166,14 +127,20 @@
 			LED is connected to pin 4.
 		</TipBox>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Blink Sketch"
-			code={data.blinkCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-01/examples/blink-code"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-01/examples/blink-code/blink-code.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-01/examples/blink-code/README.md"
 			howItWorksTitle="How the Blink Sketch Works"
-			howItWorksContent={blinkHowItWorks}
-			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make sure to select the correct board and port. You should see the LED on your microcontroller blink."
+			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make 
+            sure to select the correct board and port. You should see the LED on your microcontroller blink."
 		/>
 	</section>
 
@@ -184,18 +151,25 @@
 			Internet.
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Wifi Connection"
-			code={data.wifiCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-01/examples/wifi-code"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-01/examples/wifi-code/wifi-code.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-01/examples/wifi-code/README.md"
 			howItWorksTitle="How the WiFi Connection Works"
-			howItWorksContent={wifiHowItWorks}
 			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make sure to select the correct board and port. You should see the microcontroller connect to your Wifi and print the IP address to the serial monitor."
 		/>
 
 		<TipBox title="ESP32-C3 Super Mini WiFi Workaround" variant="info">
-			If you're using an ESP32-C3 Super Mini and experiencing WiFi connection issues, the code includes <code>WiFi.setTxPower(WIFI_POWER_8_5dBm);</code> as a workaround. This sets the WiFi transmit power to 8.5 dBm, which helps resolve connectivity problems specific to this board variant.
+			If you're using an ESP32-C3 Super Mini and experiencing WiFi connection issues, the code
+			includes <code>WiFi.setTxPower(WIFI_POWER_8_5dBm);</code> as a workaround. This sets the WiFi transmit
+			power to 8.5 dBm, which helps resolve connectivity problems specific to this board variant.
 		</TipBox>
 
 		<TipBox title="Serial Monitor" variant="success">

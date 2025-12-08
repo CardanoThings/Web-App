@@ -4,6 +4,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -11,41 +12,6 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
-
-	const koiosHowItWorks = `
-		<h3>Overview</h3>
-		<p>This sketch connects to WiFi and makes HTTP requests to the Koios API to fetch blockchain data, specifically the current epoch number from the Cardano preprod testnet.</p>
-		
-		<h3>Key Components</h3>
-		<ul>
-			<li>
-				<strong>Libraries:</strong> Uses <code>WiFi.h</code> for network connectivity, <code>HTTPClient.h</code> for making HTTP requests, and <code>ArduinoJson.h</code> for parsing JSON responses.
-			</li>
-			<li>
-				<strong>Global Variables:</strong> Stores WiFi credentials, the API URL, and an <code>epochNumber</code> variable to hold the parsed epoch value.
-			</li>
-			<li>
-				<strong>WiFi Connection:</strong> The <code>setup()</code> function initializes serial communication at 115200 baud and connects to WiFi, displaying the connection status and assigned IP address.
-			</li>
-			<li>
-				<strong>JSON Parsing:</strong> The <code>parseJsonResponse()</code> function uses ArduinoJson to deserialize the API response. It creates a <code>JsonDocument</code>, handles parsing errors, and extracts the <code>epoch_no</code> value from the first element of the JSON array returned by Koios.
-			</li>
-			<li>
-				<strong>Loop Function:</strong> Continuously checks WiFi connection status (reconnects if needed), calls <code>makeHttpRequest()</code>, and waits 60 seconds before the next request to avoid rate limiting.
-			</li>
-			<li>
-				<strong>HTTP Request:</strong> The <code>makeHttpRequest()</code> function creates an HTTP client, sends a GET request to the Koios API, checks the response code (200 = success), prints the full response, parses the JSON to extract the epoch number, and displays it in the serial monitor.
-			</li>
-		</ul>
-
-		<h3>Important Notes</h3>
-		<ul>
-			<li><strong>WiFi Credentials:</strong> Replace "Your SSID" and "Your Password" with your actual WiFi network credentials.</li>
-			<li><strong>Network:</strong> The API URL points to the Koios preprod (testnet) endpoint. For mainnet, use <code>https://api.koios.rest/api/v1/tip</code></li>
-			<li><strong>Rate Limiting:</strong> The code includes a 60-second delay between requests to prevent overwhelming the API. Adjust this value based on your needs.</li>
-			<li><strong>JSON Structure:</strong> The Koios API returns an array with one object. The code accesses the first element <code>doc[0]</code> to get the epoch number.</li>
-		</ul>
-	`;
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
@@ -159,13 +125,18 @@
 			<li>Log the epoch number to the serial monitor</li>
 		</ol>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Koios API Code"
-			code={data.koiosApiCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-01/examples/koios-api-code"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-01/examples/koios-api-code/koios-api-code.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-01/examples/koios-api-code/README.md"
 			howItWorksTitle="How the Koios API Code Works"
-			howItWorksContent={koiosHowItWorks}
 			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make sure to select the correct board and port. You should see the microcontroller connect to your Wifi and print the API response to the serial monitor."
 		/>
 	</section>

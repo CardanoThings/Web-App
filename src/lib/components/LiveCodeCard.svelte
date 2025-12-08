@@ -13,6 +13,7 @@
 		readmePath = null,
 		branch = 'main',
 		howItWorksTitle = 'How it Works',
+		footerText = null,
 		defaultShowComments = true,
 		defaultExpanded = false
 	} = $props();
@@ -34,10 +35,11 @@
 
 	let filesData = $state([]);
 	let readme = $state('');
-	let loading = $state(true);
+	let loading = $state(false);
 	let error = $state(null);
 	let howItWorksOpen = $state(false);
 	let activeTab = $state('');
+	let lastFetchKey = $state('');
 
 	// Detect language from file extension
 	function detectLanguage(filePath) {
@@ -102,16 +104,30 @@
 		}
 	}
 
-	async function fetchFromGitHub() {
-		loading = true;
-		error = null;
+	// Generate a unique key for the current files array
+	function getFilesKey(files) {
+		return files.map((f) => `${f.path}:${f.language || ''}`).join('|');
+	}
 
+	async function fetchFromGitHub() {
 		const filesToFetch = normalizedFiles();
 		if (filesToFetch.length === 0) {
 			error = 'No files provided';
 			loading = false;
 			return;
 		}
+
+		// Generate key for current files
+		const currentKey = getFilesKey(filesToFetch);
+		
+		// Prevent duplicate fetches for the same files
+		if (currentKey === lastFetchKey && filesData.length > 0) {
+			return;
+		}
+
+		loading = true;
+		error = null;
+		lastFetchKey = currentKey;
 
 		// Initialize files data
 		filesData = filesToFetch.map((file) => ({ ...file }));
@@ -198,12 +214,20 @@
 		);
 	}
 
-	onMount(() => {
-		if (normalizedFiles().length > 0) {
-			fetchFromGitHub();
-		} else {
+	// Fetch files when component mounts or files prop changes
+	$effect(() => {
+		const files = normalizedFiles();
+		if (files.length === 0) {
 			error = 'No files provided';
 			loading = false;
+			return;
+		}
+
+		const currentKey = getFilesKey(files);
+		
+		// Only fetch if files have changed or haven't been fetched yet
+		if (currentKey !== lastFetchKey) {
+			fetchFromGitHub();
 		}
 	});
 </script>
@@ -260,7 +284,7 @@
 			{/if}
 		</div>
 	</Card.Header>
-	<Card.Content class="pb-6">
+	<Card.Content class={footerText ? '' : 'pb-6'}>
 		{#if loading}
 			<div class="flex items-center justify-center py-8">
 				<div class="flex flex-col items-center gap-2">
@@ -387,6 +411,13 @@
 			</Tabs.Root>
 		{/if}
 	</Card.Content>
+	{#if footerText}
+		<Card.Footer>
+			<p class="text-xs leading-relaxed">
+				{footerText}
+			</p>
+		</Card.Footer>
+	{/if}
 </Card.Root>
 
 {#if readme && howItWorksOpen}

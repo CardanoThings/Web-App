@@ -35,5 +35,8 @@ examples/
 # Blocks
 blocks/
 
+# Workshops
+Workshops
+
 # Version file
 static/version.json
