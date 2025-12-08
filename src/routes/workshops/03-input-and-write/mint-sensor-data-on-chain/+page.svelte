@@ -16,17 +16,27 @@
 		<h3>How the Code Works</h3>
 		<ol>
 			<li>When the microcontroller starts, it connects to your WiFi network</li>
-			<li>Every 10 seconds, it reads the temperature and humidity from the sensor</li>
+			<li>Every 5 minutes, it reads the temperature and humidity from the sensor</li>
 			<li>It packages the data (like putting it in an envelope)</li>
-			<li>It sends the data to your API server (like mailing the envelope)</li>
+			<li>It checks the <code>sendOnce</code> flag - if it's true and data has already been sent, it skips sending</li>
+			<li>If allowed, it sends the data to your API server (like mailing the envelope)</li>
 			<li>It prints what happened to the serial monitor so you can see if it worked</li>
 		</ol>
+		
+		<h3>The sendOnce Flag</h3>
+		<p>The code includes a <code>sendOnce</code> flag that's set to <code>true</code> by default. This is a safety feature for testing:</p>
+		<ul>
+			<li><strong>When <code>sendOnce</code> is <code>true</code>:</strong> The sensor data will only be sent once, even if the code runs for a long time. This prevents creating too many blockchain transactions while you're testing and debugging.</li>
+			<li><strong>When <code>sendOnce</code> is <code>false</code>:</strong> The sensor data will be sent every 5 minutes continuously, creating a new NFT each time.</li>
+		</ul>
+		<p>This is especially important when your API server automatically mints NFTs - you don't want to accidentally create hundreds of NFTs while testing!</p>
 		
 		<h3>What You Need to Change</h3>
 		<ul>
 			<li><strong>WiFi Name and Password:</strong> Update <code>ssid</code> and <code>password</code> with your WiFi details</li>
 			<li><strong>Server Address:</strong> Replace <code>YOUR_SERVER_IP</code> with your computer's IP address (where your server is running)</li>
-			<li><strong>How Often:</strong> You can change <code>readingInterval</code> to send data more or less frequently (currently every 10 seconds)</li>
+			<li><strong>How Often:</strong> You can change <code>readingInterval</code> to send data more or less frequently (currently every 5 minutes)</li>
+			<li><strong>Send Once:</strong> Set <code>sendOnce</code> to <code>false</code> if you want continuous data sending (creates an NFT every time)</li>
 		</ul>
 	`;
 
@@ -286,7 +296,7 @@
 		</p>
 		<ul>
 			<li>Connects to your WiFi network</li>
-			<li>Reads temperature and humidity from the sensor every 10 seconds</li>
+			<li>Reads temperature and humidity from the sensor every 5 minutes</li>
 			<li>
 				Sends the data to your API server (only once if <code>sendOnce</code> is set to true - useful
 				for testing)
@@ -295,7 +305,7 @@
 		</ul>
 		<TipBox title="Send Once Flag for Testing" variant="info">
 			The code includes a <code>sendOnce</code> flag that's set to <code>true</code> by default.
-			When enabled, the sensor data will only be sent once instead of every 10 seconds. This is
+			When enabled, the sensor data will only be sent once instead of every 5 minutes. This is
 			useful for testing to avoid creating too many blockchain transactions while you're developing
 			and debugging your setup.
 			<br /><br />

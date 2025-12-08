@@ -25,7 +25,7 @@ export const load = async ({ url }) => {
 
 			// Variables for timing sensor readings
 			unsigned long lastReading = 0;                    // Timestamp of last reading
-			const unsigned long readingInterval = 10000;      // Read every 10 seconds (10000 milliseconds)
+			const unsigned long readingInterval = 300000;     // Read every 5 minutes (300000 milliseconds)
 			
 			// Send once flag - set to true for testing to avoid creating too many transactions
 			const bool sendOnce = true;                       // If true, send sensor data only once
