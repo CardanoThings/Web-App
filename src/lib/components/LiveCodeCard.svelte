@@ -485,7 +485,7 @@
 	}
 
 	.how-it-works-content :global(pre) {
-		background: rgba(0, 0, 0, 0.1);
+		background: rgba(0, 0, 0, 0.025);
 		padding: 1rem;
 		border-radius: 0.5rem;
 		overflow-x: auto;
