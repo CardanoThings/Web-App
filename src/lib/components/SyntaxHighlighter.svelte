@@ -447,7 +447,8 @@
 		scrollbar-color: rgba(203, 214, 226, 0.15) transparent;
 		display: flex;
 		flex-direction: column;
-		border-radius: 0.5rem;
+		border-radius: 1rem;
+		border-top-left-radius: 0;
 		background: #0b1c2c;
 		/* Ensure content is not clipped */
 		overflow-clip-margin: 0;
