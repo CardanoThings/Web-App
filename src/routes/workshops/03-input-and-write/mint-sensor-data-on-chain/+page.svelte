@@ -415,8 +415,8 @@
 		<h2 class="text-4xl font-medium">Burning NFTs</h2>
 		<p class="text-lg font-thin text-white">
 			Sometimes you may want to "burn" (permanently destroy) an NFT. Burning an NFT removes it from
-			the blockchain forever. This can be useful if you want to remove test NFTs or clean up your
-			collection.
+			the blockchain forever (though the transaction will still be visible) - This can be useful if
+			you want to remove test NFTs or clean up your collection.
 		</p>
 		<p class="text-lg font-thin text-white">
 			<strong>What is Burning?</strong>
@@ -430,7 +430,7 @@
 			<strong>Important Notes:</strong>
 		</p>
 		<ul>
-			<li>You can only burn NFTs that you own (they must be in your wallet)</li>
+			<li>You can only burn NFTs that you minted</li>
 			<li>You must use the exact same policy ID and token name that was used when minting</li>
 			<li>Burning is permanent - once burned, the NFT cannot be recovered</li>
 			<li>You still pay a transaction fee to burn an NFT</li>
