@@ -489,19 +489,26 @@
 				Connect other sensors (like a light or motion sensor maybe?) to your microcontroller and API
 				server and mint NFTs when certain events occur in the real world
 			</li>
-			<li>Use the Mesh SDK to build more complex applications on the Cardano blockchain</li>
+			<li>
+				Use the <a href="https://meshjs.dev/" target="_blank" class="link">Mesh SDK</a> to build more
+				complex applications on the Cardano blockchain
+			</li>
 		</ul>
 
 		<p class="text-lg font-thin text-white">
 			If all of this is still a bit overwhelming, don't worry. You can always come back to this
 			workshop and refer to the code examples. And if building your own API server is still too
-			much, you can always use the <a href="https://nmkr.io/" target="_blank" class="link">NMKR</a>
+			much, you can always use a paid service like <a
+				href="https://nmkr.io/"
+				target="_blank"
+				class="link">NMKR</a
+			>
 			API to mint NFTs. There is a tutorial available
 			<a
 				href="https://github.com/elRaulito/IoT-NMKR-integration-Open-Source-Tutorial"
 				target="_blank"
 				class="link">here</a
-			> that shows you how to integrate the NMKR API with your ESP32 cam for example.
+			> that shows you how to integrate the NMKR API with your ESP32 Cam.
 		</p>
 
 		<p class="text-lg font-thin text-white">
