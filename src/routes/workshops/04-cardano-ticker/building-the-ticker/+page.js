@@ -1546,6 +1546,562 @@ export const load = async ({ url }) => {
 					scrollSprite.drawString(floorStr, xPos, yPos + 2);  // +2 for vertical alignment
 					xPos += scrollSprite.textWidth(floorStr) + 8;  // Advance position with spacing
 				}
-			}`
+			}`,
+		walletScreenCode: `#include "wallet_screen.h"
+#include "config.h"
+#include "data_fetcher.h"
+#include "screen_helper.h"
+#include <TFT_eSPI.h>
+
+// External reference to TFT display
+extern TFT_eSPI tft;
+
+/**
+ * Draw the wallet balance screen
+ * 
+ * This is the first screen shown (index 0). It displays your ADA balance
+ * prominently, along with your stake address and last update time.
+ */
+void drawWalletScreen() {
+  // Draw header with title and page indicator
+  // activeIndex = 0 means this is the first screen
+  renderHeader("Wallet", 0);
+  
+  // Clear the content area
+  clearContentArea();
+
+  // Set default text color
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  int y = kHeaderHeight + 5;  // Start below header
+
+  // Draw "Balance" label
+  tft.setTextSize(2);  // Medium text
+  tft.setCursor(10, y);
+  tft.print("Balance");
+
+  // Draw ADA balance in large text
+  tft.setTextSize(3);  // Large text for emphasis
+  y += 30;  // Move down
+  tft.setCursor(10, y);
+  tft.print(getWalletBalance(), 2);  // Print balance with 2 decimal places
+  tft.print("ADA");  // Add "ADA" label
+
+  // Draw stake address (smaller text)
+  tft.setTextSize(1);  // Small text
+  y += 35;  // Move down
+  tft.setCursor(10, y);
+  tft.print("Stake Address: ");
+  
+  // Stake addresses are long (like 57 characters), so we truncate for display
+  // Show first 12 characters + "..." + last 12 characters
+  String truncated = stakeAddress.substring(0, 12);  // First 12 chars
+  truncated += "...";
+  truncated += stakeAddress.substring(stakeAddress.length() - 12);  // Last 12 chars
+  tft.print(truncated);
+
+  // Display last updated time
+  y += 16;  // Move down
+  tft.setCursor(10, y);
+  tft.print("Last updated: ");
+
+  // Get timestamp of when balance was last fetched
+  const unsigned long lastFetch = getLastKoiosFetchTime();
+  
+  if (lastFetch == 0) {
+    // Never fetched (device just started or WiFi not connected yet)
+    tft.print("Never");
+  } else {
+    // Calculate time difference
+    const unsigned long now = millis();  // Current time
+    const unsigned long diffMs = now - lastFetch;  // Difference in milliseconds
+    const unsigned long diffSec = diffMs / 1000UL;  // Convert to seconds
+
+    // Format time difference in human-readable way
+    if (diffSec < 10) {
+      // Less than 10 seconds ago
+      tft.print("just now");
+    } else if (diffSec < 60) {
+      // Less than 1 minute ago - show seconds
+      tft.print(diffSec);
+      tft.print("s ago");
+    } else {
+      // 1 minute or more - show minutes and seconds
+      const unsigned long minutes = diffSec / 60UL;  // Total minutes
+      const unsigned long seconds = diffSec % 60UL;  // Remaining seconds
+      tft.print(minutes);
+      tft.print("m ");
+      if (seconds > 0) {
+        tft.print(seconds);
+        tft.print("s ");
+      }
+      tft.print("ago");
+    }
+  }
+}`,
+		tokenScreenCode: `#include "token_screen.h"
+#include "data_fetcher.h"
+#include "screen_helper.h"
+#include <TFT_eSPI.h>
+
+// External reference to TFT display (defined in main .ino file)
+extern TFT_eSPI tft;
+
+/**
+ * Draw the token positions screen
+ *
+ * This function renders a table showing all your token holdings.
+ * Each row shows one token with its ticker, amount, value, and price change.
+ */
+void drawTokenScreen() {
+  // Draw header with title and page indicator
+  // activeIndex = 1 means this is the second screen (0-indexed)
+  renderHeader("Token Positions", 1);
+
+  // Clear the content area (erases previous screen's content)
+  clearContentArea();
+
+  // Set default text color (white on black)
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  // Start drawing below the header
+  int y = kHeaderHeight + 5;
+
+  // Draw screen title with token count
+  tft.setTextSize(2);                                   // Larger text for title
+  tft.setCursor(10, y);                                 // 10px from left edge
+  tft.print("Tokens(" + String(getTokenCount()) + ")"); // e.g., "Tokens(5)"
+  y += 35; // Move down for next line
+
+  // Get token count (already limited to MAX_DISPLAY_ITEMS = 8)
+  const int tokenCount = getTokenCount();
+  const int displayCount = tokenCount; // We can display all tokens (max 8)
+
+  // Switch to smaller text for the table
+  tft.setTextSize(1);
+
+  // Draw column headers
+  tft.setTextColor(TFT_DARKGREY, TFT_BLACK); // Gray text for headers
+
+  tft.setTextSize(1);
+  tft.setCursor(10, y); // "Ticker" column
+  tft.print("Ticker");
+  tft.setCursor(60, y); // "Amount" column
+  tft.print("Amount");
+  tft.setCursor(160, y); // "Value" column
+  tft.print("Value");
+  tft.setCursor(240, y); // "24h Change" column
+  tft.print("24h Change");
+  y += 16;                                // Move down to start data rows
+  tft.setTextColor(TFT_WHITE, TFT_BLACK); // Back to white for data
+
+  // Loop through each token and draw a row
+  for (int i = 0; i < displayCount; ++i) {
+    // Get token data from data fetcher
+    TokenInfo token = getToken(i);
+
+    // Truncate token name if too long (so it fits on screen)
+    String displayName = token.ticker;
+    if (displayName.length() > 20) {
+      // If longer than 20 characters, show first 15 + "..."
+      displayName = displayName.substring(0, 15) + "...";
+    }
+
+    // Draw token ticker (left column)
+    tft.setCursor(10, y);
+    tft.print(displayName);
+
+    // Draw amount you own (second column)
+    tft.setCursor(60, y);
+    tft.print(token.amount, 2); // Print with 2 decimal places
+
+    // Draw total value in USD (third column)
+    tft.setCursor(160, y);
+    tft.print("$" + String(token.value, 2)); // e.g., "$123.45"
+
+    // Draw 24-hour price change (fourth column)
+    tft.setCursor(240, y);
+
+    // Color code: green for positive change, red for negative
+    if (token.change24h >= 0) {
+      tft.setTextColor(TFT_GREEN, TFT_BLACK); // Green = price went up
+    } else {
+      tft.setTextColor(TFT_RED, TFT_BLACK); // Red = price went down
+    }
+
+    // Show change with + or - sign
+    tft.print((token.change24h >= 0 ? "+" : "") + String(token.change24h, 2));
+    tft.print("%");
+
+    // Reset text color back to white
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+    // Move down for next row
+    y += 16;
+
+    // Safety check: stop if we're running out of screen space
+    if (y > tft.height() - kTickerHeight - 10) {
+      break; // Exit loop early
+    }
+  }
+
+  // If there are more tokens than we can display, show a message
+  if (tokenCount > displayCount) {
+    y += 4; // Add some spacing
+    tft.setCursor(10, y);
+    tft.print("... and ");
+    tft.print(tokenCount - displayCount);
+    tft.print(" more");
+  }
+}`,
+		nftScreenCode: `#include "nft_screen.h"
+#include "data_fetcher.h"
+#include "screen_helper.h"
+#include <TFT_eSPI.h>
+
+// External reference to TFT display
+extern TFT_eSPI tft;
+
+/**
+ * Draw the NFT positions screen
+ *
+ * This function renders a table showing all your NFT collections.
+ * Each row shows one collection with its name, how many you own, and floor
+ * price.
+ */
+void drawNFTScreen() {
+  // Draw header with title and page indicator
+  // activeIndex = 2 means this is the third screen (0-indexed)
+  renderHeader("NFT Positions", 2);
+
+  // Clear the content area
+  clearContentArea();
+
+  // Set default text color
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  // Start drawing below header
+  int y = kHeaderHeight + 5;
+
+  // Draw screen title with NFT collection count
+  tft.setTextSize(2); // Larger text
+  tft.setCursor(10, y);
+  tft.print("NFTs(" + String(getNftCount()) + ")"); // e.g., "NFTs(3)"
+  y += 35;                                          // Move down
+
+  // Get NFT collection count (already limited to MAX_DISPLAY_ITEMS = 8)
+  const int nftCount = getNftCount();
+  const int displayCount = nftCount; // We can display all collections (max 8)
+
+  // Switch to smaller text for table
+  tft.setTextSize(1);
+
+  // Draw column headers
+  tft.setTextColor(TFT_DARKGREY, TFT_BLACK); // Gray for headers
+
+  tft.setTextSize(1);
+  tft.setCursor(10, y); // "Name" column
+  tft.print("Name");
+  tft.setCursor(120, y); // "Amount" column
+  tft.print("Amount");
+  tft.setCursor(200, y); // "Floor Price" column
+  tft.print("Floor Price");
+  y += 16;                                // Move down to data rows
+  tft.setTextColor(TFT_WHITE, TFT_BLACK); // Back to white
+
+  // Loop through each NFT collection and draw a row
+  for (int i = 0; i < displayCount; ++i) {
+    // Get NFT collection data from data fetcher
+    NFTInfo nft = getNFT(i);
+
+    // Truncate collection name if too long (so it fits on screen)
+    String displayName = nft.name;
+    if (displayName.length() > 18) {
+      // If longer than 18 characters, show first 15 + "..."
+      displayName = displayName.substring(0, 15) + "...";
+    }
+
+    // Draw collection name (left column)
+    tft.setCursor(10, y);
+    tft.print(displayName);
+
+    // Draw number of NFTs you own (middle column)
+    tft.setCursor(120, y);
+    tft.print(nft.amount, 0); // Print as integer (no decimals for count)
+
+    // Draw floor price (right column)
+    tft.setCursor(200, y);
+    if (nft.floorPrice > 0.0f) {
+      // If we have floor price data, show it in ADA
+      tft.print(String(nft.floorPrice, 2) + " ADA"); // e.g., "50.25 ADA"
+    } else {
+      // If floor price not available yet (still fetching), show "N/A"
+      tft.print("N/A");
+    }
+
+    // Move down for next row
+    y += 16;
+
+    // Safety check: stop if running out of screen space
+    if (y > tft.height() - kTickerHeight - 10) {
+      break; // Exit loop early
+    }
+  }
+
+  // If there are more collections than we can display, show a message
+  if (nftCount > displayCount) {
+    y += 4; // Add spacing
+    tft.setCursor(10, y);
+    tft.print("... and ");
+    tft.print(nftCount - displayCount);
+    tft.print(" more");
+  }
+}`,
+		statusScreenCode: `#include "status_screen.h"
+#include "screen_helper.h"
+#include "wifi_manager.h"
+#include <TFT_eSPI.h>
+#include <WiFi.h>
+
+// External reference to TFT display
+extern TFT_eSPI tft;
+
+/**
+ * Draw the system status screen
+ * 
+ * This is the last screen (index 3). It shows technical information about
+ * the device and network connection.
+ */
+void drawStatusScreen() {
+  // Draw header with title and page indicator
+  // activeIndex = 3 means this is the fourth (last) screen
+  renderHeader("System", 3);
+  
+  // Clear the content area
+  clearContentArea();
+
+  // Set default text color
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  // Gather all status information
+  const bool connected = wifiManagerIsConnected();  // Is WiFi connected?
+  const int32_t rssi = connected ? WiFi.RSSI() : 0;  // Signal strength (only if connected)
+  const IPAddress ipAddr = connected ? WiFi.localIP() : IPAddress(0, 0, 0, 0);  // IP address
+  const String macAddr = WiFi.macAddress();  // MAC address (always available)
+  
+  // Calculate uptime (how long device has been running)
+  const unsigned long uptimeMs = millis();  // Milliseconds since startup
+  const unsigned long uptimeSec = uptimeMs / 1000UL;  // Convert to seconds
+  
+  // Break down uptime into days, hours, minutes, seconds
+  const unsigned long days = uptimeSec / 86400UL;  // 86400 seconds = 1 day
+  const unsigned long hours = (uptimeSec % 86400UL) / 3600UL;  // Remaining hours
+  const unsigned long minutes = (uptimeSec % 3600UL) / 60UL;  // Remaining minutes
+  const unsigned long seconds = uptimeSec % 60UL;  // Remaining seconds
+
+  // Start drawing below header
+  int y = kHeaderHeight + 5;
+  
+  // Draw "Network" label
+  tft.setTextSize(2);
+  tft.setCursor(10, y);
+  tft.print("Network");
+
+  // Draw connection status in large text
+  tft.setTextSize(3);  // Large text
+  y += 30;
+  tft.setCursor(10, y);
+  tft.print(connected ? "Connected" : "Offline");  // Show status
+
+  // Draw WiFi signal strength
+  tft.setTextSize(1);  // Small text
+  y += 35;
+  tft.setCursor(10, y);
+  tft.print("Signal: ");
+  if (connected) {
+    // RSSI = Received Signal Strength Indicator
+    // Measured in dBm (decibels relative to milliwatt)
+    // Typical range: -30 (excellent) to -90 (poor)
+    // Negative numbers are normal - closer to 0 is better
+    tft.print(String(rssi) + " dBm");
+  } else {
+    tft.print("N/A");  // Not available if not connected
+  }
+
+  // Draw IP address
+  y += 16;
+  tft.setCursor(10, y);
+  tft.print("IP: ");
+  tft.print(ipAddr.toString());
+
+  // Draw MAC address
+  y += 16;
+  tft.setCursor(10, y);
+  tft.print("MAC: ");
+  tft.print(macAddr);
+
+  // Draw uptime
+  y += 16;
+  tft.setCursor(10, y);
+  tft.print("Uptime: ");
+  // Display uptime in human-readable format: "Xd Xh Xm Xs"
+  tft.print(days);
+  tft.print("d ");  // Days
+  tft.print(hours);
+  tft.print("h ");  // Hours
+  tft.print(minutes);
+  tft.print("m ");  // Minutes
+  tft.print(seconds);
+  tft.print("s");   // Seconds
+}`,
+		tickerCode: `#include "ticker.h"
+#include "data_fetcher.h"
+#include <Arduino.h>
+#include <TFT_eSPI.h>
+
+// External reference to TFT display (defined in main .ino file)
+extern TFT_eSPI tft;
+
+// Create sprite for smooth scrolling
+// A sprite is an off-screen buffer - we draw to it, then push it to the display
+// This reduces flicker because we update the whole area at once
+TFT_eSprite scrollSprite = TFT_eSprite(&tft);
+
+// Scroll area configuration
+const int scrollAreaHeight = 30;  // Height of ticker area at bottom (in pixels)
+const int yPos = 4;                // Vertical position within sprite (4px from top)
+const int scrollSpeed = 2;         // How many pixels to scroll per update
+
+// Scrolling state variables
+int scrollX = 0;      // Current horizontal scroll position (in pixels)
+int contentWidth = 0; // Total width of all token content (in pixels)
+
+/**
+ * Calculate the price per token
+ */
+static float getTokenPrice(const TokenInfo& token) {
+  // Avoid division by zero (if amount is 0, return 0)
+  return (token.amount > 0.0f) ? (token.value / token.amount) : 0.0f;
+}
+
+/**
+ * Calculate total width of all token content
+ */
+void calculateContentWidth() {
+  contentWidth = 0;  // Start with zero width
+  const int tokenCount = getTokenCount();
+
+  // Loop through each token and measure its width
+  for (int i = 0; i < tokenCount; i++) {
+    TokenInfo token = getToken(i);
+    float price = getTokenPrice(token);
+
+    // Measure ticker symbol width (larger text, size 2)
+    tft.setTextSize(2);
+    contentWidth += tft.textWidth(token.ticker) + 4;  // Add 4px spacing after ticker
+
+    // Measure price width (smaller text, size 1)
+    tft.setTextSize(1);
+    String priceStr = "$" + String(price, 4);  // Format: "$0.1234"
+    contentWidth += tft.textWidth(priceStr) + 4;  // Add 4px spacing after price
+
+    // Measure 24h change width (smaller text, size 1)
+    String changeStr = (token.change24h >= 0 ? "+" : "") +
+                       String(token.change24h, 2) + "%";  // Format: "+5.67%" or "-2.34%"
+    contentWidth += tft.textWidth(changeStr) + 8;  // Add 8px spacing after change
+  }
+}
+
+/**
+ * Draw all token information at a given horizontal position
+ */
+void drawContentLine(int xPos) {
+  const int tokenCount = getTokenCount();
+  
+  // Draw each token in sequence
+  for (int i = 0; i < tokenCount; i++) {
+    TokenInfo token = getToken(i);
+    float price = getTokenPrice(token);
+    
+    // Draw token ticker symbol (larger, more prominent)
+    scrollSprite.setTextSize(2);  // Size 2 = larger text
+    scrollSprite.setTextColor(TFT_WHITE, TFT_BLACK);
+    scrollSprite.drawString(token.ticker, xPos, yPos);  // Draw at current position
+    xPos += scrollSprite.textWidth(token.ticker) + 4;  // Move xPos right by ticker width + spacing
+
+    // Draw token price (smaller text, slightly lower for visual alignment)
+    scrollSprite.setTextSize(1);  // Size 1 = smaller text
+    String priceStr = "$" + String(price, 4);  // Format: "$0.1234"
+    scrollSprite.drawString(priceStr, xPos, yPos + 2);  // +2px down for alignment
+    xPos += scrollSprite.textWidth(priceStr) + 4;  // Move xPos right
+
+    // Draw 24h price change with color coding
+    String changeStr = (token.change24h >= 0 ? "+" : "") +
+                       String(token.change24h, 2) + "%";  // Format: "+5.67%" or "-2.34%"
+
+    // Color code: green = price went up, red = price went down
+    if (token.change24h >= 0) {
+      scrollSprite.setTextColor(TFT_GREEN, TFT_BLACK);  // Green for gains
+    } else {
+      scrollSprite.setTextColor(TFT_RED, TFT_BLACK);    // Red for losses
+    }
+    scrollSprite.drawString(changeStr, xPos, yPos + 2);  // Draw change
+    xPos += scrollSprite.textWidth(changeStr) + 8;  // Move xPos right (extra spacing)
+  }
+}
+
+/**
+ * Initialize the ticker display
+ */
+void initTicker() {
+  // Fill entire screen with black (clean slate)
+  tft.fillScreen(TFT_BLACK);
+
+  // Configure sprite for smooth scrolling
+  // 16-bit color depth = 65,536 colors (full color support)
+  scrollSprite.setColorDepth(16);
+
+  // Create the sprite buffer
+  // Width = full screen width, Height = ticker area height (30px)
+  scrollSprite.createSprite(tft.width(), scrollAreaHeight);
+
+  // Calculate how wide all the token content is
+  calculateContentWidth();
+
+  Serial.println("Token scroll display initialized!");
+}
+
+/**
+ * Update the ticker display (call this in loop)
+ */
+void updateTicker() {
+  // Clear the sprite buffer with black (erase previous frame)
+  scrollSprite.fillSprite(TFT_BLACK);
+
+  // Draw first copy of content
+  // -scrollX means we're scrolling left (negative X moves content left)
+  drawContentLine(-scrollX);
+
+  // Draw second copy of content for seamless looping
+  // We offset it by contentWidth so it appears right after the first copy
+  // When first copy scrolls off left, second copy is already visible
+  drawContentLine(-scrollX + contentWidth);
+
+  // Push the sprite to the display
+  // This updates the screen all at once (reduces flicker)
+  scrollSprite.pushSprite(0, tft.height() - scrollAreaHeight);
+
+  // Update scroll position (move left by scrollSpeed pixels)
+  scrollX += scrollSpeed;
+
+  // Check if we've scrolled past all the content
+  // If so, reset to 0 to create the loop effect
+  if (scrollX >= contentWidth) {
+    scrollX = 0;  // Loop back to beginning
+  }
+
+  // Small delay to control scroll speed
+  // 30ms = ~33 updates per second (smooth animation)
+  delay(30);
+}`
 		};
 };

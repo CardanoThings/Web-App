@@ -23,262 +23,357 @@
 
 <SectionNavigator>
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Setting Things Up</h2>
+		<h2 class="text-4xl font-medium">What We're Building</h2>
 		<p class="text-lg font-thin text-white">
-			Goods news: If you completed the former workshops, you already have the basic knowledge and
-			building blocks to build your own Ticker: Connect your microcontroler to Wifi, fetch data and
-			display it on your TFT display.
+			In this workshop, you'll build a complete Cardano Ticker that displays your wallet information
+			on a TFT display. The ticker will show:
+		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>Your ADA wallet balance</li>
+			<li>All your token holdings with prices and 24h changes</li>
+			<li>Your NFT collections with floor prices</li>
+			<li>System status information</li>
+			<li>A scrolling ticker at the bottom showing token prices</li>
+		</ul>
+		<p class="text-lg font-thin text-white">
+			The ticker automatically rotates between different screens every 10 seconds, and the data
+			updates periodically from Cardano blockchain APIs. On startup, it connects to WiFi, fetches
+			initial data, and displays the first screen. During operation, it continuously maintains the
+			WiFi connection, updates data (wallet balance every 1 minute, tokens/NFTs every 10 minutes),
+			rotates screens, and animates the scrolling ticker.
 		</p>
 		<p class="text-lg font-thin text-white">
-			We will start with the code example you have already learned about in <a
-				href="/workshops/02-read-and-output/display-data"
-				target="_blank"
-				class="link">Workshop 02</a
-			> and build on this example to fetch the token & NFT prices and the focus on displaying them neatly
-			on your TFT display.
+			<strong>Good news:</strong> If you've completed the previous workshops, you already know most of
+			what you need! This project combines:
 		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				WiFi connectivity from
+				<a href="/workshops/02-read-and-output/fetch-wallet-balance" target="_blank" class="link"
+					>Workshop 02</a
+				>
+			</li>
+			<li>
+				Display techniques from
+				<a href="/workshops/02-read-and-output/display-data" target="_blank" class="link"
+					>Workshop 02</a
+				>
+			</li>
+			<li>
+				API fetching from
+				<a href="/workshops/02-read-and-output/fetch-wallet-balance" target="_blank" class="link"
+					>Workshop 02</a
+				>
+				and
+				<a
+					href="/workshops/03-input-and-write/connect-and-read-sensor-data"
+					target="_blank"
+					class="link">Workshop 03</a
+				>
+			</li>
+		</ul>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Understanding the Project Structure</h2>
 		<p class="text-lg font-thin text-white">
-			Revisit the code example to make sure you understand it before we continue.
+			The CardanoTicker is organized as a multi-file Arduino project, splitting the code into
+			logical modules for easier understanding and maintenance. Each component has its own file (or
+			pair of .h and .cpp files), and we'll walk through each one step by step in the following
+			sections.
 		</p>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Fetching The Ticker Data</h2>
+		<h2 class="text-4xl font-medium">Step 1: Configuration Files</h2>
 		<p class="text-lg font-thin text-white">
-			Now let's create an Arduino sketch that fetches all the data we need for our ticker. The code
-			will:
+			Before we dive into the code, you need to configure the project with your wallet addresses and
+			API keys. This is similar to how you configured WiFi credentials in previous workshops.
+		</p>
+		<h3 class="mt-6 text-2xl font-medium">config.cpp - Your Wallet Addresses</h3>
+		<p class="text-lg font-thin text-white">
+			The <code>config.cpp</code> file stores your Cardano addresses and API endpoints. You need to edit
+			this file with your own addresses:
+		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				<strong>stakeAddress</strong> - Your stake address (starts with "stake1..."). This is used
+				to fetch your wallet balance from Koios. You learned about stake addresses in
+				<a href="/workshops/02-read-and-output/fetch-wallet-balance" target="_blank" class="link"
+					>Workshop 02</a
+				>!
+			</li>
+			<li>
+				<strong>walletAddress</strong> - Your payment address (starts with "addr1..."). This is used
+				to fetch your tokens and NFTs from MinSwap.
+			</li>
+			<li>
+				<strong>cexplorerApiKey</strong> - Your Cexplorer.io API key. Get this from cexplorer.io after
+				creating an account (as explained in the previous step).
+			</li>
+		</ul>
+		<TipBox title="Finding Your Addresses" variant="info">
+			You can find your stake address and wallet address in your Cardano wallet (Yoroi, Eternl,
+			Vespr, etc.). The stake address is usually shown in the "Staking" or "Rewards" section, and
+			the payment address is your main receiving address. Both addresses are also available on
+			blockchain explorers like
+			<a href="https://cardanoscan.io/" target="_blank" class="link">CardanoScan</a> or
+			<a href="https://cexplorer.io/" target="_blank" class="link">Cexplorer</a>.
+		</TipBox>
+		<h3 class="mt-6 text-2xl font-medium">secrets.h - WiFi Credentials</h3>
+		<p class="text-lg font-thin text-white">
+			The <code>secrets.h</code> file stores your WiFi credentials. This file is not committed to
+			git for security. You'll need to create it from <code>secrets.h.example</code>:
+		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				Copy <code>secrets.h.example</code> to <code>secrets.h</code>
+			</li>
+			<li>
+				Replace <code>WIFI_SSID</code> with your WiFi network name (same as you did in Workshop 02!)
+			</li>
+			<li>
+				Replace <code>WIFI_PASSWORD</code> with your WiFi password
+			</li>
+		</ul>
+		<p class="text-lg font-thin text-white">
+			This is exactly the same process you used in previous workshops for WiFi configuration!
+		</p>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Step 2: WiFi Manager & Data Fetcher</h2>
+		<p class="text-lg font-thin text-white">
+			The WiFi manager handles connecting to WiFi and automatically reconnecting if the connection
+			drops. The data fetcher organizes all the API calls from the previous step (Koios, MinSwap,
+			and Cexplorer) into a reusable module that fetches data periodically and stores it for the
+			screens to display.
+		</p>
+		<p class="text-lg font-thin text-white">
+			Both modules use the same techniques you learned in
+			<a href="/workshops/02-read-and-output/fetch-wallet-balance" target="_blank" class="link"
+				>Workshop 02</a
+			>, just organized into reusable components. The data fetcher uses rate limiting (wallet
+			balance every 1 minute, tokens/NFTs every 10 minutes) and provides getter functions like
+			<code>getWalletBalance()</code> and <code>getToken(i)</code> that the screen files use to display
+			data.
+		</p>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Step 3: Wallet Screen</h2>
+		<p class="text-lg font-thin text-white">
+			After the start screen displays "CardanoTicker" on boot, the ticker automatically rotates
+			between four data screens every 10 seconds: the wallet screen, token screen, NFT screen, and
+			status screen.
+		</p>
+		<p class="text-lg font-thin text-white">
+			The wallet screen displays your ADA balance prominently. This is similar to the wallet balance
+			display you created in
+			<a href="/workshops/02-read-and-output/display-data" target="_blank" class="link"
+				>Workshop 02</a
+			>!
+		</p>
+		<p class="text-lg font-thin text-white">
+			<strong>What it shows:</strong>
+		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				<strong>Balance:</strong> Your ADA balance in large text (size 3) - this is the most important
+				information!
+			</li>
+			<li>
+				<strong>Stake Address:</strong> Your stake address, truncated to fit on screen (shows first 12
+				characters + "..." + last 12 characters)
+			</li>
+			<li>
+				<strong>Last Updated:</strong> How long ago the balance was fetched (e.g., "2m 30s ago" or "just
+				now")
+			</li>
+		</ul>
+		<CodeCard
+			title="Wallet Screen Code"
+			code={data.walletScreenCode}
+			language="cpp"
+			filename="wallet_screen.cpp"
+			howItWorksContent="<p>The screen uses the <code>getWalletBalance()</code> function from the data fetcher to get the current balance. The &quot;Last updated&quot; time is calculated using <code>millis()</code> - the same timing technique you learned in previous workshops!</p><p>The function first draws the header using <code>renderHeader()</code>, then clears the content area. It displays the balance in large text (size 3) for emphasis, followed by a truncated stake address and the last update time. The time formatting converts milliseconds to a human-readable format (e.g., &quot;2m 30s ago&quot; or &quot;just now&quot;).</p>"
+		/>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Step 4: Token Screen</h2>
+		<p class="text-lg font-thin text-white">
+			The token screen displays all your token holdings in a table format. Each row shows one token
+			with its ticker symbol, amount you own, total value, and 24-hour price change.
+		</p>
+		<p class="text-lg font-thin text-white">
+			<strong>What it shows:</strong>
+		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				<strong>Ticker:</strong> The token symbol (e.g., "MIN", "HOSKY", "ADA")
+			</li>
+			<li>
+				<strong>Amount:</strong> How many tokens you own
+			</li>
+			<li>
+				<strong>Value:</strong> Total value in USD (amount × price per token)
+			</li>
+			<li>
+				<strong>24h Change:</strong> Price change percentage, color-coded green (up) or red (down)
+			</li>
+		</ul>
+		<CodeCard
+			title="Token Screen Code"
+			code={data.tokenScreenCode}
+			language="cpp"
+			filename="token_screen.cpp"
+			howItWorksContent="<p>The screen loops through all tokens using <code>getTokenCount()</code> and <code>getToken(i)</code> functions from the data fetcher. For each token, it draws a row in the table. The screen can display up to 8 tokens (limited by screen space).</p><p>The 24h change is color-coded: green for positive changes (price went up) and red for negative changes (price went down). This makes it easy to see at a glance which tokens are performing well!</p><p>The function first draws column headers, then loops through each token to display its ticker, amount, value, and 24h change. Long token names are truncated to fit on screen. The function includes a safety check to stop drawing if running out of screen space.</p>"
+		/>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Step 5: NFT Screen</h2>
+		<p class="text-lg font-thin text-white">
+			The NFT screen displays all your NFT collections. Each row shows one collection with its name,
+			how many NFTs you own from that collection, and the floor price.
+		</p>
+		<p class="text-lg font-thin text-white">
+			<strong>What it shows:</strong>
+		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				<strong>Name:</strong> The NFT collection name (e.g., "Cardano Punks", "SpaceBudz")
+			</li>
+			<li>
+				<strong>Amount:</strong> How many NFTs you own from this collection (if you own 3 NFTs from the
+				same collection, it shows "3")
+			</li>
+			<li>
+				<strong>Floor Price:</strong> The lowest current selling price for this collection in ADA
+			</li>
+		</ul>
+		<CodeCard
+			title="NFT Screen Code"
+			code={data.nftScreenCode}
+			language="cpp"
+			filename="nft_screen.cpp"
+			howItWorksContent="<p>NFTs are grouped by Policy ID (collection identifier). If you own multiple NFTs from the same collection, they're shown as one row with the total count. The floor price comes from the Cexplorer API and shows the cheapest NFT from that collection currently for sale.</p><p>The screen uses <code>getNftCount()</code> and <code>getNFT(i)</code> functions from the data fetcher, just like the token screen!</p><p>The function displays column headers for Name, Amount, and Floor Price. For each NFT collection, it shows the collection name (truncated if too long), the number of NFTs owned, and the floor price in ADA. If floor price data isn't available yet, it displays &quot;N/A&quot;.</p>"
+		/>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Step 6: Status Screen</h2>
+		<p class="text-lg font-thin text-white">
+			The status screen shows technical information about your device and network connection. This
+			is useful for debugging and monitoring.
+		</p>
+		<p class="text-lg font-thin text-white">
+			<strong>What it shows:</strong>
+		</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				<strong>Network Status:</strong> "Connected" or "Offline" in large text
+			</li>
+			<li>
+				<strong>Signal Strength:</strong> WiFi signal strength in dBm (closer to 0 is better)
+			</li>
+			<li>
+				<strong>IP Address:</strong> Your device's address on the network (e.g., 192.168.1.100)
+			</li>
+			<li>
+				<strong>MAC Address:</strong> Your device's unique hardware identifier
+			</li>
+			<li>
+				<strong>Uptime:</strong> How long the device has been running (e.g., "2d 5h 30m 15s")
+			</li>
+		</ul>
+		<CodeCard
+			title="Status Screen Code"
+			code={data.statusScreenCode}
+			language="cpp"
+			filename="status_screen.cpp"
+			howItWorksContent="<p>The uptime is calculated using <code>millis()</code> and converted to days, hours, minutes, and seconds. This is the same timing technique you've been using throughout the workshops!</p><p>The function gathers all status information first: WiFi connection status, signal strength (RSSI), IP address, MAC address, and uptime. It then displays each piece of information in a clear format. The connection status is shown in large text (size 3) for emphasis, while other details use smaller text. If WiFi is not connected, some values show &quot;N/A&quot; or default values.</p>"
+		/>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Step 7: Scrolling Ticker</h2>
+		<p class="text-lg font-thin text-white">
+			The scrolling ticker at the bottom of the screen continuously scrolls token prices
+			horizontally. This creates a stock-market-style ticker effect!
+		</p>
+		<p class="text-lg font-thin text-white">
+			<strong>What it displays:</strong>
+		</p>
+		<p class="text-lg font-thin text-white">For each token, the ticker shows:</p>
+		<ul class="list-inside list-disc space-y-2">
+			<li>
+				<strong>Ticker symbol</strong> in larger text (e.g., "MIN")
+			</li>
+			<li>
+				<strong>Price per token</strong> in USD (e.g., "$0.0123")
+			</li>
+			<li>
+				<strong>24h change</strong> color-coded green (up) or red (down) (e.g., "+5.67%")
+			</li>
+		</ul>
+		<CodeCard
+			title="Scrolling Ticker Code"
+			code={data.tickerCode}
+			language="cpp"
+			filename="ticker.cpp"
+			howItWorksContent="<p>The ticker uses a sprite (off-screen buffer) to reduce flicker. Here's the clever trick:</p><ol><li>All token information is drawn into a sprite buffer (not directly to the screen)</li><li>The content is drawn twice, side by side, to create seamless looping</li><li>The sprite scrolls left, and when the first copy scrolls off, the second copy is already visible</li><li>When we reach the end, we reset to the beginning - creating an endless scroll effect!</li></ol><p>The ticker updates every 30 milliseconds to create smooth scrolling. The scroll speed is 2 pixels per update, which creates a nice, readable scrolling speed.</p><p><strong>Understanding Sprites:</strong> A sprite is an off-screen buffer (like a canvas) that you draw to, then push to the screen all at once. This reduces flicker because the screen updates in one operation instead of many small updates. Think of it like drawing on paper first, then showing the whole paper at once, rather than drawing directly on a whiteboard where people can see each line being drawn.</p>"
+		/>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Getting Started</h2>
+		<p class="text-lg font-thin text-white">
+			Now that you understand how the code works, here's how to set it up:
 		</p>
 		<ol class="list-inside list-decimal space-y-2">
-			<li>Set up all necessary variables (stake address, wallet address, API keys)</li>
-			<li>Connect to WiFi</li>
-			<li>Fetch wallet balance from Koios using your stake address</li>
-			<li>Fetch wallet assets and NFT positions from MinSwap</li>
-			<li>Fetch NFT collection information from Cexplorer.io</li>
-			<li>Log all the fetched data to the serial console</li>
+			<li>
+				<strong>Download the code:</strong> Get the CardanoTicker project from the GitHub repository
+			</li>
+			<li>
+				<strong>Configure addresses:</strong> Edit <code>config.cpp</code> with your stake address and
+				wallet address
+			</li>
+			<li>
+				<strong>Set up WiFi:</strong> Copy <code>secrets.h.example</code> to <code>secrets.h</code>
+				and add your WiFi credentials
+			</li>
+			<li>
+				<strong>Get API key:</strong> Get your Cexplorer.io API key and add it to
+				<code>config.cpp</code>
+			</li>
+			<li>
+				<strong>Install libraries:</strong> Make sure you have TFT_eSPI, ArduinoJson, and WiFi libraries
+				installed (you should already have these from previous workshops!)
+			</li>
+			<li>
+				<strong>Upload and run:</strong> Upload the code to your ESP32 and watch your ticker come to
+				life!
+			</li>
 		</ol>
-		<p class="text-lg font-thin text-white">
-			For now, the data will be fetched only once when the microcontroller starts. Later, we'll add
-			code to fetch the data in intervals to keep it up to date.
-		</p>
-
-		<TipBox title="Example Addresses" variant="info">
-			The code example uses example addresses from the
-			<a
-				href="https://pool.pm/stake1u8l0y82je0t2wkkpps97rv0q7lf882q0fc24gwjz9nacz0c5gt5k3"
-				target="_blank"
-				class="link">CardanoThings.io</a
-			> wallet for demonstration purposes. This is a mainnet wallet and contains some tokens and NFTs.
-			Feel free to use your own addresses when you use this code.
+		<TipBox title="Library Requirements" variant="info">
+			You should already have all the required libraries from previous workshops:
+			<ul class="mt-2 ml-4 list-disc">
+				<li>
+					<strong>TFT_eSPI</strong> - From Workshop 02 (display library)
+				</li>
+				<li>
+					<strong>ArduinoJson</strong> - From Workshop 02 (JSON parsing)
+				</li>
+				<li>
+					<strong>WiFi</strong> - Built into ESP32 (WiFi connectivity)
+				</li>
+				<li>
+					<strong>HTTPClient</strong> - Built into ESP32 (HTTP requests)
+				</li>
+			</ul>
 		</TipBox>
-
-		<CodeCard
-			title="Fetching The Ticker Data"
-			code={data.fetchAllDataCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-04/examples/arduino-fetch-code"
-			footerText="Copy and paste the code into your Arduino IDE. Make sure to replace 'Your SSID' and 'Your Password' with your WiFi credentials and replace 'your-api-key-here' with your Cexplorer.io API key. Upload it to your microcontroller and open the serial monitor to see all the fetched data."
-			howItWorksContent={`
-				<h3>Overview</h3>
-				<p>This code example demonstrates how to fetch all the data needed for a Cardano ticker by making API calls to three different services: Koios (for wallet balance), MinSwap (for token and NFT positions), and Cexplorer.io (for NFT collection information).</p>
-				
-				<h3>Step-by-Step Breakdown</h3>
-				
-				<h4>Step 1: Setting Up Variables</h4>
-				<ul>
-					<li><strong>WiFi Credentials:</strong> Your network SSID and password for connecting to the internet</li>
-					<li><strong>Cardano Addresses:</strong> Your stake address (for balance) and wallet address (for tokens/NFTs)</li>
-					<li><strong>API Key:</strong> Your Cexplorer.io API key (required for their API)</li>
-					<li><strong>API URLs:</strong> The endpoints for each service we'll be calling</li>
-				</ul>
-				
-				<h4>Step 2: Connecting to WiFi</h4>
-				<ul>
-					<li>The <strong>connectToWiFi()</strong> function initializes the WiFi connection using your credentials</li>
-					<li>It waits until the connection is established (checking every second)</li>
-					<li>Once connected, it prints the IP address assigned to your microcontroller</li>
-					<li>This is essential because all API calls require an internet connection</li>
-				</ul>
-				
-				<h4>Step 3: Fetching Wallet Balance from Koios</h4>
-				<ul>
-					<li>The <strong>fetchWalletBalance()</strong> function makes a POST request to the Koios API</li>
-					<li>It sends your stake address in a JSON payload: <code>{"_stake_addresses": ["your_stake_address"]}</code></li>
-					<li>Koios returns the balance as a string in Lovelace (the smallest unit of ADA)</li>
-					<li>The code converts Lovelace to ADA by dividing by 1,000,000 (1 ADA = 1,000,000 Lovelace)</li>
-					<li>The balance is stored in the <code>walletBalance</code> variable and printed to the console</li>
-				</ul>
-				
-				<h4>Step 4: Fetching Tokens and NFTs from MinSwap</h4>
-				<ul>
-					<li>The <strong>fetchMinSwapData()</strong> function makes a GET request to the MinSwap API</li>
-					<li>It appends your wallet address as a query parameter: <code>?address=YOUR_ADDRESS&only_minswap=true&filter_small_value=false</code></li>
-					<li>The API returns a JSON object with "positions" containing "nft_positions" and "asset_positions" arrays</li>
-					<li>The code extracts:
-						<ul>
-							<li>NFT count and currency symbols</li>
-							<li>Token information (ticker, name, price in USD, amount, 24h change percentage)</li>
-						</ul>
-					</li>
-					<li>All found tokens and NFTs are logged to the serial console</li>
-				</ul>
-				
-				<h4>Step 5: Fetching NFT Info from Cexplorer</h4>
-				<ul>
-					<li>The <strong>fetchCexplorerData()</strong> function makes a GET request to the Cexplorer API</li>
-					<li>It requires your API key in the request header: <code>"api-key": "your-api-key"</code></li>
-					<li>The API URL includes the policy ID as a query parameter: <code>?id=POLICY_ID</code></li>
-					<li>The response contains collection information including:
-						<ul>
-							<li>Collection name</li>
-							<li>Floor price (in Lovelace, converted to ADA)</li>
-							<li>Number of owners</li>
-							<li>Volume and other statistics</li>
-						</ul>
-					</li>
-					<li>This data is printed to the console for verification</li>
-				</ul>
-				
-				<h3>Key Concepts</h3>
-				<ul>
-					<li><strong>HTTP Methods:</strong> Koios uses POST (sends data in body), MinSwap and Cexplorer use GET (data in URL)</li>
-					<li><strong>JSON Parsing:</strong> All responses are JSON, which we parse using ArduinoJSON library</li>
-					<li><strong>API Keys:</strong> Cexplorer requires authentication via API key in headers</li>
-					<li><strong>Lovelace Conversion:</strong> Cardano amounts are often returned in Lovelace and need conversion to ADA</li>
-					<li><strong>Error Handling:</strong> The code checks HTTP response codes and JSON parsing errors</li>
-				</ul>
-				
-				<h3>What Happens Next</h3>
-				<p>Currently, the code fetches data once when the microcontroller starts. In the next steps, you'll learn how to:</p>
-				<ul>
-					<li>Fetch data in intervals (e.g., every 30 seconds) to keep it up to date</li>
-					<li>Display the fetched data on your TFT display</li>
-					<li>Format and animate the data for a beautiful ticker display</li>
-				</ul>
-				
-				<h3>Important Notes</h3>
-				<ul>
-					<li><strong>Replace all placeholders:</strong> Make sure to replace SSID, password, addresses, and API key with your actual values</li>
-					<li><strong>API Key Security:</strong> Never share your API keys publicly or commit them to version control</li>
-					<li><strong>Rate Limits:</strong> Be mindful of API rate limits, especially for free tiers</li>
-					<li><strong>Network Requirements:</strong> All API calls require an active WiFi connection</li>
-					<li><strong>Serial Monitor:</strong> Open the Serial Monitor at 115200 baud to see all the output</li>
-				</ul>
-			`}
-		/>
-	</section>
-
-	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Designing the Ticker</h2>
-		<p class="text-lg font-thin text-white">
-			Now that we have all the data we need, we can start designing the Ticker. We will use dummy
-			data to not run into rate limits and to get a feel for the data we are working with.
-		</p>
-
-		<h3 class="mt-6 text-2xl font-medium">Start Screen</h3>
-		<p class="text-lg font-thin text-white">
-			The first screen will just be show on startup and welcome you with a simple "CardanoTicker"
-			intro.
-		</p>
-		<p class="text-lg font-thin text-white">
-			You have all the knowledge to build this from <a
-				href="/workshops/02-read-and-output/display-data"
-				target="_blank"
-				class="link">Workshop 02</a
-			> already.
-		</p>
-
-		<CodeCard
-			title="Start Screen"
-			language="cpp"
-			code={data.startScreenCode}
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-04/examples/start-screen-code"
-			footerText="Copy and paste the code into your Arduino IDE. Upload it to your microcontroller to display the start screen with 'CardanoTicker' and the website URL."
-			howItWorksContent={`
-				<h3>Overview</h3>
-				<p>This code creates a simple start screen that displays "CardanoTicker" and "www.cardanothings.io" centered on a black background. The display logic is organized in a separate function for easy reuse and future extraction to its own file.</p>
-				
-				<h3>Display Initialization</h3>
-				<p>The code begins by initializing the TFT display hardware in the <code>setup()</code> function:</p>
-				<ul>
-					<li><strong>tft.init():</strong> Powers on the display and initializes the ILI9341 driver chip</li>
-					<li><strong>tft.setRotation(1):</strong> Sets landscape orientation (90° rotation)</li>
-					<li><strong>tft.invertDisplay(true):</strong> Inverts the display colors to correct color mapping for CYD displays. This ensures colors appear correctly (black shows as black, white shows as white)</li>
-				</ul>
-				
-				<h3>The displayStartScreen() Function</h3>
-				<p>All display logic is contained in the <code>displayStartScreen()</code> function, which makes it easy to call from anywhere in your code and extract to a separate file later:</p>
-				<ul>
-					<li><strong>Background:</strong> Fills the entire screen with black using <code>tft.fillScreen(TFT_BLACK)</code></li>
-					<li><strong>Main Title:</strong> Displays "CardanoTicker" in large white text (size 3) centered on the screen</li>
-					<li><strong>Website URL:</strong> Displays "www.cardanothings.io" in smaller white text (size 1) centered below the main title</li>
-				</ul>
-				
-				<h3>Text Centering Calculation</h3>
-				<p>To center text on the screen, the code calculates the position mathematically:</p>
-				<ul>
-					<li><strong>Text Width:</strong> <code>text.length() × 6 × textSize</code> - estimates the total pixel width of the text</li>
-					<li><strong>Text Height:</strong> <code>8 × textSize</code> - calculates the pixel height of the text</li>
-					<li><strong>Horizontal Centering:</strong> <code>(320 - textWidth) / 2</code> - centers the text horizontally on the 320-pixel wide screen</li>
-					<li><strong>Vertical Centering:</strong> <code>(240 - textHeight) / 2</code> - centers the text vertically on the 240-pixel tall screen</li>
-				</ul>
-				<p>The main title is positioned slightly above center (subtracting 15 pixels), and the URL is positioned below it with 10 pixels of spacing.</p>
-				
-				<h3>Function Organization</h3>
-				<p>The <code>displayStartScreen()</code> function is placed at the end of the script, following the common Arduino pattern of placing helper functions after <code>setup()</code> and <code>loop()</code>. This organization makes it easy to extract the function to a separate file (like <code>startScreen.h</code> or <code>startScreen.cpp</code>) when building more complex projects.</p>
-				
-				<h3>Screen Dimensions</h3>
-				<p>The CYD display is 320×240 pixels in landscape mode (rotation 1). The origin (0,0) is at the top-left corner of the screen, with X increasing from left to right and Y increasing from top to bottom.</p>
-			`}
-		/>
-
-		<h3 class="mt-8 text-2xl font-medium">Status Page</h3>
-		<p>
-			After the start screen, we will add a status page that displays network and system information
-			in a centered table. This will show WiFi status, WiFi name (SSID), IP address, signal
-			strength, and other useful information.
-		</p>
-		<p>
-			The status page will be displayed in a separate function called <code
-				>displayStatusPage()</code
-			>. This function can be called to show network information when needed.
-		</p>
-
-		<CodeCard
-			title="Status Page"
-			language="cpp"
-			code={data.statusPageCode}
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-04/examples/status-page-code"
-			footerText="Copy and paste the code into your Arduino IDE. Make sure to replace 'Your SSID' and 'Your Password' with your WiFi credentials. Upload it to your microcontroller to see the status page with network information displayed in a centered table."
-		/>
-
-		<h3 class="mt-8 text-2xl font-medium">Wallet and ADA Balance</h3>
-		<p class="text-lg font-thin text-white">
-			Next we will add the wallet data to display the wallet balance in ADA, the current ADA price
-			in USD, and the 24-hour price change. This information will be displayed below the status bar.
-		</p>
-
-		<CodeCard
-			title="Wallet Balance Display"
-			language="cpp"
-			code={data.walletBalanceCode}
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-04/examples/wallet-balance-code"
-			footerText="Copy and paste the code into your Arduino IDE. Upload it to your microcontroller to display the wallet balance, ADA price, and 24h change. The code uses dummy data for now and will be connected to real API data later."
-		/>
-
-		<h3 class="mt-8 text-2xl font-medium">Token Prices</h3>
-		<p class="text-lg font-thin text-white">
-			Next we will add the token data to display the token prices, their ticker symbols and the
-			24-hour price changes as well as the NFT floor prices. This information will be displayed
-			below the wallet balance and scroll horizontally.
-		</p>
-
-		<CodeCard
-			title="Token Prices & NFT Floor Prices Display"
-			language="cpp"
-			code={data.tokenScrollCode}
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-04/examples/token-prices-code"
-			footerText="Copy and paste the code into your Arduino IDE. Upload it to your microcontroller to display the token prices and 24h changes. The code uses dummy data for now and will be connected to real API data in the next steps."
-		/>
 	</section>
 
 	<FurtherResources
@@ -288,6 +383,30 @@
 				url: 'https://github.com/Bodmer/TFT_eSPI',
 				description:
 					'Arduino and PlatformIO IDE compatible TFT library optimized for ESP8266 and ESP32. Supports different driver chips and provides fast graphics rendering with proportional fonts and sprite support.'
+			},
+			{
+				title: 'ArduinoJson Library',
+				url: 'https://arduinojson.org/',
+				description:
+					'JSON library for Arduino. Used for parsing API responses from Koios, MinSwap, and Cexplorer.'
+			},
+			{
+				title: 'Koios API Documentation',
+				url: 'https://api.koios.rest/',
+				description:
+					'Free community-driven Cardano API. Used for fetching wallet balance from stake addresses.'
+			},
+			{
+				title: 'MinSwap',
+				url: 'https://minswap.org/',
+				description:
+					"Cardano's leading decentralized exchange. Used for fetching token and NFT positions with prices and 24h changes."
+			},
+			{
+				title: 'Cexplorer.io',
+				url: 'https://cexplorer.io/',
+				description:
+					'Cardano blockchain explorer with API access. Used for fetching NFT collection information and floor prices.'
 			}
 		]}
 	/>

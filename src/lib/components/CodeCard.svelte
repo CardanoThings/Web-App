@@ -1,5 +1,6 @@
 <script>
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { Badge } from '$lib/components/ui/badge/index.js';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
@@ -8,6 +9,7 @@
 		title = 'Code Example',
 		code,
 		language = 'cpp',
+		filename = null,
 		githubLink = null,
 		howItWorksTitle = 'How it Works',
 		howItWorksContent = null,
@@ -21,7 +23,17 @@
 
 <Card.Root>
 	<Card.Header class="mb-0 flex flex-col gap-3 pb-0 md:flex-row md:items-start md:justify-between">
-		<Card.Title class="text-lg">{title}</Card.Title>
+		<div class="flex flex-col gap-2">
+			<Card.Title class="text-lg">{title}</Card.Title>
+			{#if filename}
+				<Badge
+					variant="outline"
+					class="w-fit rounded-md border-slate-500 text-xs text-muted-foreground"
+				>
+					{filename}
+				</Badge>
+			{/if}
+		</div>
 		<div class="flex gap-2">
 			{#if howItWorksContent}
 				<Button
@@ -85,7 +97,7 @@
 
 {#if howItWorksContent}
 	<Dialog.Root bind:open={howItWorksOpen}>
-		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-y-auto overflow-x-hidden">
+		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-x-hidden overflow-y-auto">
 			<Dialog.Header>
 				<Dialog.Title>{howItWorksTitle}</Dialog.Title>
 			</Dialog.Header>
