@@ -69,7 +69,7 @@ export const workshops = [
         steps: [
             {
                 title: "Connect and read sensor data",
-                description: "Your will learn how to connect a DHT-22 temperature sensor to your Microcontroller, read the sensor output, store it and display it in the Arduino console and on the display of your Microcontroller.",
+                description: "Your will learn how to connect a AHT10 temperature sensor to your Microcontroller, read the sensor output, store it and display it in the Arduino console and on the display of your Microcontroller.",
                 link: "/workshops/03-input-and-write/connect-and-read-sensor-data"
             },
             {

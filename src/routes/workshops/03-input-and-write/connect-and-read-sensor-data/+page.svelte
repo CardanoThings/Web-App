@@ -12,48 +12,53 @@
 
 	const sht21HowItWorks = `
 		<h3>Overview</h3>
-		<p>This project demonstrates how to read temperature and humidity data from an SHT21 sensor using I2C communication and display it on a TFT screen. The SHT21 is a high-precision digital sensor that provides accurate measurements with factory calibration, making it ideal for environmental monitoring projects.</p>
+		<p>This project demonstrates how to read temperature and humidity data from an AHT10 sensor using I2C communication and display it on an OLED screen. The AHT10 is a high-precision digital sensor that provides accurate measurements with factory calibration, making it ideal for environmental monitoring projects.</p>
 		
 		<h3>Key Concepts</h3>
 		<ul>
-			<li><strong>I2C Communication:</strong> The SHT21 uses the I2C (Inter-Integrated Circuit) protocol, which requires only two wires (SDA for data and SCL for clock) to communicate with the microcontroller. This makes it simpler than single-wire protocols like DHT sensors.</li>
-			<li><strong>Sensor Initialization:</strong> The SHT21 sensor is initialized through the I2C bus using the Wire library. The sensor has a default I2C address (0x40) and doesn't require additional configuration.</li>
+			<li><strong>I2C Communication:</strong> The AHT10 uses the I2C (Inter-Integrated Circuit) protocol, which requires only two wires (SDA for data and SCL for clock) to communicate with the microcontroller. This makes it simpler than single-wire protocols like DHT sensors.</li>
+			<li><strong>Sensor Initialization:</strong> The AHT10 sensor is initialized through the I2C bus using the Wire library. The sensor has a default I2C address (0x38) and doesn't require additional configuration.</li>
 			<li><strong>Non-blocking Timing:</strong> Using <code>millis()</code> instead of <code>delay()</code> allows the microcontroller to update the display while checking for new sensor data, creating a responsive user interface.</li>
-			<li><strong>Display Updates:</strong> The TFT display is updated every 2 seconds with fresh sensor readings, providing real-time environmental data visualization.</li>
+			<li><strong>Display Updates:</strong> The OLED display is updated every 2 seconds with fresh sensor readings, providing real-time environmental data visualization.</li>
 		</ul>
 		
 		<h3>How the Sensor Reading Works</h3>
 		<ol>
-			<li>The code initializes the I2C bus and SHT2x sensor on startup</li>
-			<li>The TFT display is initialized and configured for landscape orientation</li>
+			<li>The code initializes the AHT10 sensor on startup using standard I2C pins (GPIO 8/9)</li>
+			<li>The OLED display is initialized on the same I2C bus</li>
 			<li>Every 2 seconds, the code reads temperature and humidity from the sensor</li>
-			<li>The <code>readSensorData()</code> function calls <code>sht.getTemperature()</code> and <code>sht.getHumidity()</code> to get current readings</li>
-			<li>Sensor readings are validated using <code>sht.getError()</code> which returns 0 for success, non-zero for errors</li>
+			<li>The <code>readSensorData()</code> function calls <code>aht.getEvent(&humidity, &temp)</code> to get both temperature and humidity readings simultaneously</li>
+			<li>Sensor readings are stored in <code>sensors_event_t</code> structures, with temperature accessed via <code>temp.temperature</code> and humidity via <code>humidity.relative_humidity</code></li>
 			<li>Valid readings are stored in global variables and printed to the serial monitor</li>
-			<li>The <code>displayData()</code> function updates the TFT screen with formatted sensor data</li>
-			<li>The display shows temperature in large red text and humidity in large blue text for easy reading</li>
+			<li>The <code>displayData()</code> function updates the OLED screen with formatted sensor data</li>
+			<li>The display shows temperature and humidity values for easy reading</li>
 			<li>The process repeats continuously, providing real-time updates of environmental conditions</li>
 		</ol>
 		
 		<h3>I2C Communication</h3>
-		<p>The SHT21 sensor communicates via I2C protocol:</p>
+		<p>Both the AHT10 sensor and OLED display communicate via I2C protocol:</p>
 		<ul>
-			<li><strong>SDA (Serial Data Line):</strong> Carries data between the sensor and microcontroller. Connect to GPIO 3.</li>
-			<li><strong>SCL (Serial Clock Line):</strong> Provides the clock signal for synchronization. Connect to GPIO 4.</li>
+			<li><strong>SDA (Serial Data Line):</strong> Carries data between devices and microcontroller. Connect both AHT10 and OLED to GPIO 8 (standard SDA pin on ESP32).</li>
+			<li><strong>SCL (Serial Clock Line):</strong> Provides the clock signal for synchronization. Connect both AHT10 and OLED to GPIO 9 (standard SCL pin on ESP32).</li>
 			<li>
-				<strong>I2C Address:</strong> The SHT21 has a fixed I2C address of 0x40, which the library
-				handles automatically. If you're not sure what the I2C address of your sensor is, use the{' '}
+				<strong>I2C Addresses:</strong> Each device has a unique address:
+				<ul>
+					<li>AHT10 sensor: 0x38 (fixed address)</li>
+					<li>OLED display: 0x3C or 0x3D (check your display's documentation)</li>
+				</ul>
+				The libraries handle addressing automatically. If you're not sure what addresses your devices use, use the{' '}
 				<a href="/blocks/esp32-i2c-scanner" class="link">I2C Scanner block</a> to scan for all
 				connected I2C devices.
 			</li>
-			<li><strong>Pull-up Resistors:</strong> I2C requires pull-up resistors (usually 4.7kΩ) on both SDA and SCL lines. Most sensor modules include these resistors.</li>
+			<li><strong>Multiple Devices on One Bus:</strong> I2C supports multiple devices on the same bus because each device has a unique address. Both the sensor and display can share the same SDA and SCL lines.</li>
+			<li><strong>Pull-up Resistors:</strong> I2C requires pull-up resistors (usually 4.7kΩ) on both SDA and SCL lines. Most modules include these resistors.</li>
 		</ul>
 		
 		<h3>Display Functions</h3>
 		<ul>
-			<li><strong>readSensorData():</strong> Reads temperature and humidity from the SHT2x sensor via I2C. Validates readings using <code>getError()</code> and stores them in global variables. Prints data to serial monitor for debugging.</li>
+			<li><strong>readSensorData():</strong> Reads temperature and humidity from the AHT10 sensor via I2C using <code>getEvent(&humidity, &temp)</code>. Stores readings in global variables and prints data to serial monitor for debugging.</li>
 			<li><strong>displayData():</strong> Updates the TFT display with current sensor readings. Clears the screen, displays a title, and shows temperature and humidity in different colors and sizes for visual distinction.</li>
-			<li><strong>Error Handling:</strong> The code checks for sensor read failures (indicated by -999.0) and handles them gracefully without crashing the program.</li>
+			<li><strong>Error Handling:</strong> The code checks for sensor initialization failures using <code>begin()</code> which returns false if the sensor is not found, halting execution to prevent invalid readings.</li>
 		</ul>
 		
 		<h3>Customization Ideas</h3>
@@ -69,45 +74,45 @@
 
 	const simpleShtHowItWorks = `
 		<h3>Overview</h3>
-		<p>This simple example demonstrates basic SHT21 sensor reading without any display hardware. It's perfect for testing your wiring and verifying that your sensor is working correctly before adding display functionality.</p>
+		<p>This simple example demonstrates basic AHT10 sensor reading without any display hardware. It's perfect for testing your wiring and verifying that your sensor is working correctly before adding display functionality.</p>
 		
 		<h3>Key Concepts</h3>
 		<ul>
-			<li><strong>I2C Initialization:</strong> The Wire library is initialized with <code>Wire.begin(SDA_PIN, SCL_PIN)</code>, which sets up the I2C communication on GPIO 3 (SDA) and GPIO 4 (SCL).</li>
-			<li><strong>Sensor Library:</strong> The SHT2x library by RobTillaart provides easy-to-use functions like <code>getTemperature()</code> and <code>getHumidity()</code> that handle the complex I2C communication protocol.</li>
-			<li><strong>Error Detection:</strong> The sensor library returns -999.0 when a read fails, allowing you to detect and handle errors gracefully.</li>
+			<li><strong>I2C Communication:</strong> The AHT10 uses standard I2C pins on ESP32 (GPIO 8 for SDA and GPIO 9 for SCL). The library handles I2C initialization automatically.</li>
+			<li><strong>Sensor Library:</strong> The Adafruit AHT10 library provides easy-to-use functions like <code>getEvent()</code> that handle the complex I2C communication protocol and return both temperature and humidity in a single call.</li>
+			<li><strong>Error Detection:</strong> The sensor library's <code>begin()</code> function returns false if the sensor is not found, allowing you to detect initialization errors.</li>
 			<li><strong>Serial Output:</strong> All sensor readings are printed to the serial monitor, making it easy to debug and verify sensor functionality.</li>
 		</ul>
 		
 		<h3>How the Reading Sequence Works</h3>
 		<ol>
-			<li>The code initializes serial communication for debugging output</li>
-			<li>The I2C bus is initialized with <code>Wire.begin()</code></li>
-			<li>The SHT2x sensor is initialized with <code>sht.begin()</code></li>
-			<li>The main loop reads temperature using <code>sht.getTemperature()</code></li>
-			<li>Humidity is read using <code>sht.getHumidity()</code></li>
-			<li>Readings are validated using <code>sht.getError()</code> which returns 0 for success, non-zero for errors</li>
-			<li>Valid readings are printed to the serial monitor with 2 decimal places</li>
-			<li>The code waits 2 seconds before taking the next reading</li>
+			<li>The code initializes serial communication for debugging output (115200 baud)</li>
+			<li>The AHT10 sensor is initialized with <code>aht.begin()</code>, which returns true if successful</li>
+			<li>If initialization fails, the code halts with an error message</li>
+			<li>The main loop creates <code>sensors_event_t</code> structures to hold sensor readings</li>
+			<li>Both temperature and humidity are read simultaneously using <code>aht.getEvent(&humidity, &temp)</code></li>
+			<li>Temperature is accessed via <code>temp.temperature</code> and humidity via <code>humidity.relative_humidity</code></li>
+			<li>Readings are printed to the serial monitor</li>
+			<li>The code waits 500ms before taking the next reading</li>
 			<li>The process repeats continuously, providing regular sensor updates</li>
 		</ol>
 		
 		<h3>I2C Wiring</h3>
-		<p>The SHT21 sensor requires four connections:</p>
+		<p>The AHT10 sensor requires four connections:</p>
 		<ul>
 			<li><strong>VCC:</strong> Connect to 3.3V power supply</li>
 			<li><strong>GND:</strong> Connect to ground</li>
-			<li><strong>SDA:</strong> Connect to GPIO 3 (I2C data line)</li>
-			<li><strong>SCL:</strong> Connect to GPIO 4 (I2C clock line)</li>
+			<li><strong>SDA:</strong> Connect to GPIO 8 (standard SDA pin on ESP32)</li>
+			<li><strong>SCL:</strong> Connect to GPIO 9 (standard SCL pin on ESP32)</li>
 		</ul>
-		<p>Most SHT21 modules include pull-up resistors on the I2C lines, so no additional components are needed.</p>
+		<p>Most AHT10 modules include pull-up resistors on the I2C lines, so no additional components are needed.</p>
 		
 		<h3>Important Notes</h3>
 		<ul>
-			<li><strong>I2C Address:</strong> The SHT21 has a fixed I2C address of 0x40. If you have multiple I2C devices, make sure they don't conflict.</li>
-			<li><strong>Power Supply:</strong> The SHT21 operates at 3.3V. Make sure your power supply is stable and provides adequate current.</li>
-			<li><strong>Reading Frequency:</strong> While the sensor can be read more frequently, waiting 2 seconds between readings is a good practice to ensure accurate measurements and reduce power consumption.</li>
-			<li><strong>Error Handling:</strong> Always check for error values (-999.0) before using sensor readings in calculations or displays.</li>
+			<li><strong>I2C Address:</strong> The AHT10 has a fixed I2C address of 0x38. If you have multiple I2C devices, make sure they don't conflict.</li>
+			<li><strong>Power Supply:</strong> The AHT10 operates at 3.3V. Make sure your power supply is stable and provides adequate current.</li>
+			<li><strong>Reading Frequency:</strong> The example code reads every 500ms, but you can adjust this delay to suit your needs. More frequent readings provide faster updates but consume more power.</li>
+			<li><strong>Standard I2C Pins:</strong> On ESP32, GPIO 8 and GPIO 9 are the standard SDA and SCL pins respectively. The library uses these by default, so no pin configuration is needed.</li>
 		</ul>
 		
 		<h3>Customization Ideas</h3>
@@ -143,7 +148,7 @@
 				<strong>ESP32-C3 or ESP32 Microcontroller</strong> - The main controller for this project
 			</li>
 			<li>
-				<strong>SHT21 Temperature and Humidity Sensor</strong> - High-precision digital sensor with I2C
+				<strong>AHT10 Temperature and Humidity Sensor</strong> - High-precision digital sensor with I2C
 				interface
 			</li>
 			<li>
@@ -163,17 +168,17 @@
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Introduction to SHT21 Sensor</h2>
+		<h2 class="text-4xl font-medium">Introduction to AHT10 Sensor</h2>
 		<p class="text-lg font-thin text-white">
-			The SHT21 is a high-precision digital temperature and humidity sensor from Sensirion. It
-			features excellent accuracy, low power consumption, and factory-calibrated measurements,
-			making it superior to basic sensors like the DHT-22.
+			The AHT10 is a high-precision digital temperature and humidity sensor from Aosong. It features
+			excellent accuracy, low power consumption, and factory-calibrated measurements, making it
+			superior to basic sensors like the DHT-22.
 		</p>
 		<p class="text-lg font-thin text-white">
 			<strong>Key Features:</strong>
 		</p>
 		<ul>
-			<li>Temperature range: -40°C to +125°C with ±0.3°C accuracy</li>
+			<li>Temperature range: -40°C to +85°C with ±0.3°C accuracy</li>
 			<li>Humidity range: 0-100% RH with ±2% RH accuracy</li>
 			<li>I2C interface (only requires 2 wires for data communication)</li>
 			<li>3.3V operation (compatible with ESP32)</li>
@@ -182,29 +187,30 @@
 			<li>Fast response time</li>
 		</ul>
 		<p class="text-lg font-thin text-white">
-			The SHT21 communicates using the I2C protocol, which is simpler than single-wire protocols
+			The AHT10 communicates using the I2C protocol, which is simpler than single-wire protocols
 			used by sensors like the DHT-22. I2C requires only two wires (SDA for data and SCL for clock)
-			and supports multiple devices on the same bus.
+			and supports multiple devices on the same bus. The Adafruit AHTX0 library supports both AHT10
+			and AHT20 sensors.
 		</p>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Connecting the Sensor</h2>
 		<p class="text-lg font-thin text-white">
-			<strong>Wiring the SHT21:</strong>
+			<strong>Wiring the AHT10:</strong>
 		</p>
-		<p class="text-lg font-thin text-white">The SHT21 sensor module typically has four pins:</p>
+		<p class="text-lg font-thin text-white">The AHT10 sensor module typically has four pins:</p>
 		<ol>
 			<li><strong>VCC (Power):</strong> Connect to 3.3V</li>
 			<li><strong>GND (Ground):</strong> Connect to GND</li>
-			<li><strong>SDA (Data):</strong> Connect to GPIO 3 (I2C data line)</li>
+			<li><strong>SDA (Data):</strong> Connect to GPIO 8 (standard SDA pin on ESP32)</li>
 			<li>
-				<strong>SCL (Clock):</strong> Connect to GPIO 4 (I2C clock line)
+				<strong>SCL (Clock):</strong> Connect to GPIO 9 (standard SCL pin on ESP32)
 			</li>
 		</ol>
 		<p class="text-lg font-thin text-white">
 			<strong>Important:</strong> I2C requires pull-up resistors (usually 4.7kΩ to 10kΩ) on both SDA
-			and SCL lines. Most SHT21 modules come with these resistors already built-in. If your module doesn't
+			and SCL lines. Most AHT10 modules come with these resistors already built-in. If your module doesn't
 			have one, you'll need to add external pull-up resistors between the data/clock pins and VCC.
 		</p>
 		<ESP32C3Pinout />
@@ -214,17 +220,20 @@
 		<ol>
 			<li>Open Arduino IDE</li>
 			<li>Go to <strong>Sketch → Include Library → Manage Libraries</strong></li>
-			<li>Search for "SHT2x"</li>
-			<li>Install the library by RobTillaart</li>
+			<li>Search for "Adafruit AHT10"</li>
+			<li>Install the library by Adafruit</li>
+			<li>
+				If prompted, install the required dependencies: Adafruit BusIO and Adafruit Unified Sensor
+			</li>
 		</ol>
 		<TipBox title="Library Information" variant="info">
-			The SHT2x library by RobTillaart provides easy-to-use functions for reading temperature and
-			humidity from SHT2x series sensors (SHT20, SHT21, SHT25). It handles the complex I2C
-			communication protocol and provides simple functions like <code>getTemperature()</code> and
-			<code>getHumidity()</code>. This library makes it easy to integrate SHT2x sensors into your
-			projects. More information available at
-			<a href="https://github.com/RobTillaart/SHT2x" target="_blank" class="link"
-				>https://github.com/RobTillaart/SHT2x</a
+			The Adafruit AHT10 library provides easy-to-use functions for reading temperature and humidity
+			from AHT10 sensors. It handles the complex I2C communication protocol and provides simple
+			functions like <code>getEvent()</code> to read both temperature and humidity simultaneously.
+			This library uses the standard I2C pins (GPIO 8/9 on ESP32) automatically, so no pin
+			configuration is needed. More information available at
+			<a href="https://github.com/adafruit/Adafruit_AHTX0" target="_blank" class="link"
+				>https://github.com/adafruit/Adafruit_AHTX0</a
 			>.
 		</TipBox>
 	</section>
@@ -237,117 +246,112 @@
 			that the sensor is working properly.
 		</p>
 		<p class="text-lg font-thin text-white">
-			This example reads temperature and humidity every 2 seconds and prints the values to the
-			serial monitor. You should see readings like "Temperature: 23.45 °C" and "Humidity: 55.67 %RH"
-			updating every 2 seconds.
+			This example reads temperature and humidity every 500ms and prints the values to the serial
+			monitor. You should see readings like "Temperature: 23.45 degrees C" and "Humidity: 55.67% rH"
+			updating every 500ms.
 		</p>
 
 		<CodeCard
-			title="Simple SHT21 Reading Code"
+			title="Simple AHT10 Reading Code"
 			code={data.simpleShtCode}
 			language="cpp"
 			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/simple-sht-code"
 			howItWorksContent={simpleShtHowItWorks}
-			footerText="Copy and paste this code into your Arduino IDE. Make sure you've installed the SHT2x library by RobTillaart and connected your sensor correctly. Upload it to your microcontroller and open the serial monitor (115200 baud) to see temperature and humidity readings updating every 2 seconds. If you see error messages, check your wiring and make sure the I2C pull-up resistors are present."
+			footerText="Copy and paste this code into your Arduino IDE. Make sure you've installed the Adafruit AHT10 library and its dependencies (Adafruit BusIO and Adafruit Unified Sensor) and connected your sensor correctly. Connect SDA to GPIO 8 and SCL to GPIO 9 (standard I2C pins on ESP32). Upload it to your microcontroller and open the serial monitor (115200 baud) to see temperature and humidity readings updating every 500ms. If you see error messages, check your wiring and make sure the I2C pull-up resistors are present."
 		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Connecting the TFT Display</h2>
+		<h2 class="text-4xl font-medium">Connecting the 1.3" OLED Display</h2>
 		<p class="text-lg font-thin text-white">
-			The TFT display uses SPI (Serial Peripheral Interface) communication, which is different from
-			I2C. This means both the SHT21 sensor (I2C) and the TFT display (SPI) can be connected
-			simultaneously to your ESP32-C3 without any conflicts, as they use different communication
-			protocols and different GPIO pins.
+			The 1.3" OLED display (SH1106 controller) also uses I2C communication, just like the AHT10
+			sensor. This is great news because I2C supports multiple devices on the same bus! Both the
+			AHT10 sensor and OLED display can share the same SDA and SCL lines, as long as they have
+			different I2C addresses.
 		</p>
 		<p class="text-lg font-thin text-white">
-			<strong>Wiring the TFT Display (SPI):</strong>
+			<strong>Wiring the 1.3" OLED Display (I2C):</strong>
 		</p>
 		<p class="text-lg font-thin text-white">
-			Most TFT displays using the TFT_eSPI library require the following connections. Note that pin
-			assignments may vary depending on your specific display model, so check your display's
-			documentation:
+			The OLED display connects to the same I2C bus as the AHT10 sensor:
 		</p>
 		<ol>
-			<li><strong>VCC (Power):</strong> Connect to 3.3V (can share with SHT21 sensor)</li>
-			<li><strong>GND (Ground):</strong> Connect to GND (can share with SHT21 sensor)</li>
-			<li>
-				<strong>MOSI (Master Out Slave In):</strong> Connect to GPIO 10 (or check your display's requirements)
-			</li>
-			<li>
-				<strong>SCK (Serial Clock):</strong> Connect to GPIO 8 (or check your display's requirements)
-			</li>
-			<li><strong>CS (Chip Select):</strong> Connect to GPIO 7 (or any available GPIO pin)</li>
-			<li><strong>DC (Data/Command):</strong> Connect to GPIO 6 (or any available GPIO pin)</li>
-			<li>
-				<strong>RST (Reset):</strong> Connect to GPIO 5 (or any available GPIO pin, can share with ESP32
-				reset)
-			</li>
+			<li><strong>VCC (Power):</strong> Connect to 3.3V (share with AHT10 sensor)</li>
+			<li><strong>GND (Ground):</strong> Connect to GND (share with AHT10 sensor)</li>
+			<li><strong>SDA (Data):</strong> Connect to GPIO 8 (same SDA line as AHT10 sensor)</li>
+			<li><strong>SCL (Clock):</strong> Connect to GPIO 9 (same SCL line as AHT10 sensor)</li>
 		</ol>
 		<TipBox title="Complete Wiring Setup" variant="info">
 			<strong>Power and Ground Connections:</strong>
 			<ul class="mt-2 ml-4">
 				<li>
-					Both the SHT21 sensor and TFT display can share the same 3.3V power supply and GND
+					Both the AHT10 sensor and OLED display can share the same 3.3V power supply and GND
 					connections
 				</li>
 				<li>Connect all VCC pins together to ESP32-C3's 3.3V pin</li>
 				<li>Connect all GND pins together to ESP32-C3's GND pin</li>
 			</ul>
 			<br />
-			<strong>Communication Protocols:</strong>
+			<strong>I2C Bus Sharing:</strong>
 			<ul class="mt-2 ml-4">
-				<li><strong>SHT21 Sensor:</strong> Uses I2C on GPIO 3 (SDA) and GPIO 4 (SCL)</li>
 				<li>
-					<strong>TFT Display:</strong> Uses SPI on GPIO 8 (SCK), GPIO 10 (MOSI), and control pins (CS,
-					DC, RST)
+					<strong>AHT10 Sensor:</strong> Uses I2C address 0x38 on GPIO 8 (SDA) and GPIO 9 (SCL)
 				</li>
-				<li>These protocols are independent and don't interfere with each other</li>
+				<li>
+					<strong>1.3" OLED Display (SH1106):</strong> Uses I2C address 0x3C (or 0x3D) on the same GPIO
+					8 (SDA) and GPIO 9 (SCL) lines
+				</li>
+				<li>
+					<strong>Why this works:</strong> I2C supports multiple devices on the same bus because each
+					device has a unique address. The microcontroller communicates with specific devices by addressing
+					them individually.
+				</li>
+				<li>Both devices share the same two wires (SDA and SCL), making wiring very simple!</li>
 			</ul>
 			<br />
-			<strong>Pin Configuration:</strong>
+			<strong>I2C Addresses:</strong>
 			<ul class="mt-2 ml-4">
+				<li>AHT10 sensor: 0x38 (fixed address)</li>
 				<li>
-					Make sure to configure the TFT_eSPI library's User_Setup.h file with the correct pin
-					assignments for your specific display model
+					1.3" OLED display (SH1106): 0x3C or 0x3D (check your display's documentation or use an I2C
+					scanner)
 				</li>
 				<li>
-					The pin numbers listed above are examples - always verify with your display's
-					documentation
+					If you're not sure what addresses your devices use, check out the{' '}
+					<a href="/blocks/esp32-i2c-scanner" class="link">I2C Scanner block</a> to scan for all connected
+					I2C devices.
 				</li>
 			</ul>
 		</TipBox>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Displaying Sensor Data on TFT Screen</h2>
+		<h2 class="text-4xl font-medium">Displaying Sensor Data on OLED Screen</h2>
 		<p class="text-lg font-thin text-white">
 			Now let's enhance the code to display the sensor data both in the serial monitor and on your
-			TFT display (if you have one from Workshop 02). This creates a complete sensor monitoring
+			OLED display (if you have one from Workshop 02). This creates a complete sensor monitoring
 			system with visual feedback.
 		</p>
 		<p class="text-lg font-thin text-white">
-			The display shows temperature in large red text and humidity in large blue text, making it
-			easy to read at a glance. The data updates every 2 seconds, providing real-time environmental
-			monitoring.
+			The display shows temperature and humidity values, making it easy to read at a glance. The
+			data updates every 2 seconds, providing real-time environmental monitoring.
 		</p>
 
 		<CodeCard
-			title="SHT21 with TFT Display Code"
+			title="AHT10 with OLED Display Code"
 			code={data.sht21Code}
 			language="cpp"
 			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/sht-21-code"
 			howItWorksContent={sht21HowItWorks}
-			footerText="Copy and paste the code into your Arduino IDE. Make sure you've installed both the SHT2x library by RobTillaart and the TFT_eSPI library. Configure the TFT_eSPI library for your specific display model. Upload it to your microcontroller and you should see sensor data updating on both the serial monitor and the TFT display every 2 seconds."
+			footerText="Copy and paste the code into your Arduino IDE. Make sure you've installed the Adafruit AHT10 library (and its dependencies: Adafruit BusIO and Adafruit Unified Sensor) and the Adafruit SH110X library (with Adafruit GFX Library dependency) for the 1.3 inch OLED display. Connect both the AHT10 sensor and OLED display to GPIO 8 (SDA) and GPIO 9 (SCL) - they share the same I2C bus. Upload it to your microcontroller and you should see sensor data updating on both the serial monitor and the OLED display every 2 seconds."
 		/>
 
 		<h3 class="mt-6 text-2xl font-medium">Display Layout</h3>
-		<p class="text-lg font-thin text-white">The display shows:</p>
+		<p class="text-lg font-thin text-white">The OLED display shows:</p>
 		<ul>
-			<li>A title "Sensor Data" in cyan at the top</li>
-			<li>A separator line</li>
-			<li>Temperature in large red text with the value and unit (°C)</li>
-			<li>Humidity in large blue text with the value and unit (%RH)</li>
+			<li>Temperature label at the top in small text</li>
+			<li>Temperature value in large text (size 3) with the unit (C)</li>
+			<li>Humidity label and value at the bottom in small text with the unit (%)</li>
 		</ul>
 		<p class="text-lg font-thin text-white">
 			You can customize the display layout, colors, and add more information like timestamps,
@@ -356,30 +360,36 @@
 
 		<h3 class="mt-6 text-2xl font-medium">Troubleshooting</h3>
 		<p class="text-lg font-thin text-white">
-			If you're getting "Failed to read from SHT2x sensor!" errors:
+			If you're getting "Failed to find AHT10 sensor!" errors:
 		</p>
 		<ul>
 			<li>Check your wiring connections (VCC, GND, SDA, SCL)</li>
 			<li>Ensure I2C pull-up resistors are present (usually included on the module)</li>
-			<li>Verify the I2C pins match your wiring (GPIO 3 for SDA, GPIO 4 for SCL)</li>
+			<li>
+				Verify the I2C pins match your wiring (GPIO 8 for SDA, GPIO 9 for SCL - standard I2C pins on
+				ESP32)
+			</li>
 			<li>Check that the sensor is getting power (3.3V)</li>
 			<li>
-				Use an I2C scanner sketch to verify the sensor is detected at address 0x40. If you're not
+				Use an I2C scanner sketch to verify the sensor is detected at address 0x38. If you're not
 				sure what the I2C address of your sensor is, check out the{' '}
 				<a href="/blocks/esp32-i2c-scanner" class="link">I2C Scanner block</a> to scan for all connected
 				I2C devices.
 			</li>
 			<li>Make sure no other I2C devices are conflicting on the same bus</li>
+			<li>
+				Verify that you've installed all required libraries: Adafruit AHT10, Adafruit BusIO, and
+				Adafruit Unified Sensor
+			</li>
 		</ul>
 	</section>
 
 	<FurtherResources
 		resources={[
 			{
-				title: 'SHT2x Library by RobTillaart',
-				url: 'https://github.com/RobTillaart/SHT2x',
-				description:
-					'Arduino library for SHT2x series temperature and humidity sensors (SHT20, SHT21, SHT25).'
+				title: 'Adafruit AHT10 Library',
+				url: 'https://github.com/adafruit/Adafruit_AHTX0',
+				description: 'Arduino library for AHT10 temperature and humidity sensor by Adafruit.'
 			},
 			{
 				title: 'I2C Communication Tutorial',

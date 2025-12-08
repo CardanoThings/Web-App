@@ -9,21 +9,23 @@ export const load = async ({ url }) => {
 		sht21Code: `
 			// Include necessary libraries
 			#include <Wire.h>                // I2C communication library (built-in)
-			#include <SHT2x.h>              // SHT2x sensor library by RobTillaart
-			#include <TFT_eSPI.h>          // TFT display library
-			#include <SPI.h>               // SPI communication for display
+			#include <Adafruit_AHT10.h>     // Adafruit AHT10 library
+			#include <Adafruit_GFX.h>       // Adafruit graphics library
+			#include <Adafruit_SH110X.h>    // Adafruit SH1106 OLED library (for 1.3" OLED)
+
+			// OLED display settings
+			#define SCREEN_WIDTH 128         // OLED display width in pixels
+			#define SCREEN_HEIGHT 64         // OLED display height in pixels
+			#define OLED_RESET -1            // Reset pin (not used, set to -1)
+			#define SCREEN_ADDRESS 0x3C      // I2C address (usually 0x3C or 0x3D)
 
 			// Create sensor and display objects
-			SHT2x sht;                      // Initialize SHT2x sensor
-			TFT_eSPI tft = TFT_eSPI();     // Create TFT display object
+			Adafruit_AHT10 aht;             // Initialize AHT10 sensor
+			Adafruit_SH1106G display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 			// Variables to store sensor readings
 			float temperature = 0;         // Current temperature reading
 			float humidity = 0;            // Current humidity reading
-			
-			// I2C pin configuration
-			#define SDA_PIN 3               // I2C data line (SDA)
-			#define SCL_PIN 4               // I2C clock line (SCL)
 			
 			// Variables for timing sensor reads
 			unsigned long lastRead = 0;                    // Timestamp of last sensor read
@@ -32,29 +34,36 @@ export const load = async ({ url }) => {
 			void setup() {
 				// Initialize serial communication for debugging (115200 baud rate)
 				Serial.begin(115200);
+				Serial.println("Adafruit AHT10 demo!");
 				
-				// Initialize I2C bus with custom pins (SDA pin 3, SCL pin 4)
-				Wire.begin(SDA_PIN, SCL_PIN);
+				// Initialize AHT10 sensor
+				if (!aht.begin()) {
+					Serial.println("Could not find AHT10? Check wiring");
+					while (1) delay(10);  // Halt if sensor not found
+				}
+				Serial.println("AHT10 found");
 				
-				// Initialize SHT2x sensor
-				sht.begin();
+				// Initialize OLED display
+				if (!display.begin(SCREEN_ADDRESS)) {
+					Serial.println("SH1106 allocation failed");
+					for (;;);  // Don't proceed, loop forever
+				}
+				Serial.println("OLED Display initialized!");
 				
-				// Initialize TFT display
-				tft.init();                        // Initialize display hardware
-				tft.setRotation(1);                // Set to landscape orientation
-				tft.fillScreen(TFT_BLACK);         // Clear screen with black background
-				tft.setTextColor(TFT_WHITE, TFT_BLACK);  // White text on black background
-				tft.setTextSize(2);                // Set default text size
-				
-				// Display startup message on screen
-				tft.setCursor(10, 10);
-				tft.println("Initializing...");
+				// Clear display and show startup message
+				display.clearDisplay();
+				display.setTextSize(1);
+				display.setTextColor(SH110X_WHITE);
+				display.setCursor(0, 0);
+				display.println("Initializing...");
+				display.display();
 				delay(1000);
 				
-				// Clear screen and show ready message
-				tft.fillScreen(TFT_BLACK);
-				tft.setCursor(10, 10);
-				tft.println("Ready!");
+				// Clear and show ready message
+				display.clearDisplay();
+				display.setCursor(0, 0);
+				display.println("Ready!");
+				display.display();
 				delay(500);
 			}
 
@@ -71,131 +80,72 @@ export const load = async ({ url }) => {
 			}
 
 			void readSensorData() {
-				// Read temperature from sensor (returns value in Celsius)
-				float t = sht.getTemperature();
+				// Create sensor event structures to hold readings
+				sensors_event_t humidity_event, temp_event;
 				
-				// Read relative humidity from sensor (returns value as percentage)
-				float h = sht.getHumidity();
-				
-				// Check if reads failed (getError() returns 0 for OK, non-zero for errors)
-				if (sht.getError() != 0) {
-					Serial.println("Failed to read from SHT2x sensor!");
-					return;  // Exit function if read failed
-				}
+				// Read both temperature and humidity from sensor
+				// The getEvent() function populates temp and humidity objects with fresh data
+				aht.getEvent(&humidity_event, &temp_event);
 				
 				// Store readings in global variables
-				temperature = t;
-				humidity = h;
+				temperature = temp_event.temperature;        // Temperature in Celsius
+				humidity = humidity_event.relative_humidity;  // Humidity as percentage (0-100)
 				
 				// Print readings to serial monitor for debugging
 				Serial.print("Temperature: ");
-				Serial.print(temperature, 2);  // Print with 2 decimal places
-				Serial.print(" °C\\t");
+				Serial.print(temperature);
+				Serial.println(" degrees C");
 				Serial.print("Humidity: ");
-				Serial.print(humidity, 2);      // Print with 2 decimal places
-				Serial.println(" %RH");
+				Serial.print(humidity);
+				Serial.println("% rH");
 			}
 
 			void displayData() {
-				// Clear entire screen with black background
-				tft.fillScreen(TFT_BLACK);
+				// Clear display buffer
+				display.clearDisplay();
 				
-				// Display title "Sensor Data" in cyan
-				tft.setTextSize(2);
-				tft.setTextColor(TFT_CYAN, TFT_BLACK);
-				tft.setCursor(10, 10);
-				tft.println("Sensor Data");
+				// Display temperature label and value
+				display.setTextSize(1);
+				display.setCursor(0, 0);
+				display.print("Temperature");
+				display.setCursor(0, 14);
+				display.setTextSize(3);
+				display.print(temperature, 1);  // Format to 1 decimal place
+				display.println("C");
 				
-				// Draw a horizontal line separator
-				tft.drawLine(10, 45, 230, 45, TFT_WHITE);
+				// Display humidity label and value
+				display.setTextSize(1);
+				display.setCursor(0, 52);
+				display.print("Humidity: ");
+				display.print(humidity, 1);  // Format to 1 decimal place
+				display.println("%");
 				
-				// Display temperature label in yellow
-				tft.setTextSize(2);
-				tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-				tft.setCursor(10, 60);
-				tft.print("Temp: ");
-				
-				// Display temperature value in large red text
-				tft.setTextSize(3);
-				tft.setTextColor(TFT_RED, TFT_BLACK);
-				tft.print(String(temperature, 1));  // Format to 1 decimal place
-				
-				// Display temperature unit in yellow
-				tft.setTextSize(2);
-				tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-				tft.println(" °C");
-				
-				// Display humidity label in yellow
-				tft.setTextSize(2);
-				tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-				tft.setCursor(10, 100);
-				tft.print("Humidity: ");
-				
-				// Display humidity value in large blue text
-				tft.setTextSize(3);
-				tft.setTextColor(TFT_BLUE, TFT_BLACK);
-				tft.print(String(humidity, 1));  // Format to 1 decimal place
-				
-				// Display humidity unit in yellow
-				tft.setTextSize(2);
-				tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-				tft.println(" %RH");
+				// Update display to show all changes
+				display.display();
 			}`,
 		simpleShtCode: `
-			// Include required libraries
-			#include <Wire.h>                // I2C communication library (built-in)
-			#include <SHT2x.h>              // SHT2x sensor library by RobTillaart
+			#include <Adafruit_AHT10.h>
 
-			// I2C pin configuration
-			#define SDA_PIN 3               // I2C data line (SDA)
-			#define SCL_PIN 4               // I2C clock line (SCL)
-
-			// Create sensor object
-			SHT2x sht;
+			Adafruit_AHT10 aht;
 
 			void setup() {
-				// Initialize serial communication for debugging (115200 baud rate)
 				Serial.begin(115200);
-				
-				// Initialize I2C bus with custom pins (SDA pin 3, SCL pin 4)
-				Wire.begin(SDA_PIN, SCL_PIN);
-				
-				// Initialize SHT2x sensor
-				sht.begin();
-				
-				// Print header information
-				Serial.println("SHT2x Temperature & Humidity Sensor");
-				Serial.println("-----------------------------------");
+				Serial.println("Adafruit AHT10 demo!");
+
+				if (! aht.begin()) {
+					Serial.println("Could not find AHT10? Check wiring");
+					while (1) delay(10);
+				}
+				Serial.println("AHT10 found");
 			}
 
 			void loop() {
-				// Read temperature from sensor (returns value in Celsius)
-				float temperature = sht.getTemperature();
-				
-				// Read relative humidity from sensor (returns value as percentage)
-				float humidity = sht.getHumidity();
-				
-				// Check if reads failed (getError() returns 0 for OK, non-zero for errors)
-				if (sht.getError() != 0) {
-					Serial.println("Failed to read from SHT2x sensor!");
-				} else {
-					// Print temperature reading with 2 decimal places
-					Serial.print("Temperature: ");
-					Serial.print(temperature, 2);  // Print with 2 decimal places
-					Serial.print(" °C\\t");
-					
-					// Print humidity reading with 2 decimal places
-					Serial.print("Humidity: ");
-					Serial.print(humidity, 2);      // Print with 2 decimal places
-					Serial.println(" %RH");        // %RH = Percentage Relative Humidity
-				}
-				
-				// Print separator line
-				Serial.println("-----------------------------------");
-				
-				// Wait 2 seconds before next reading
-				// This prevents excessive sensor queries and reduces power consumption
-				delay(2000);
+				sensors_event_t humidity, temp;
+				aht.getEvent(&humidity, &temp);// populate temp and humidity objects with fresh data
+				Serial.print("Temperature: "); Serial.print(temp.temperature); Serial.println(" degrees C");
+				Serial.print("Humidity: "); Serial.print(humidity.relative_humidity); Serial.println("% rH");
+
+				delay(500);
 			}`
 	};
 };
