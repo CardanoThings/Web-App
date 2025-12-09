@@ -108,7 +108,7 @@ export const workshops = [
         steps: [
             {
                 title: "Building the Interface",
-                description: "You will learn how to build a simple payment user interface utilizing the touch capabilities of your microcontroller and your knowledge from former workshops about the TFT_eSPI Library.",
+                description: "You will learn how to build a simple payment user interface, running a simple web server on your Microcontroller and make it interact with the display of your Microcontroller.",
                 link: "/workshops/05-qr-code-payments/building-the-interface"
             },
             {
