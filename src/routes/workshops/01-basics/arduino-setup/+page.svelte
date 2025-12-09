@@ -161,7 +161,7 @@
 					language: 'cpp'
 				}
 			]}
-			readmePath="Workshop-01/examples/wifi-code/README.md"
+			readmePath="Workshop-01/examples/wifi/README.md"
 			howItWorksTitle="How the WiFi Connection Works"
 			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make sure to select the correct board and port. You should see the microcontroller connect to your Wifi and print the IP address to the serial monitor."
 		/>
