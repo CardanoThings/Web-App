@@ -207,7 +207,6 @@
 				}
 			]}
 			readmePath="Workshop-02/examples/led-ring-blink/README.md"
-			howItWorksTitle="How the Basic LED Ring Test Works"
 			footerText="Copy and paste this code into your Arduino IDE. Make sure you've installed the Adafruit NeoPixel library and connected your WS2812 LED ring correctly. Update the LED_PIN definition to match your wiring (the pin connected to the IN pin on your ring). Upload it to your microcontroller and you should see LEDs lighting up one at a time in sequence around the ring. If no LEDs light up, check your wiring and make sure the pin number matches your connection."
 		/>
 	</section>
@@ -269,7 +268,6 @@
 				}
 			]}
 			readmePath="Workshop-02/examples/epoch-clock/README.md"
-			howItWorksTitle="How the Epoch Clock Code Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure you've installed the Adafruit NeoPixel library and connected your WS2812 LED ring correctly. Update the LED_PIN definition to match your wiring. Replace WiFi credentials with your own. Upload it to your microcontroller and you should see LEDs lighting up progressively around the ring in blue as the epoch advances."
 		/>
 	</section>

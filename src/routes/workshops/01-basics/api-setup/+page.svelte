@@ -136,7 +136,6 @@
 				}
 			]}
 			readmePath="Workshop-01/examples/koios-api/README.md"
-			howItWorksTitle="How the Koios API Code Works"
 			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make sure to select the correct board and port. You should see the microcontroller connect to your Wifi and print the API response to the serial monitor."
 		/>
 	</section>

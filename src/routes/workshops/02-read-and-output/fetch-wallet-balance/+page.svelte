@@ -119,7 +119,6 @@
 				}
 			]}
 			readmePath="Workshop-02/examples/wallet-balance/README.md"
-			howItWorksTitle="How the Stake Address Balance Code Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure to replace 'Your SSID' and 'Your Password' with your WiFi credentials, and replace 'stake_test1...' with your actual stake address. Upload it to your microcontroller and open the serial monitor to see your balance."
 		/>
 	</section>
@@ -212,7 +211,6 @@
 				}
 			]}
 			readmePath="Workshop-02/examples/wallet-balance-blockfrost/README.md"
-			howItWorksTitle="How the Blockfrost Arduino Code Works"
 			footerText="To use Blockfrost, you'll need to sign up at blockfrost.io and get an API key. The free tier has rate limits but is sufficient for most projects."
 		/>
 

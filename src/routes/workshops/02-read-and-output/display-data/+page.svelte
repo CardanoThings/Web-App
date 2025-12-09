@@ -122,7 +122,6 @@
 				}
 			]}
 			readmePath="Workshop-02/examples/display-hello-world/README.md"
-			howItWorksTitle="How the Hello World Display Test Works"
 			footerText="Upload this sketch to your CYD. If everything is configured correctly, you should see 'Hello World!' displayed in white text, centered on a blue screen. If the display doesn't work or shows corrupted graphics, double-check that you've replaced the User_Setup.h file correctly."
 		/>
 
@@ -184,7 +183,6 @@
 				}
 			]}
 			readmePath="Workshop-02/examples/display-wallet-balance/README.md"
-			howItWorksTitle="How the Wallet Balance Display Code Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure you've completed the library configuration steps above (replacing User_Setup.h with the CYD version). Replace the WiFi credentials and stake address with your own. Upload it to your microcontroller and you should see your wallet balance in white text on a blue background. The balance fetches every 60 seconds, and the timestamp updates every second."
 		/>
 	</section>

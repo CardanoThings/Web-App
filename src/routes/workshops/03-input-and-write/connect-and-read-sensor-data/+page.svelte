@@ -147,7 +147,6 @@
 				}
 			]}
 			readmePath="Workshop-03/examples/sensor-example/README.md"
-			howItWorksTitle="How the Basic AHT10 Reading Code Works"
 			footerText="Copy and paste this code into your Arduino IDE. Make sure you've installed the Adafruit AHT10 library and its dependencies (Adafruit BusIO and Adafruit Unified Sensor) and connected your sensor correctly. Connect SDA to GPIO 8 and SCL to GPIO 9 (standard I2C pins on ESP32). Upload it to your microcontroller and open the serial monitor (115200 baud) to see temperature and humidity readings updating every 500ms. If you see error messages, check your wiring and make sure the I2C pull-up resistors are present."
 		/>
 
@@ -263,7 +262,6 @@
 				}
 			]}
 			readmePath="Workshop-03/examples/display-sensor-data/README.md"
-			howItWorksTitle="How the Display Sensor Data Code Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure you've installed the Adafruit AHT10 library (and its dependencies: Adafruit BusIO and Adafruit Unified Sensor) and the Adafruit SH110X library (with Adafruit GFX Library dependency) for the 1.3 inch OLED display. Connect both the AHT10 sensor and OLED display to GPIO 8 (SDA) and GPIO 9 (SCL) - they share the same I2C bus. Upload it to your microcontroller and you should see sensor data updating on both the serial monitor and the OLED display every 2 seconds."
 		/>
 

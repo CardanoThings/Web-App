@@ -272,7 +272,6 @@
 				}
 			]}
 			readmePath="Workshop-03/examples/post-sensor-data/README.md"
-			howItWorksTitle="How the Arduino Post Sensor Data Code Works"
 			footerText="Copy this code into Arduino IDE. Make sure you have the Adafruit AHT10 library installed (and its dependencies: Adafruit BusIO and Adafruit Unified Sensor). Update your WiFi name, password, and your computer's IP address. Upload to your microcontroller and watch the serial monitor to see it working!"
 		/>
 		<p class="text-lg font-thin text-white">
@@ -342,7 +341,6 @@
 				}
 			]}
 			readmePath="Workshop-03/examples/nodejs-nft-api/README.md"
-			howItWorksTitle="How the Complete API Server with NFT Minting Works"
 			footerText="Copy this code into a file called server.js. Make sure you have the required packages installed (npm install express cors @meshsdk/core). Replace the mnemonic array with your actual wallet mnemonic. Run it with node server.js. Every time your microcontroller posts sensor data, an NFT will be automatically minted!"
 		/>
 		<p class="text-lg font-thin text-white">

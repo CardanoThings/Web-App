@@ -313,7 +313,6 @@
 				}
 			]}
 			readmePath="Workshop-03/examples/basic-nodejs-api/README.md"
-			howItWorksTitle="How the Basic Node.js API Server Works"
 			footerText="This is a minimal Express.js server with a health check endpoint. Save this as basic-api.js in your project directory. Make sure your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
@@ -380,7 +379,6 @@
 				}
 			]}
 			readmePath="Workshop-03/examples/basic-nodejs-api/README.md"
-			howItWorksTitle="How the Enhanced Node.js API Works"
 			footerText="This enhanced API includes CORS support and a POST endpoint to receive data. Save this as server.js. Make sure to install express and cors, and that your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">

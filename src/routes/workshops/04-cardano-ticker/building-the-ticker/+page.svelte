@@ -216,7 +216,6 @@
 				}
 			]}
 			readmePath="Workshop-04/examples/CardanoTicker/data_fetcher.md"
-			howItWorksTitle="How WiFi Manager & Data Fetcher Work"
 		/>
 	</section>
 
@@ -266,7 +265,6 @@
 				}
 			]}
 			readmePath="Workshop-04/examples/CardanoTicker/wallet_screen.md"
-			howItWorksTitle="How the Wallet Screen Works"
 		/>
 	</section>
 
@@ -308,7 +306,6 @@
 				}
 			]}
 			readmePath="Workshop-04/examples/CardanoTicker/token_screen.md"
-			howItWorksTitle="How the Token Screen Works"
 		/>
 	</section>
 
@@ -348,7 +345,6 @@
 				}
 			]}
 			readmePath="Workshop-04/examples/CardanoTicker/nft_screen.md"
-			howItWorksTitle="How the NFT Screen Works"
 		/>
 	</section>
 
@@ -393,7 +389,6 @@
 				}
 			]}
 			readmePath="Workshop-04/examples/CardanoTicker/status_screen.md"
-			howItWorksTitle="How the Status Screen Works"
 		/>
 	</section>
 
@@ -433,7 +428,6 @@
 				}
 			]}
 			readmePath="Workshop-04/examples/CardanoTicker/ticker.md"
-			howItWorksTitle="How the Scrolling Ticker Works"
 		/>
 	</section>
 

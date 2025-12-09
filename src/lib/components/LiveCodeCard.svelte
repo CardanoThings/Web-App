@@ -12,7 +12,6 @@
 		files, // Required: [{ path: string, language?: string, filename?: string }]
 		readmePath = null,
 		branch = 'main',
-		howItWorksTitle = 'How it Works',
 		footerText = null,
 		defaultShowComments = true,
 		defaultExpanded = false
@@ -541,10 +540,7 @@
 
 {#if readme && howItWorksOpen}
 	<Dialog.Root bind:open={howItWorksOpen}>
-		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-x-hidden overflow-y-auto">
-			<Dialog.Header>
-				<Dialog.Title>{howItWorksTitle}</Dialog.Title>
-			</Dialog.Header>
+		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-x-hidden overflow-y-auto pt-0">
 			<div class="how-it-works-content markdown-content">
 				{#each readmeSegments as segment}
 					{#if segment.type === 'code'}
