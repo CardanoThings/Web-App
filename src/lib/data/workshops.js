@@ -107,6 +107,11 @@ export const workshops = [
         description: "In this workshop you will build a simple payment system right on your microcontroller utilising everything you have learned in former workshops. You will also learn about Cardano mobile wallets like Yoroi, Vespr or BeginWallet.",
         steps: [
             {
+                title: "Getting Started",
+                description: "You will learn how to set up a basic web server on your Microcontroller, understand the project structure, upload files to LittleFS, and test your webserver. This foundation is essential for building the payment interface.",
+                link: "/workshops/05-qr-code-payments/getting-started"
+            },
+            {
                 title: "Building the Interface",
                 description: "You will learn how to build a simple payment user interface, running a simple web server on your Microcontroller and make it interact with the display of your Microcontroller.",
                 link: "/workshops/05-qr-code-payments/building-the-interface"
