@@ -4,6 +4,8 @@
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
+	import PingPongWallet from '$lib/base/PingPongWallet.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
@@ -35,8 +37,11 @@
 		<h2 class="text-4xl font-medium">Installing Required Libraries</h2>
 		<p class="text-lg font-thin text-white">
 			To generate and display QR codes on your TFT display, you'll need to install two libraries:
-			<strong>QRcodeDisplay</strong> (the base QR code library) and <strong>QRcode_eSPI</strong> (the
-			TFT_eSPI adapter).
+			<strong>QRcodeDisplay</strong> (the base QR code library) and <strong>QRcode_eSPI</strong>
+			(the TFT_eSPI adapter). Make sure to install both libraries, as QRcode_eSPI depends on QRcodeDisplay.
+			You should already have the TFT_eSPI library installed and configured from{' '}
+			<a href="/workshops/02-read-and-output/display-data" class="link">Workshop 02</a>, where you
+			learned how to display data on your microcontroller.
 		</p>
 
 		<h3 class="mt-8 mb-4 text-2xl font-medium">Step 1: Install QRcodeDisplay Library</h3>
@@ -71,61 +76,6 @@
 			<li>Click <strong>Install</strong></li>
 			<li>Wait for the installation to complete</li>
 		</ol>
-
-		<h3 class="mt-8 mb-4 text-2xl font-medium">Step 3: Verify TFT_eSPI is Installed</h3>
-		<p class="text-lg font-thin text-white">
-			You should already have the <strong>TFT_eSPI</strong> library installed from{' '}
-			<a href="/workshops/02-read-and-output/display-data" class="link">previous workshops</a>. If
-			not, install it now:
-		</p>
-		<ol class="ml-4 list-decimal space-y-2 text-lg font-thin text-white">
-			<li>Search for <strong>"TFT_eSPI"</strong> in the Library Manager</li>
-			<li>Find <strong>"TFT_eSPI" by Bodmer</strong> and install it</li>
-			<li>
-				<strong>Important:</strong> Make sure your TFT_eSPI is configured for your display (CYD
-				users should have already done this in{' '}
-				<a href="/workshops/02-read-and-output/display-data" class="link">Workshop 02</a>)
-			</li>
-		</ol>
-
-		<TipBox title="Library Dependencies" variant="info">
-			The QRcode_eSPI library depends on both QRcodeDisplay and TFT_eSPI. Make sure all three
-			libraries are installed before proceeding. If you encounter compilation errors, verify that
-			all libraries are properly installed and up to date.
-		</TipBox>
-
-		<TipBox title="GitHub Links" variant="success">
-			If you prefer manual installation or want to check the source code:
-			<ul class="mt-2 ml-4 list-disc space-y-1">
-				<li>
-					<strong>QRcodeDisplay:</strong>{' '}
-					<a
-						href="https://github.com/yoprogramo/QRcodeDisplay"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link">https://github.com/yoprogramo/QRcodeDisplay</a
-					>
-				</li>
-				<li>
-					<strong>QRcode_eSPI:</strong>{' '}
-					<a
-						href="https://github.com/yoprogramo/QRcode_eSPI"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link">https://github.com/yoprogramo/QRcode_eSPI</a
-					>
-				</li>
-				<li>
-					<strong>TFT_eSPI:</strong>{' '}
-					<a
-						href="https://github.com/Bodmer/TFT_eSPI"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link">https://github.com/Bodmer/TFT_eSPI</a
-					>
-				</li>
-			</ul>
-		</TipBox>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
@@ -166,13 +116,43 @@
 		<h2 class="text-4xl font-medium">Next Steps</h2>
 		<p class="text-lg font-thin text-white">
 			Congratulations! You've successfully created and displayed a QR code on your microcontroller's
-			TFT display. In the last step of this workshop, you'll learn how to:
+			TFT display. Feel free to try out a CIP-13 payment URI example right away by creating a
+			payment URI for the CardanoThings PingPong wallet and send some tADA around!
+		</p>
+
+		<PingPongWallet />
+
+		<p class="text-lg font-thin text-white">
+			In the last step of this workshop, you'll learn how to:
 		</p>
 		<ul class="ml-4 list-disc space-y-2 text-lg font-thin text-white">
 			<li>Display the QR code on the TFT display once the payment request is created</li>
 			<li>Listen for payment confirmations and update the display accordingly</li>
 		</ul>
 	</section>
+
+	<FurtherResources
+		resources={[
+			{
+				title: 'QRcodeDisplay',
+				url: 'https://github.com/yoprogramo/QRcodeDisplay',
+				description:
+					'GitHub repository for the QRcodeDisplay library. Use this for manual installation or to check the source code.'
+			},
+			{
+				title: 'QRcode_eSPI',
+				url: 'https://github.com/yoprogramo/QRcode_eSPI',
+				description:
+					'GitHub repository for the QRcode_eSPI library, which depends on QRcodeDisplay and TFT_eSPI. Use this for manual installation or to check the source code.'
+			},
+			{
+				title: 'TFT_eSPI',
+				url: 'https://github.com/Bodmer/TFT_eSPI',
+				description:
+					'GitHub repository for the TFT_eSPI library, a graphics library for TFT displays. Use this for manual installation or to check the source code.'
+			}
+		]}
+	/>
 </SectionNavigator>
 
 <WorkshopNavigation />

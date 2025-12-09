@@ -6,6 +6,11 @@ export function load() {
             link: "/introductions/cardano"
         },
         {
+            title: "CIPs",
+            description: "Understand how Cardano evolves through community-driven improvement proposals.",
+            link: "/introductions/cips"
+        },
+        {
             title: "ESP32",
             description: "Learn about the ESP32 microcontroller and its features.",
             link: "/introductions/esp32"

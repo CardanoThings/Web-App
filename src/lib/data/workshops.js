@@ -112,19 +112,19 @@ export const workshops = [
                 link: "/workshops/05-qr-code-payments/getting-started"
             },
             {
-                title: "Building the Interface",
-                description: "You will learn how to build a simple payment user interface, running a simple web server on your Microcontroller and make it interact with the display of your Microcontroller.",
-                link: "/workshops/05-qr-code-payments/building-the-interface"
-            },
-            {
                 title: "CIP13 Integration",
                 description: "You will learn about Cardano Improvement Proposals (CIPs) in general and in the specific case of CIP13, which lets you create payment URIs for Cardano mobile wallets. Of cause, you'll get a brief introduction into various mobile wallets, too.",
                 link: "/workshops/05-qr-code-payments/cip13-integration"
             },
             {
                 title: "QR-Code Creation",
-                description: "You will learn how to create and display a QR-Code with a CIP-13 Payment URI on your microcontroller display that can be scanned to send a transaction by using your smartphone and a mobile wallet (tbd).",
+                description: "You will learn how to create and display a QR-Code with a CIP-13 Payment URI on your microcontroller display that can be scanned to send a transaction by using your smartphone and a mobile wallet like Yoroi or begin.",
                 link: "/workshops/05-qr-code-payments/qr-code-creation"
+            },
+            {
+                title: "Building the Interface",
+                description: "You will learn how to build a simple payment user interface, running a simple web server on your Microcontroller and make it interact with the display of your Microcontroller.",
+                link: "/workshops/05-qr-code-payments/building-the-interface"
             },
             {
                 title: "Confirming the payment",
