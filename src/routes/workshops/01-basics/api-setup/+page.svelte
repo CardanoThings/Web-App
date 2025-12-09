@@ -131,11 +131,11 @@
 			branch="main"
 			files={[
 				{
-					path: 'Workshop-01/examples/koios-api-code/koios-api-code.ino',
+					path: 'Workshop-01/examples/koios-api/koios-api.ino',
 					language: 'cpp'
 				}
 			]}
-			readmePath="Workshop-01/examples/koios-api-code/README.md"
+			readmePath="Workshop-01/examples/koios-api/README.md"
 			howItWorksTitle="How the Koios API Code Works"
 			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make sure to select the correct board and port. You should see the microcontroller connect to your Wifi and print the API response to the serial monitor."
 		/>

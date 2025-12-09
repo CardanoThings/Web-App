@@ -133,11 +133,11 @@
 			branch="main"
 			files={[
 				{
-					path: 'Workshop-01/examples/blink-code/blink-code.ino',
+					path: 'Workshop-01/examples/blink/blink.ino',
 					language: 'cpp'
 				}
 			]}
-			readmePath="Workshop-01/examples/blink-code/README.md"
+			readmePath="Workshop-01/examples/blink/README.md"
 			howItWorksTitle="How the Blink Sketch Works"
 			footerText="Copy and paste the code into your Arduino IDE and upload it to your microcontroller. Make 
             sure to select the correct board and port. You should see the LED on your microcontroller blink."
@@ -157,7 +157,7 @@
 			branch="main"
 			files={[
 				{
-					path: 'Workshop-01/examples/wifi-code/wifi-code.ino',
+					path: 'Workshop-01/examples/wifi/wifi.ino',
 					language: 'cpp'
 				}
 			]}

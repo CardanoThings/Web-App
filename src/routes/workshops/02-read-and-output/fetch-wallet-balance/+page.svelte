@@ -4,6 +4,7 @@
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import PingPongWallet from '$lib/base/PingPongWallet.svelte';
 	import { MoveLeft } from 'lucide-svelte';
@@ -107,43 +108,19 @@
 			<li>Display the balance in the serial monitor</li>
 		</ol>
 
-		<CodeCard
-			title="Stake Address Balance Code"
-			code={data.walletBalanceCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/wallet-balance-code"
+		<LiveCodeCard
+			title="Wallet Balance from Koios"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/wallet-balance/wallet-balance.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/wallet-balance/README.md"
+			howItWorksTitle="How the Stake Address Balance Code Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure to replace 'Your SSID' and 'Your Password' with your WiFi credentials, and replace 'stake_test1...' with your actual stake address. Upload it to your microcontroller and open the serial monitor to see your balance."
-			howItWorksContent={`
-				<ul>
-					<li>
-						The <strong>setup</strong> function initializes the serial communication and connects to WiFi, then makes
-						an initial balance check.
-					</li>
-					<li>
-						The <strong>loop</strong> function checks the WiFi connection and calls <strong>fetchStakeBalance</strong> every
-						30 seconds.
-					</li>
-					<li>
-						The <strong>fetchStakeBalance</strong> function creates a JSON payload by building the string step by step
-						to avoid escaping issues, then makes a POST request to the Koios API.
-					</li>
-					<li>
-						The response is parsed using ArduinoJSON. Koios returns balance values as strings to handle large numbers,
-						so we use <strong>atoll()</strong> to convert the string to a long long integer.
-					</li>
-					<li>
-						The balance is converted from Lovelace (the smallest unit, 1 tADA = 1,000,000 Lovelace) to tADA (test ADA)
-						by dividing by 1,000,000.0.
-					</li>
-					<li>
-						The stake address and total balance are printed to the serial monitor in a simple, easy-to-read format.
-					</li>
-					<li>
-						The code detects balance changes by comparing with the previous balance and notifies you when
-						your balance increases or decreases.
-					</li>
-				</ul>
-			`}
 		/>
 	</section>
 
@@ -221,40 +198,22 @@
 			<li><strong>drep_id</strong>: DRep ID for governance voting</li>
 		</ul>
 		<p class="text-lg font-thin text-white">
-			Here's an Arduino example for fetching stake account information using Blockfrost:
+			Here's an Arduino example for fetching stake account information like your wallet balance
+			using Blockfrost:
 		</p>
-		<CodeCard
-			title="Blockfrost Arduino Code"
-			code={data.blockfrostCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/blockfrost-code"
+		<LiveCodeCard
+			title="Wallet Balance from Blockfrost"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/wallet-balance-blockfrost/wallet-balance-blockfrost.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/wallet-balance-blockfrost/README.md"
+			howItWorksTitle="How the Blockfrost Arduino Code Works"
 			footerText="To use Blockfrost, you'll need to sign up at blockfrost.io and get an API key. The free tier has rate limits but is sufficient for most projects."
-			howItWorksContent={`
-				<ul>
-					<li>
-						Unlike Koios, Blockfrost uses a <strong>GET request</strong> instead of POST, making the code simpler.
-					</li>
-					<li>
-						The stake address is appended directly to the API URL path, so the full URL becomes:
-						<code>https://cardano-preprod.blockfrost.io/api/v0/accounts/YOUR_STAKE_ADDRESS</code>
-					</li>
-					<li>
-						The API key is sent in the <strong>project_id</strong> header. You can get a free API key by signing up
-						at blockfrost.io and creating a Preprod project.
-					</li>
-					<li>
-						The response is parsed using ArduinoJSON. Blockfrost returns the <strong>controlled_amount</strong> field
-						as a string to handle large numbers, so we use <strong>atoll()</strong> to convert it to a long long integer.
-					</li>
-					<li>
-						The balance is converted from Lovelace (the smallest unit, 1 tADA = 1,000,000 Lovelace) to tADA (test ADA)
-						by dividing by 1,000,000.0.
-					</li>
-					<li>
-						The stake address and total balance are printed to the serial monitor in the same format as the Koios example.
-					</li>
-				</ul>
-			`}
 		/>
 
 		<TipBox title="Advanced Users" variant="purple">
