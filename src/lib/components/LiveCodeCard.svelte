@@ -374,7 +374,7 @@
 								</svg>
 							</div>
 						{:else if fileData.error}
-							<div class="rounded-md border border-red-500/50 bg-red-500/10 p-4">
+							<div class="rounded-md rounded-tl-none bg-[#0b1c2c] p-4">
 								<p class="text-sm text-red-400">{fileData.error}</p>
 								<Button
 									onclick={() => {

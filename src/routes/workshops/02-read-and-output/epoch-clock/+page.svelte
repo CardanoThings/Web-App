@@ -2,109 +2,13 @@
 	import { page } from '$app/state';
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
-	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import ESP32C3Pinout from '$lib/components/ESP32C3Pinout.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
-
-	const epochClockHowItWorks = `
-		<h3>Overview</h3>
-		<p>This project combines WiFi connectivity, API calls, and LED ring display to create a physical Epoch Clock that visually represents epoch progress. The circular LED ring with 12 LEDs lights up progressively around the circle to show how far through the current epoch the blockchain has progressed, based on block data from the API.</p>
-		
-		<h3>Key Concepts</h3>
-		<ul>
-			<li><strong>Epoch Progress:</strong> Cardano epochs last approximately 5 days. By tracking blocks created within an epoch, we can calculate what percentage of the epoch has been completed.</li>
-			<li><strong>API Integration:</strong> The code uses the Koios API to fetch current blockchain state, including block height and epoch information needed to calculate progress.</li>
-			<li><strong>Visual Progress Indicator:</strong> The 12 LEDs on the circular ring light up sequentially around the circle to create a clock-like visual representation of epoch progress. As more blocks are created, more LEDs light up around the ring.</li>
-			<li><strong>LED Ring Control:</strong> The code directly controls individual RGB LEDs on the WS2812 ring to create a circular progress indicator. Each LED can display any color, allowing for creative visualizations of epoch progression.</li>
-			<li><strong>Non-blocking Timing:</strong> Using <code>millis()</code> instead of <code>delay()</code> allows the microcontroller to update the display while checking for new blockchain data.</li>
-		</ul>
-		
-		<h3>How the Epoch Clock Works</h3>
-		<ol>
-			<li>The code initializes the LED ring display and connects to WiFi on startup</li>
-			<li>An initial API call fetches the current epoch data and block information from the Koios API</li>
-			<li>The code calculates epoch progress based on blocks created within the current epoch</li>
-			<li>Every minute (or at your configured interval), the code fetches updated blockchain data</li>
-			<li>The <code>fetchEpochData()</code> function sends a request to the Koios API to get current block height and epoch information</li>
-			<li>The JSON response is parsed to extract block data and epoch details</li>
-			<li>The <code>displayProgress()</code> function determines how many of the 12 LEDs should be lit based on epoch progress</li>
-			<li>The function lights up the appropriate number of LEDs around the ring in blue</li>
-			<li>As the epoch progresses and more blocks are created, more LEDs light up around the circle, creating a clock-like progress indicator</li>
-			<li>A white walking LED moves around the ring every 5 seconds, creating a second-hand effect that completes a full rotation in 60 seconds</li>
-			<li>When a new epoch starts, the display resets and begins filling again from the start</li>
-		</ol>
-		
-		<h3>Progress Calculation</h3>
-		<p>The code calculates epoch progress by:</p>
-		<ul>
-			<li>Determining the total number of slots in an epoch (typically 432,000 slots)</li>
-			<li>Getting the current epoch slot from the API</li>
-			<li>Calculating the percentage: (current_epoch_slot / total_epoch_slots) × 100</li>
-			<li>Mapping this percentage to the 12 LEDs: (progress_percentage / 100) × 12</li>
-			<li>Lighting up that many LEDs around the ring</li>
-		</ul>
-		
-		<h3>Display Functions</h3>
-		<ul>
-			<li><strong>displayProgress():</strong> Lights up the appropriate number of LEDs around the ring based on calculated epoch progress. All LEDs are lit in blue to create a simple visual progress indicator showing how far through the epoch the blockchain has progressed.</li>
-			<li><strong>updateWalkingLED():</strong> Displays a white LED that moves around the ring, blinking at each position for 5 seconds. This creates a clock-like second hand effect, completing a full rotation in 60 seconds (1 minute). The white LED appears on top of the blue progress LEDs.</li>
-			<li><strong>clearDisplay():</strong> Turns off all LEDs, used when resetting for a new epoch.</li>
-			<li><strong>setPixelColor():</strong> Sets the color of individual LEDs on the ring using RGB values, allowing precise control over which LEDs are lit and what color they display.</li>
-		</ul>
-		
-		<h3>Customization Ideas</h3>
-		<ul>
-			<li>Change the starting position of the progress indicator (e.g., start at 12 o'clock position)</li>
-			<li>Add color coding around the ring (e.g., green for early epoch, yellow for middle, red for near end)</li>
-			<li>Add a blinking LED to indicate when a new block is detected</li>
-			<li>Display different colors for different epochs</li>
-			<li>Add a reset animation when a new epoch starts (e.g., all LEDs flash before resetting)</li>
-			<li>Create a countdown effect as the epoch nears completion</li>
-		</ul>
-	`;
-
-	const ledBlinkHowItWorks = `
-		<h3>Overview</h3>
-		<p>This simple example demonstrates basic WS2812 LED ring control without any network connectivity. It's perfect for testing your wiring and verifying that your LED ring is working correctly before adding blockchain integration.</p>
-		
-		<h3>Key Concepts</h3>
-		<ul>
-			<li><strong>Library Initialization:</strong> The Adafruit NeoPixel library is initialized with the number of LEDs (12 for the ring), the data pin, and the LED type (NEO_GRB + NEO_KHZ800 for WS2812).</li>
-			<li><strong>Brightness Control:</strong> The brightness is set to a very low value (5 out of 255, approximately 2%) to protect the ESP32-C3 from excessive current draw. This is safe for USB power and prevents damage to the microcontroller.</li>
-			<li><strong>Individual LED Control:</strong> Each LED can be controlled individually using <code>setPixelColor()</code>, which takes the LED index (0-11) and RGB color values.</li>
-			<li><strong>Update Display:</strong> After setting LED colors, you must call <code>show()</code> to actually update the physical display. This allows you to set multiple LEDs before updating.</li>
-		</ul>
-		
-		<h3>How the Blink Sequence Works</h3>
-		<ol>
-			<li>The code initializes the NeoPixel ring with 12 LEDs on the specified pin</li>
-			<li>Brightness is set to 5 (very low) to protect the ESP32-C3 from excessive current draw</li>
-			<li>The main loop cycles through all 12 LEDs one at a time</li>
-			<li>For each LED, the code clears all LEDs, sets the current LED to white, and updates the display</li>
-			<li>Each LED stays lit for 200 milliseconds before moving to the next one</li>
-			<li>After all LEDs have been lit, the display is cleared and the sequence immediately repeats continuously</li>
-		</ol>
-		
-		<h3>Important Safety Notes</h3>
-		<ul>
-			<li><strong>Low Brightness:</strong> The brightness is intentionally set very low (5/255) to prevent damage. WS2812 LEDs can draw significant current - a 12-LED ring at full brightness can draw up to 720mA, which is safer than larger displays but still requires caution with USB power.</li>
-			<li><strong>Power Supply:</strong> If you need brighter LEDs, use an external 5V power supply for the ring and connect the grounds together. Never exceed the current rating of your power supply.</li>
-			<li><strong>Testing:</strong> This example is perfect for verifying your wiring is correct. You should see one LED light up at a time, moving around the circular ring.</li>
-		</ul>
-		
-		<h3>Customization Ideas</h3>
-		<ul>
-			<li>Change the delay between LEDs to make the sequence faster or slower</li>
-			<li>Try different colors instead of white (e.g., red, green, blue, or custom RGB values)</li>
-			<li>Light up multiple LEDs at once to create patterns around the ring</li>
-			<li>Add a fade effect by gradually increasing and decreasing brightness</li>
-			<li>Create different patterns (clockwise, counter-clockwise, alternating, etc.)</li>
-		</ul>
-	`;
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
@@ -279,7 +183,7 @@
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Simple LED Blink Example</h2>
+		<h2 class="text-4xl font-medium">Basic LED Ring Test</h2>
 		<p class="text-lg font-thin text-white">
 			Before connecting your LED ring to blockchain events, let's start with a simple blink example.
 			This will help you verify that your wiring is correct and that the LED ring is working
@@ -292,12 +196,18 @@
 			moving around the circular ring.
 		</p>
 
-		<CodeCard
-			title="Simple LED Blink Code"
-			code={data.ledBlinkCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/led-blink-code"
-			howItWorksContent={ledBlinkHowItWorks}
+		<LiveCodeCard
+			title="Basic LED Ring Test"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/led-ring-blink/led-ring-blink.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/led-ring-blink/README.md"
+			howItWorksTitle="How the Basic LED Ring Test Works"
 			footerText="Copy and paste this code into your Arduino IDE. Make sure you've installed the Adafruit NeoPixel library and connected your WS2812 LED ring correctly. Update the LED_PIN definition to match your wiring (the pin connected to the IN pin on your ring). Upload it to your microcontroller and you should see LEDs lighting up one at a time in sequence around the ring. If no LEDs light up, check your wiring and make sure the pin number matches your connection."
 		/>
 	</section>
@@ -348,12 +258,18 @@
 			epoch the blockchain has advanced.
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Epoch Clock Code"
-			code={data.epochClockCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/epoch-clock-code"
-			howItWorksContent={epochClockHowItWorks}
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/epoch-clock/epoch-clock.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/epoch-clock/README.md"
+			howItWorksTitle="How the Epoch Clock Code Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure you've installed the Adafruit NeoPixel library and connected your WS2812 LED ring correctly. Update the LED_PIN definition to match your wiring. Replace WiFi credentials with your own. Upload it to your microcontroller and you should see LEDs lighting up progressively around the ring in blue as the epoch advances."
 		/>
 	</section>

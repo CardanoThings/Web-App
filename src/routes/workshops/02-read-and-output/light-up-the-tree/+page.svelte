@@ -3,6 +3,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import ESP32C3Pinout from '$lib/components/ESP32C3Pinout.svelte';
@@ -10,85 +11,6 @@
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
-
-	const relayBlinkHowItWorks = `
-		<h3>Overview</h3>
-		<p>This simple example demonstrates basic relay control without any network connectivity. It's perfect for testing your relay wiring before adding blockchain integration.</p>
-		
-		<h3>Key Concepts</h3>
-		<ul>
-			<li><strong>Pin Configuration:</strong> The relay control pin is configured as an OUTPUT using <code>pinMode()</code>, allowing the microcontroller to control the relay state.</li>
-			<li><strong>Active LOW vs Active HIGH:</strong> Most relay modules are active LOW, meaning LOW (0V) turns the relay ON and HIGH (3.3V/5V) turns it OFF. Some modules work the opposite way.</li>
-			<li><strong>Timing:</strong> The code uses <code>delay()</code> to create a simple on/off cycle. The relay turns ON for 2 seconds, then OFF for 2 seconds, repeating continuously.</li>
-			<li><strong>Serial Feedback:</strong> The code prints messages to the Serial Monitor so you can verify the relay is responding to commands.</li>
-		</ul>
-		
-		<h3>How the Blink Cycle Works</h3>
-		<ol>
-			<li>The relay pin is set to LOW (for active LOW relays), activating the relay</li>
-			<li>The program waits 2 seconds using <code>delay(2000)</code></li>
-			<li>The relay pin is set to HIGH, deactivating the relay</li>
-			<li>The program waits another 2 seconds</li>
-			<li>The cycle repeats indefinitely</li>
-		</ol>
-		
-		<h3>Testing Your Setup</h3>
-		<p>When the code is running correctly, you should:</p>
-		<ul>
-			<li>Hear a clicking sound every 2 seconds (the relay switching)</li>
-			<li>See the status LED on the relay module turn on and off</li>
-			<li>If you've connected a device, it should turn on and off with the relay</li>
-		</ul>
-		
-		<h3>Troubleshooting</h3>
-		<p>If the relay doesn't work:</p>
-		<ul>
-			<li>Check your wiring (VCC, GND, and IN pins)</li>
-			<li>Verify the GPIO pin number matches your wiring</li>
-			<li>Try reversing HIGH and LOW in the code (some relays are active HIGH)</li>
-			<li>Check that your relay module is receiving power (verify VCC connection)</li>
-		</ul>
-	`;
-
-	const relayIntegrationHowItWorks = `
-		<h3>Overview</h3>
-		<p>This example demonstrates how to connect blockchain events to physical hardware using a relay. When your wallet balance changes, the relay activates or deactivates, controlling your connected device.</p>
-		
-		<h3>Key Concepts</h3>
-		<ul>
-			<li><strong>Balance Monitoring:</strong> The code checks your wallet balance every 30 seconds using the Koios API <code>/address_info</code> endpoint, comparing it to the previous balance to detect changes.</li>
-			<li><strong>Change Detection:</strong> By storing the previous balance and comparing it to the current balance, we can detect both incoming (balance increases) and outgoing (balance decreases) transactions.</li>
-			<li><strong>Relay Control:</strong> When a balance change is detected, the code calls either <code>turnOnLight()</code> or <code>turnOffLight()</code> to control the relay state.</li>
-			<li><strong>Non-blocking Timing:</strong> Using <code>millis()</code> instead of <code>delay()</code> allows the microcontroller to continue checking balances while maintaining timing control.</li>
-		</ul>
-		
-		<h3>How the Balance Monitoring Works</h3>
-		<ol>
-			<li>The code connects to WiFi and performs an initial balance check on startup</li>
-			<li>Every 30 seconds, the <code>loop()</code> function calls <code>fetchWalletBalance()</code></li>
-			<li>The function sends a POST request to the Koios API with your wallet address</li>
-			<li>The API response is parsed to extract the current balance (converted from Lovelace to ADA)</li>
-			<li>The current balance is compared to the previous balance</li>
-			<li>If the balance increased, <code>turnOnLight()</code> is called (relay activates)</li>
-			<li>If the balance decreased, <code>turnOffLight()</code> is called (relay deactivates)</li>
-			<li>The previous balance is updated for the next comparison</li>
-		</ol>
-		
-		<h3>Relay Control Functions</h3>
-		<ul>
-			<li><strong>turnOnLight():</strong> Sets the relay pin to HIGH (for most relay modules), activating the relay and turning on your connected device. Also updates the <code>lightState</code> variable and prints a confirmation message.</li>
-			<li><strong>turnOffLight():</strong> Sets the relay pin to LOW, deactivating the relay and turning off your connected device. Updates the state variable and prints a confirmation message.</li>
-		</ul>
-		
-		<h3>Customization Ideas</h3>
-		<ul>
-			<li>Modify the logic to trigger only on balance increases (incoming transactions)</li>
-			<li>Add a threshold check (e.g., only activate if balance exceeds a certain amount)</li>
-			<li>Detect specific token receipts instead of ADA balance changes</li>
-			<li>Add multiple relays for different types of events</li>
-			<li>Implement timed activation (e.g., relay turns on for 60 seconds then automatically turns off)</li>
-		</ul>
-	`;
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
@@ -315,12 +237,18 @@
 			correct GPIO pin for your relay module.
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Simple Relay Blink Code"
-			code={data.relayBlinkCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/relay-blink-code"
-			howItWorksContent={relayBlinkHowItWorks}
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/relay-blink/relay-blink.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/relay-blink/README.md"
+			howItWorksTitle="How the Simple Relay Blink Code Works"
 			footerText="Copy and paste this code into your Arduino IDE. Make sure to set the correct GPIO pin number to match your wiring. Upload it to your microcontroller and you should hear the relay clicking every 2 seconds. If your relay doesn't work, try reversing HIGH and LOW in the code (some relays are active HIGH instead of active LOW)."
 		/>
 	</section>
@@ -338,12 +266,18 @@
 			relay will turn OFF.
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Relay Control with Blockchain Integration"
-			code={data.relayCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/relay-code"
-			howItWorksContent={relayIntegrationHowItWorks}
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/relay-events/relay-events.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/relay-events/README.md"
+			howItWorksTitle="How the Relay Control with Blockchain Integration Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure to set the correct GPIO pin for your relay module. Replace WiFi credentials and wallet address with your own. Upload it to your microcontroller. When you receive a transaction to your wallet, the relay should activate and turn on your light. Make sure you're using a Preprod Testnet wallet address (starting with 'addr_test1...')."
 		/>
 		<PingPongWallet />

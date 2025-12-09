@@ -7,6 +7,7 @@
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { MoveLeft } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -110,53 +111,19 @@
 			background covering the entire screen, confirming that your CYD is working properly.
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Hello World Display Test"
-			language="cpp"
-			code={data.helloWorldCode}
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/hello-world-code"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/display-hello-world/display-hello-world.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/display-hello-world/README.md"
+			howItWorksTitle="How the Hello World Display Test Works"
 			footerText="Upload this sketch to your CYD. If everything is configured correctly, you should see 'Hello World!' displayed in white text, centered on a blue screen. If the display doesn't work or shows corrupted graphics, double-check that you've replaced the User_Setup.h file correctly."
-			howItWorksContent={`
-			<h3>Display Initialization</h3>
-			<p>The code begins by initializing the TFT display hardware and configuring it for use:</p>
-			<ul>
-				<li><strong>tft.init():</strong> Powers on the display and initializes the ILI9341 driver chip</li>
-				<li><strong>tft.setRotation(1):</strong> Sets landscape orientation where 0=0°, 1=90°, 2=180°, 3=270°</li>
-				<li><strong>tft.invertDisplay(true):</strong> Inverts the display colors to correct color mapping. Some CYD displays require this for colors to appear correctly (blue shows as blue instead of yellow, white shows as white instead of black)</li>
-				<li><strong>tft.fillScreen(TFT_BLUE):</strong> Fills the entire 320x240 pixel screen with blue color, creating our background</li>
-			</ul>
-
-			<h3>Screen Dimensions and Coordinate System</h3>
-			<p>Understanding the display coordinate system is essential for positioning elements:</p>
-			<ul>
-				<li><strong>Screen dimensions:</strong> 320 pixels wide × 240 pixels tall (in landscape mode with rotation 1)</li>
-				<li><strong>Origin point:</strong> (0,0) is at the top-left corner of the screen</li>
-				<li><strong>X-axis:</strong> Increases from left (0) to right (319)</li>
-				<li><strong>Y-axis:</strong> Increases from top (0) to bottom (239)</li>
-			</ul>
-
-			<h3>Text Rendering</h3>
-			<p>Text is rendered with specific properties to make it visible and centered:</p>
-			<ul>
-				<li><strong>Text color:</strong> <code>setTextColor(TFT_WHITE, TFT_BLUE)</code> sets white text with blue background</li>
-				<li><strong>Text size:</strong> Size 3 means each character is 18 pixels wide × 24 pixels tall (base 6×8 multiplied by 3)</li>
-				<li><strong>Character dimensions:</strong> Each character is approximately 6 pixels wide per size unit</li>
-				<li><strong>Cursor positioning:</strong> <code>setCursor(x, y)</code> sets where the text top-left corner begins</li>
-			</ul>
-
-			<h3>Text Centering Formula</h3>
-			<p>To center the text on the screen, we calculate the position mathematically:</p>
-			<ul>
-				<li><code>textWidth = text.length() × 6 × textSize</code> estimates the total pixel width of the text</li>
-				<li><code>textHeight = 8 × textSize</code> calculates the pixel height of the text</li>
-				<li><code>textX = (320 - textWidth) / 2</code> centers the text horizontally on the 320-pixel wide screen</li>
-				<li><code>textY = (240 - textHeight) / 2</code> centers the text vertically on the 240-pixel tall screen</li>
-			</ul>
-			<p>This formula works by finding the leftover space and dividing it equally on both sides.</p>
-
-			<h3>The Loop Function</h3>
-			<p>The <code>loop()</code> function is empty because this is a static display test. Once the display is drawn in <code>setup()</code>, nothing needs to update. For dynamic displays (like showing sensor data or wallet balances), you would update the display content in the loop.</p>
-		`}
 		/>
 
 		<h3 class="mt-4 text-2xl font-medium">Understanding the Code</h3>
@@ -206,83 +173,19 @@
 			every second. The balance is fetched every 60 seconds.
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Wallet Balance Display Code"
-			language="cpp"
-			code={data.tftDisplayCode}
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-02/examples/tft-display-code"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-02/examples/display-wallet-balance/display-wallet-balance.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-02/examples/display-wallet-balance/README.md"
+			howItWorksTitle="How the Wallet Balance Display Code Works"
 			footerText="Copy and paste the code into your Arduino IDE. Make sure you've completed the library configuration steps above (replacing User_Setup.h with the CYD version). Replace the WiFi credentials and stake address with your own. Upload it to your microcontroller and you should see your wallet balance in white text on a blue background. The balance fetches every 60 seconds, and the timestamp updates every second."
-			howItWorksContent={`
-				<h3>Program Structure</h3>
-				<p>This sketch combines WiFi connectivity, API requests, JSON parsing, and TFT display control into a complete wallet monitoring system.</p>
-
-				<h3>Setup Phase</h3>
-				<p>The <code>setup()</code> function initializes all components in sequence:</p>
-				<ul>
-					<li><strong>Serial Communication:</strong> Opens serial monitor at 115200 baud for debugging</li>
-					<li><strong>Display Initialization:</strong> Configures the TFT display with landscape orientation and color inversion</li>
-					<li><strong>WiFi Connection:</strong> Connects to your network and displays status messages on screen</li>
-					<li><strong>Initial Fetch:</strong> Immediately fetches and displays the wallet balance</li>
-				</ul>
-
-				<h3>Main Loop</h3>
-				<p>The <code>loop()</code> function continuously monitors and updates the display:</p>
-				<ul>
-					<li><strong>WiFi Health Check:</strong> Verifies WiFi connection and reconnects if necessary</li>
-					<li><strong>Timing Control:</strong> Uses <code>millis()</code> to check if 60 seconds have elapsed since last fetch</li>
-					<li><strong>Balance Update:</strong> Calls <code>fetchWalletBalance()</code> at regular intervals</li>
-				</ul>
-
-			<h3>Fetching Stake Balance</h3>
-			<p>The <code>fetchStakeBalance()</code> function handles API communication:</p>
-			<ul>
-				<li><strong>HTTP Setup:</strong> Creates HTTP client and configures headers for JSON request</li>
-				<li><strong>Stake Address Usage:</strong> Uses <code>account_info</code> endpoint with stake address (not payment address)</li>
-				<li><strong>JSON Payload:</strong> Constructs request body with "_stake_addresses" array containing your stake address</li>
-				<li><strong>POST Request:</strong> Sends request to Koios API endpoint</li>
-				<li><strong>Response Parsing:</strong> Uses ArduinoJson to extract total_balance from response</li>
-				<li><strong>String to Number Conversion:</strong> Koios returns balance as a string, so we use <code>atoll()</code> to convert it to a long long for large Lovelace values</li>
-				<li><strong>Balance Conversion:</strong> Converts from Lovelace (1 tADA = 1,000,000 Lovelace) to tADA for display</li>
-				<li><strong>Change Detection:</strong> Only updates display if balance has changed, and logs whether it increased or decreased</li>
-				<li><strong>Serial Logging:</strong> Prints detailed information to serial monitor for debugging</li>
-			</ul>
-
-			<h3>Display Update</h3>
-			<p>The display uses a simple, clean design with all white text on a blue background:</p>
-			<ul>
-				<li><strong>Screen Background:</strong> Fills entire screen with blue for consistent appearance</li>
-				<li><strong>Title (White, Size 2):</strong> "Wallet Balance" at top of screen</li>
-				<li><strong>Balance (White, Size 4):</strong> Large, prominent display of ADA amount with 2 decimal places</li>
-				<li><strong>Unit Label (White, Size 2):</strong> "ADA" text to clearly identify the currency</li>
-				<li><strong>Timestamp (White, Size 1):</strong> Lower left corner shows "Updated Xs ago" with live counter that updates every second</li>
-			</ul>
-
-			<h3>Timestamp Updates</h3>
-			<p>A separate <code>updateTimestamp()</code> function efficiently updates just the timestamp:</p>
-			<ul>
-				<li><strong>Calculated Display:</strong> Shows seconds elapsed since last successful balance fetch</li>
-				<li><strong>Efficient Redraw:</strong> Only clears and redraws the small timestamp area (200×10 pixels)</li>
-				<li><strong>Live Counter:</strong> Called every second in the loop to provide real-time feedback</li>
-				<li><strong>No Flicker:</strong> Minimal screen updates prevent flickering while keeping display responsive</li>
-			</ul>
-
-				<h3>Timing and Intervals</h3>
-				<p>The sketch uses non-blocking timing for efficient operation:</p>
-				<ul>
-					<li><strong>checkInterval = 60000:</strong> Fetches balance every 60 seconds (60,000 milliseconds)</li>
-					<li><strong>millis():</strong> Tracks time since device boot without blocking code execution</li>
-					<li><strong>Non-blocking:</strong> Device remains responsive during delays between updates</li>
-				</ul>
-
-				<h3>Error Handling</h3>
-				<p>The code includes basic error handling:</p>
-				<ul>
-					<li><strong>WiFi Reconnection:</strong> Automatically reconnects if connection drops</li>
-					<li><strong>HTTP Response Codes:</strong> Checks if request was successful (>0)</li>
-					<li><strong>JSON Validation:</strong> Verifies parsing succeeded and data exists before accessing</li>
-					<li><strong>Default Values:</strong> Uses safe defaults (0.0) if data extraction fails</li>
-				</ul>
-			`}
 		/>
 	</section>
 
