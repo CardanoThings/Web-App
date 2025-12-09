@@ -5,7 +5,7 @@
 </script>
 
 <section id="further-resources" class="mt-8 flex flex-col gap-4 text-white">
-	<h2 class="text-4xl font-medium">Further Resources</h2>
+	<h2 class="text-3xl font-medium">Further Resources</h2>
 	<Card.Root class="sm:[calc(100%-2rem)] bg-transparent pb-4 text-white">
 		<Card.Content>
 			<ul>

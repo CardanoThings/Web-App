@@ -38,56 +38,6 @@ export const introductions = [
         ]
     },
     {
-        title: "CIPs (Cardano Improvement Proposals)",
-        slug: "cips",
-        link: "introductions/cips",
-        summary: "Cardano Improvement Proposals (CIPs) are formalized design documents that serve as the primary mechanism for proposing new features, standards, and processes within the Cardano ecosystem. They provide a structured, transparent, and community-driven approach to evolving the Cardano network, ensuring interoperability, documenting design decisions, and enabling decentralized governance.",
-        description: "Understand how Cardano evolves through community-driven improvement proposals",
-        history: "CIPs were established as Cardano's formal governance mechanism, inspired by similar processes in other blockchain ecosystems like Bitcoin's BIPs (Bitcoin Improvement Proposals) and Ethereum's EIPs (Ethereum Improvement Proposals). The CIP process was designed to align with Cardano's commitment to peer-reviewed research, evidence-based development, and decentralized governance. As Cardano progressed through its development eras—from Byron (foundation) through Shelley (decentralization), Goguen (smart contracts), Basho (scaling), and Voltaire (governance)—CIPs became increasingly important for standardizing protocols, ensuring wallet interoperability, and documenting community-driven enhancements. The CIP repository serves as the official record of all proposals, with CIP Editors maintaining quality and consistency throughout the review process.",
-        keyFeatures: [
-            "Standards Track CIPs: Propose changes affecting Cardano implementations, including network protocol modifications, transaction validity rules, and interoperability standards (e.g., CIP-13 for payment URIs, CIP-25 for NFT metadata).",
-            "Process CIPs: Describe or propose changes to processes surrounding Cardano, including governance procedures, guidelines, and decision-making mechanisms that apply beyond the protocol itself.",
-            "Informational CIPs: Provide general guidelines, best practices, or information to the Cardano community without proposing new features or requiring implementation.",
-            "Open Participation: Any community member can propose a CIP, ensuring decentralized and inclusive evolution of the ecosystem.",
-            "Structured Review Process: Proposals go through discussion, community review, technical evaluation, and voting stages before implementation.",
-            "CIP Editors: Maintain quality and consistency by reviewing submissions for clarity, technical soundness, and adherence to CIP format standards.",
-            "Community Voting: ADA holders participate in governance by voting on proposals, ensuring decisions reflect the community's collective will.",
-            "Interoperability Focus: Many CIPs establish standards that ensure different wallets, dApps, and services can work together seamlessly.",
-            "Documentation: CIPs serve as permanent documentation of design decisions, technical specifications, and implementation details.",
-            "Transparency: All proposals, discussions, and decisions are publicly accessible, maintaining accountability and community trust."
-        ],
-        resources: [
-            {
-                title: "CIP Repository",
-                link: "https://cips.cardano.org/"
-            },
-            {
-                title: "About CIPs",
-                link: "https://cips.cardano.org/about"
-            },
-            {
-                title: "CIP Process Guide",
-                link: "https://cips.cardano.org/cips/cip1/"
-            },
-            {
-                title: "Cardano Forum - CIPs",
-                link: "https://forum.cardano.org/c/developers/cips/5"
-            },
-            {
-                title: "CIP GitHub Repository",
-                link: "https://github.com/cardano-foundation/CIPs"
-            },
-            {
-                title: "CIP-13 (Payment URIs)",
-                link: "https://cips.cardano.org/cips/cip13/"
-            },
-            {
-                title: "CIP-25 (NFT Metadata)",
-                link: "https://cips.cardano.org/cips/cip25/"
-            }
-        ]
-    },
-    {
         title: "Arduino",
         slug: "arduino",
         link: "introductions/arduino",
