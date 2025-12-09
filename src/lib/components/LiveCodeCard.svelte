@@ -231,28 +231,106 @@
 	function formatMarkdown(text) {
 		if (!text) return '';
 
-		return (
-			text
-				// Headers - process #### before ### to avoid conflicts
-				.replace(/^#### (.*$)/gim, '<strong>$1</strong>')
-				.replace(/^### (.*$)/gim, '<h3>$1</h3>')
-				.replace(/^## (.*$)/gim, '<h2>$1</h2>')
-				.replace(/^# (.*$)/gim, '<h1>$1</h1>')
-				// Bold
-				.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-				// Inline code
-				.replace(/`([^`]+)`/gim, '<code>$1</code>')
-				// Links
-				.replace(
-					/\[([^\]]+)\]\(([^)]+)\)/gim,
-					'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-				)
-				// Line breaks
-				.replace(/\n\n/gim, '</p><p>')
-				.replace(/\n/gim, '<br>')
-				// Wrap in paragraph
-				.replace(/^(.*)$/gim, '<p>$1</p>')
-		);
+		// Split text into lines for processing
+		const lines = text.split('\n');
+		const result = [];
+		let inList = false;
+		let listType = null; // 'ul' or 'ol'
+		let listItems = [];
+
+		function flushList() {
+			if (listItems.length > 0) {
+				const tag = listType === 'ol' ? 'ol' : 'ul';
+				result.push(`<${tag}>`);
+				listItems.forEach((item) => {
+					result.push(`<li>${item}</li>`);
+				});
+				result.push(`</${tag}>`);
+				listItems = [];
+			}
+			inList = false;
+			listType = null;
+		}
+
+		function processInlineMarkdown(text) {
+			return (
+				text
+					// Bold
+					.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+					// Inline code
+					.replace(/`([^`]+)`/gim, '<code>$1</code>')
+					// Links
+					.replace(
+						/\[([^\]]+)\]\(([^)]+)\)/gim,
+						'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+					)
+			);
+		}
+
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			const trimmed = line.trim();
+
+			// Check for headers first (before trimming for list detection)
+			if (trimmed.match(/^####\s+(.+)$/)) {
+				if (inList) flushList();
+				result.push(`<strong>${processInlineMarkdown(trimmed.replace(/^####\s+/, ''))}</strong>`);
+				continue;
+			}
+			if (trimmed.match(/^###\s+(.+)$/)) {
+				if (inList) flushList();
+				result.push(`<h3>${processInlineMarkdown(trimmed.replace(/^###\s+/, ''))}</h3>`);
+				continue;
+			}
+			if (trimmed.match(/^##\s+(.+)$/)) {
+				if (inList) flushList();
+				result.push(`<h2>${processInlineMarkdown(trimmed.replace(/^##\s+/, ''))}</h2>`);
+				continue;
+			}
+			if (trimmed.match(/^#\s+(.+)$/)) {
+				if (inList) flushList();
+				result.push(`<h1>${processInlineMarkdown(trimmed.replace(/^#\s+/, ''))}</h1>`);
+				continue;
+			}
+
+			// Check for ordered list item (number followed by period)
+			const olMatch = trimmed.match(/^\d+\.\s+(.+)$/);
+			// Check for unordered list item (dash, asterisk, or plus)
+			const ulMatch = trimmed.match(/^[-*+]\s+(.+)$/);
+
+			if (olMatch) {
+				if (!inList || listType !== 'ol') {
+					flushList();
+					inList = true;
+					listType = 'ol';
+				}
+				listItems.push(processInlineMarkdown(olMatch[1]));
+			} else if (ulMatch) {
+				if (!inList || listType !== 'ul') {
+					flushList();
+					inList = true;
+					listType = 'ul';
+				}
+				listItems.push(processInlineMarkdown(ulMatch[1]));
+			} else if (trimmed === '') {
+				// Empty line - flush list if we're in one
+				if (inList) {
+					flushList();
+				}
+				// Don't add empty lines
+			} else {
+				// Regular line - flush list if we're in one, then add as paragraph
+				if (inList) {
+					flushList();
+				}
+				result.push(`<p>${processInlineMarkdown(trimmed)}</p>`);
+			}
+		}
+
+		// Flush any remaining list
+		flushList();
+
+		return result.join('');
 	}
 
 	// Fetch files when component mounts or files prop changes
@@ -507,21 +585,33 @@
 		line-height: 1.6;
 	}
 
+	.how-it-works-content :global(p + ul),
+	.how-it-works-content :global(p + ol) {
+		margin-top: 0;
+	}
+
+	.how-it-works-content :global(ul + p),
+	.how-it-works-content :global(ol + p) {
+		margin-top: 0;
+	}
+
 	.how-it-works-content :global(ul) {
 		list-style-type: disc;
-		padding-left: 1.5rem;
-		margin: 0.5rem 0;
+		padding-left: 1rem;
+		margin: 0.25rem 0;
+		line-height: 1.35;
 	}
 
 	.how-it-works-content :global(ol) {
 		list-style-type: decimal;
-		padding-left: 1.5rem;
-		margin: 0.5rem 0;
+		padding-left: 1.25rem;
+		margin: 0.25rem 0;
+		line-height: 1.35;
 	}
 
 	.how-it-works-content :global(li) {
-		margin: 0.75rem 0;
-		line-height: 1.6;
+		margin: 0.4rem 0;
+		line-height: 1.35;
 	}
 
 	.how-it-works-content :global(strong) {
