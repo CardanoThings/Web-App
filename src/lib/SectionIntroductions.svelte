@@ -9,7 +9,7 @@
 		<div class="text-white">
 			<h1 class="text-4xl">Introductions</h1>
 			<p class="mt-2 max-w-[90%] text-lg leading-relaxed font-thin">
-				Quick introductions to all the tech needed for projects on CardanoThings.io
+				Quick introductions on all the things (well, some) we think you might wanna know about.
 			</p>
 		</div>
 
