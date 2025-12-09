@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
+	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
@@ -27,6 +28,17 @@
 			then be displayed on your microcontroller's TFT display as a QR code.
 		</p>
 	</section>
+
+	<FurtherResources
+		resources={[
+			{
+				title: 'W3Schools',
+				url: 'https://www.w3schools.com/',
+				description:
+					'Learn HTML, CSS, JavaScript, and other web technologies with free tutorials, references, and examples.'
+			}
+		]}
+	/>
 </SectionNavigator>
 
 <WorkshopNavigation />
