@@ -641,6 +641,7 @@
 		padding: 0 1.5rem !important;
 		margin: 0 !important;
 		background: transparent !important;
+		color: white !important;
 		font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 		font-size: 0.75rem;
 		line-height: 1.75;
@@ -659,6 +660,7 @@
 	/* Ensure highlight.js themes apply properly */
 	.code-pre code.hljs {
 		background: transparent !important;
+		color: white !important;
 	}
 
 	/* Custom comment styling */

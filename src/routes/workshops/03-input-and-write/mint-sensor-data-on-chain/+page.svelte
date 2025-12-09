@@ -3,75 +3,12 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import { MoveLeft } from 'lucide-svelte';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
-
-	const arduinoPostHowItWorks = `
-		<h3>Overview</h3>
-		<p>This code reads temperature and humidity from your sensor and sends it to your computer's API server. Think of it like sending a text message - your microcontroller reads the sensor, packages the data, and sends it to your server over WiFi.</p>
-		
-		<h3>How the Code Works</h3>
-		<ol>
-			<li>When the microcontroller starts, it connects to your WiFi network</li>
-			<li>Every 5 minutes, it reads the temperature and humidity from the sensor</li>
-			<li>It packages the data (like putting it in an envelope)</li>
-			<li>It checks the <code>sendOnce</code> flag - if it's true and data has already been sent, it skips sending</li>
-			<li>If allowed, it sends the data to your API server (like mailing the envelope)</li>
-			<li>It prints what happened to the serial monitor so you can see if it worked</li>
-		</ol>
-		
-		<h3>The sendOnce Flag</h3>
-		<p>The code includes a <code>sendOnce</code> flag that's set to <code>true</code> by default. This is a safety feature for testing:</p>
-		<ul>
-			<li><strong>When <code>sendOnce</code> is <code>true</code>:</strong> The sensor data will only be sent once, even if the code runs for a long time. This prevents creating too many blockchain transactions while you're testing and debugging.</li>
-			<li><strong>When <code>sendOnce</code> is <code>false</code>:</strong> The sensor data will be sent every 5 minutes continuously, creating a new NFT each time.</li>
-		</ul>
-		<p>This is especially important when your API server automatically mints NFTs - you don't want to accidentally create hundreds of NFTs while testing!</p>
-		
-		<h3>What You Need to Change</h3>
-		<ul>
-			<li><strong>WiFi Name and Password:</strong> Update <code>ssid</code> and <code>password</code> with your WiFi details</li>
-			<li><strong>Server Address:</strong> Replace <code>YOUR_SERVER_IP</code> with your computer's IP address (where your server is running)</li>
-			<li><strong>How Often:</strong> You can change <code>readingInterval</code> to send data more or less frequently (currently every 5 minutes)</li>
-			<li><strong>Send Once:</strong> Set <code>sendOnce</code> to <code>false</code> if you want continuous data sending (creates an NFT every time)</li>
-		</ul>
-	`;
-
-	const meshMintHowItWorks = `
-		<h3>Overview</h3>
-		<p>This server receives sensor data from your microcontroller and turns it into an NFT on the Cardano blockchain. Think of it like a factory: it takes your sensor data, packages it as an NFT, and puts it on the blockchain forever.</p>
-		
-		<h3>How It Works</h3>
-		<ol>
-			<li>Your microcontroller sends sensor data to the server</li>
-			<li>The server receives the data (temperature, humidity, timestamp)</li>
-			<li>It creates a unique name for this NFT (based on the timestamp)</li>
-			<li>It packages everything together: the sensor data, a name, and a description</li>
-			<li>It creates a blockchain transaction to mint (create) the NFT</li>
-			<li>It signs the transaction with your wallet (like signing a check)</li>
-			<li>It sends the transaction to the Cardano network</li>
-			<li>It gives you back a link to view your new NFT</li>
-		</ol>
-		
-		<h3>What Gets Stored in the NFT</h3>
-		<p>Each NFT contains:</p>
-		<ul>
-			<li><strong>Name:</strong> A title for your NFT (like "Sensor Data NFT - 2024-01-15")</li>
-			<li><strong>Description:</strong> What the NFT is about</li>
-			<li><strong>Your Sensor Data:</strong> The temperature, humidity, and timestamp</li>
-		</ul>
-		
-		<h3>Important Security Tips</h3>
-		<ul>
-			<li>Never put your wallet passphrase directly in your code - always use a .env file</li>
-			<li>We're using testnet (Preprod) which uses fake money - safe for testing!</li>
-			<li>Make sure your wallet has some tADA for fees (about 0.2 ADA per NFT)</li>
-			<li>Never share your wallet passphrase with anyone</li>
-		</ul>
-	`;
 
 	const mintFirstNftHowItWorks = `
 		<h3>Overview</h3>
@@ -263,11 +200,23 @@
 			<li>Submits the transaction to create your NFT</li>
 			<li>Provides a link to view your NFT on the blockchain explorer</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="Basic NFT Minting Code Example"
-			code={data.mintFirstNftCode}
-			language="javascript"
-			howItWorksContent={mintFirstNftHowItWorks}
+			files={[
+				{
+					path: 'Workshop-03/examples/mesh-nft-basics/mint-nft.js',
+					language: 'javascript',
+					filename: 'mint-nft.js'
+				},
+				{
+					path: 'Workshop-03/examples/mesh-nft-basics/package.json',
+					language: 'json',
+					filename: 'package.json'
+				}
+			]}
+			readmePath="Workshop-03/examples/mesh-nft-basics/README.md"
+			repo="CardanoThings/Workshops"
+			branch="main"
 			footerText="Copy this code into a file called mint-nft.js. Make sure you have @meshsdk/core installed (npm install @meshsdk/core). Replace the mnemonic array with your actual wallet mnemonic. Make sure your wallet has some tADA for transaction fees. Run it with node mint-nft.js and it will mint your first NFT!"
 		/>
 
@@ -312,12 +261,18 @@
 			<strong>To send data continuously:</strong> Set <code>sendOnce</code> to <code>false</code> in
 			the code.
 		</TipBox>
-		<CodeCard
+		<LiveCodeCard
 			title="Arduino Code - Post Sensor Data to API"
-			code={data.arduinoPostSensorCode}
-			language="cpp"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/arduino-post-sensor-code"
-			howItWorksContent={arduinoPostHowItWorks}
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-03/examples/post-sensor-data/post-sensor-data.ino',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-03/examples/post-sensor-data/README.md"
+			howItWorksTitle="How the Arduino Post Sensor Data Code Works"
 			footerText="Copy this code into Arduino IDE. Make sure you have the Adafruit AHT10 library installed (and its dependencies: Adafruit BusIO and Adafruit Unified Sensor). Update your WiFi name, password, and your computer's IP address. Upload to your microcontroller and watch the serial monitor to see it working!"
 		/>
 		<p class="text-lg font-thin text-white">
@@ -372,12 +327,23 @@
 			<li>Returns the transaction hash and explorer URL so you can view your NFT</li>
 			<li>Handles errors gracefully and provides helpful error messages</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="Complete API Server with NFT Minting"
-			code={data.meshMintCode}
-			language="javascript"
-			howItWorksContent={meshMintHowItWorks}
-			footerText="Copy this code into a file called api-server.js. Make sure you have the required packages installed (npm install express cors @meshsdk/core). Replace the mnemonic array with your actual wallet mnemonic. Run it with node api-server.js. Every time your microcontroller posts sensor data, an NFT will be automatically minted!"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-03/examples/nodejs-nft-api/server.js',
+					language: 'javascript'
+				},
+				{
+					path: 'Workshop-03/examples/nodejs-nft-api/package.json',
+					language: 'json'
+				}
+			]}
+			readmePath="Workshop-03/examples/nodejs-nft-api/README.md"
+			howItWorksTitle="How the Complete API Server with NFT Minting Works"
+			footerText="Copy this code into a file called server.js. Make sure you have the required packages installed (npm install express cors @meshsdk/core). Replace the mnemonic array with your actual wallet mnemonic. Run it with node server.js. Every time your microcontroller posts sensor data, an NFT will be automatically minted!"
 		/>
 		<p class="text-lg font-thin text-white">
 			<strong>Setup Steps:</strong>
@@ -445,11 +411,23 @@
 			<li>Burning is permanent - once burned, the NFT cannot be recovered</li>
 			<li>You still pay a transaction fee to burn an NFT</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="Burn NFT Example"
-			code={data.burnNftCode}
-			language="javascript"
-			howItWorksContent={burnNftHowItWorks}
+			files={[
+				{
+					path: 'Workshop-03/examples/mesh-nft-basics/burn-nft.js',
+					language: 'javascript',
+					filename: 'burn-nft.js'
+				},
+				{
+					path: 'Workshop-03/examples/mesh-nft-basics/package.json',
+					language: 'json',
+					filename: 'package.json'
+				}
+			]}
+			readmePath="Workshop-03/examples/mesh-nft-basics/README.md"
+			repo="CardanoThings/Workshops"
+			branch="main"
 			footerText="Copy this code into a file called burn-nft.js. Replace the mnemonic array with your actual wallet mnemonic. Set the tokenName variable to the exact name of the NFT you want to burn (this should match the tokenName from when you minted it). Run it with node burn-nft.js to permanently destroy the NFT."
 		/>
 		<p class="text-lg font-thin text-white">

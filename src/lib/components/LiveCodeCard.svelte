@@ -40,6 +40,7 @@
 	let howItWorksOpen = $state(false);
 	let activeTab = $state('');
 	let lastFetchKey = $state('');
+	let readmeSegments = $state([]);
 
 	// Detect language from file extension
 	function detectLanguage(filePath) {
@@ -167,7 +168,9 @@
 				try {
 					const readmeResponse = await fetch(rawReadmeUrl);
 					if (readmeResponse.ok) {
-						readme = await readmeResponse.text();
+						const readmeText = await readmeResponse.text();
+						readme = readmeText;
+						readmeSegments = parseMarkdown(readmeText);
 					}
 					// README is optional, so we don't throw if it fails
 				} catch (readmeError) {
@@ -182,23 +185,61 @@
 		}
 	}
 
+	// Parse markdown into segments (text and code blocks)
+	function parseMarkdown(text) {
+		if (!text) return [];
+
+		const segments = [];
+		const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
+		let lastIndex = 0;
+		let match;
+
+		while ((match = codeBlockRegex.exec(text)) !== null) {
+			// Add text before code block
+			if (match.index > lastIndex) {
+				const textContent = text.substring(lastIndex, match.index);
+				if (textContent.trim()) {
+					segments.push({ type: 'text', content: textContent });
+				}
+			}
+
+			// Add code block
+			const language = match[1] || 'javascript';
+			const code = match[2].trim();
+			segments.push({ type: 'code', language, code });
+
+			lastIndex = codeBlockRegex.lastIndex;
+		}
+
+		// Add remaining text
+		if (lastIndex < text.length) {
+			const textContent = text.substring(lastIndex);
+			if (textContent.trim()) {
+				segments.push({ type: 'text', content: textContent });
+			}
+		}
+
+		// If no code blocks found, return entire text as single segment
+		if (segments.length === 0) {
+			segments.push({ type: 'text', content: text });
+		}
+
+		return segments;
+	}
+
 	// Simple markdown formatting (basic conversion to HTML)
 	function formatMarkdown(text) {
 		if (!text) return '';
 
 		return (
 			text
-				// Headers
+				// Headers - process #### before ### to avoid conflicts
+				.replace(/^#### (.*$)/gim, '<strong>$1</strong>')
 				.replace(/^### (.*$)/gim, '<h3>$1</h3>')
 				.replace(/^## (.*$)/gim, '<h2>$1</h2>')
 				.replace(/^# (.*$)/gim, '<h1>$1</h1>')
 				// Bold
 				.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-				// Code blocks
-				.replace(/```[\s\S]*?```/gim, (match) => {
-					const code = match.replace(/```[\w]*\n?/g, '').trim();
-					return `<pre><code>${code}</code></pre>`;
-				})
 				// Inline code
 				.replace(/`([^`]+)`/gim, '<code>$1</code>')
 				// Links
@@ -427,7 +468,18 @@
 				<Dialog.Title>{howItWorksTitle}</Dialog.Title>
 			</Dialog.Header>
 			<div class="how-it-works-content markdown-content">
-				{@html formatMarkdown(readme)}
+				{#each readmeSegments as segment}
+					{#if segment.type === 'code'}
+						<SyntaxHighlighter
+							language={segment.language}
+							code={segment.code}
+							{defaultShowComments}
+							{defaultExpanded}
+						/>
+					{:else}
+						{@html formatMarkdown(segment.content)}
+					{/if}
+				{/each}
 			</div>
 		</Dialog.Content>
 	</Dialog.Root>
@@ -478,7 +530,7 @@
 
 	.how-it-works-content :global(code) {
 		background: rgba(255, 255, 255, 0.1);
-		padding: 0.2rem 0.4rem;
+		padding: 0.2rem 0.2rem;
 		border-radius: 0.25rem;
 		font-size: 0.9em;
 		color: #34d399;

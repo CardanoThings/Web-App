@@ -3,6 +3,7 @@
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
 	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
@@ -251,115 +252,6 @@
 			<li><strong>No API key needed:</strong> Koios is free and doesn't require an API key, making it perfect for development and testing.</li>
 		</ul>
 	`;
-
-	const basicApiHowItWorks = `
-		<h3>Overview</h3>
-		<p>This is the simplest possible Express.js API server. It creates a basic HTTP server with a single health check endpoint. This is a great starting point to verify your server is working correctly.</p>
-		
-		<h3>Key Concepts</h3>
-		<ul>
-			<li><strong>Express.js:</strong> A minimal web framework for Node.js that simplifies creating HTTP servers and handling routes.</li>
-			<li><strong>ESM Modules:</strong> Modern JavaScript module system using <code>import</code> and <code>export</code> instead of CommonJS <code>require()</code>.</li>
-			<li><strong>Health Check Endpoint:</strong> A simple endpoint that returns server status, useful for monitoring and testing if the server is running.</li>
-		</ul>
-		
-		<h3>How it Works</h3>
-		<ol>
-			<li><strong>Import Express:</strong> The code imports the Express framework.</li>
-			<li><strong>Create App Instance:</strong> Creates an Express application instance.</li>
-			<li><strong>Define Route:</strong> Sets up a GET route at <code>/health</code> that returns a JSON response with status and timestamp.</li>
-			<li><strong>Start Server:</strong> The server listens on port 3000 and logs a message when it's ready.</li>
-		</ol>
-		
-		<h3>Testing the Server</h3>
-		<ol>
-			<li>Start the server: <code>node basic-api.js</code></li>
-			<li>Open your browser or use Insomnia to send a GET request to <code>http://localhost:3000/health</code></li>
-			<li>You should receive a JSON response: <code>{"status": "ok", "timestamp": "..."}</code></li>
-		</ol>
-	`;
-
-	const enhancedApiHowItWorks = `
-		<h3>Overview</h3>
-		<p>This enhanced API server adds a POST endpoint to receive and store data, and a GET endpoint to retrieve the stored data. It includes CORS middleware to allow cross-origin requests and JSON parsing middleware to handle JSON request bodies. Data is stored in memory using a variable (in production, you would use a database).</p>
-		
-		<h3>Key Concepts</h3>
-		<ul>
-			<li><strong>CORS:</strong> Cross-Origin Resource Sharing middleware that allows the API to accept requests from different origins (domains, ports, or protocols).</li>
-			<li><strong>JSON Middleware:</strong> The <code>express.json()</code> middleware automatically parses incoming JSON request bodies into JavaScript objects.</li>
-			<li><strong>POST Endpoint:</strong> An endpoint that accepts data in the request body, stores it in a variable, and returns a success response.</li>
-			<li><strong>GET Endpoint:</strong> An endpoint that retrieves and returns the stored data.</li>
-			<li><strong>Data Storage:</strong> Data is stored in a variable (<code>storedData</code>) in memory. Note that this data will be lost when the server restarts. In production, use a database.</li>
-			<li><strong>Error Handling:</strong> Try-catch blocks to handle errors gracefully and return appropriate error responses.</li>
-		</ul>
-		
-		<h3>How it Works</h3>
-		<ol>
-			<li><strong>Data Storage Variable:</strong> A variable <code>storedData</code> is declared at the top level to store received data in memory.</li>
-			<li><strong>Middleware Setup:</strong> CORS and JSON parsing middleware are added to handle cross-origin requests and parse JSON bodies.</li>
-			<li><strong>POST /data Endpoint:</strong> 
-				<ul>
-					<li>Accepts POST requests with JSON data in the body</li>
-					<li>Stores the received data in the <code>storedData</code> variable</li>
-					<li>Logs the data to the console for debugging</li>
-					<li>Returns a success response with the received data</li>
-				</ul>
-			</li>
-			<li><strong>GET /data Endpoint:</strong>
-				<ul>
-					<li>Retrieves the data stored in the <code>storedData</code> variable</li>
-					<li>Returns a 404 error if no data has been stored yet</li>
-					<li>Returns the stored data in a JSON response if available</li>
-				</ul>
-			</li>
-			<li><strong>Error Handling:</strong> If an error occurs, it's caught and a 500 status code with an error message is returned.</li>
-			<li><strong>Health Check:</strong> The original health check endpoint remains available for testing.</li>
-		</ol>
-		
-		<h3>API Endpoints</h3>
-		<ul>
-			<li><strong>POST /data:</strong> Receives JSON data in the request body, stores it in memory, and returns a success response with the received data.</li>
-			<li><strong>GET /data:</strong> Retrieves and returns the stored data. Returns a 404 error if no data has been stored yet.</li>
-			<li><strong>GET /health:</strong> Health check endpoint that returns server status and current timestamp.</li>
-		</ul>
-		
-		<h3>Testing with Insomnia</h3>
-		<ol>
-			<li>Start your server: <code>node basic-api.js</code></li>
-			<li><strong>Store Data:</strong>
-				<ul>
-					<li>Open Insomnia and create a new POST request to <code>http://localhost:3000/data</code></li>
-					<li>In the Body tab, select JSON format</li>
-					<li>Enter your JSON data (e.g., <code>{"temperature": 23.5, "humidity": 65.2}</code>)</li>
-					<li>Click Send to make the request</li>
-					<li>You should see a success response confirming the data was stored</li>
-				</ul>
-			</li>
-			<li><strong>Retrieve Data:</strong>
-				<ul>
-					<li>Create a new GET request to <code>http://localhost:3000/data</code></li>
-					<li>Click Send to retrieve the stored data</li>
-					<li>You should receive the data you previously sent via POST</li>
-				</ul>
-			</li>
-		</ol>
-		
-		<h3>Important Notes</h3>
-		<ul>
-			<li><strong>In-Memory Storage:</strong> Data stored in the variable will be lost when the server restarts. This is fine for testing, but use a database (MongoDB, PostgreSQL, etc.) for production applications.</li>
-			<li><strong>Single Data Item:</strong> This example stores only one data item. Each new POST request will overwrite the previous data. For multiple items, use an array or a database.</li>
-		</ul>
-		
-		<h3>Next Steps</h3>
-		<ul>
-			<li>Store multiple data items using an array</li>
-			<li>Add validation to ensure incoming data meets your requirements</li>
-			<li>Store data in a database (MongoDB, PostgreSQL, etc.) for persistence</li>
-			<li>Add authentication to secure your API endpoints</li>
-			<li>Add more endpoints for different operations (PUT, DELETE)</li>
-			<li>Implement rate limiting to prevent abuse</li>
-		</ul>
-	`;
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
@@ -406,12 +298,22 @@
 			</li>
 		</ol>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Basic Node.js API Server"
-			code={data.basicApiCode}
-			language="javascript"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
-			howItWorksContent={basicApiHowItWorks}
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-03/examples/basic-nodejs-api/basic-api.js',
+					language: 'javascript'
+				},
+				{
+					path: 'Workshop-03/examples/basic-nodejs-api/package.json',
+					language: 'json'
+				}
+			]}
+			readmePath="Workshop-03/examples/basic-nodejs-api/README.md"
+			howItWorksTitle="How the Basic Node.js API Server Works"
 			footerText="This is a minimal Express.js server with a health check endpoint. Save this as basic-api.js in your project directory. Make sure your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
@@ -463,13 +365,23 @@
 			>
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Enhanced Node.js API with POST Endpoint"
-			code={data.enhancedApiCode}
-			language="javascript"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
-			howItWorksContent={enhancedApiHowItWorks}
-			footerText="This enhanced API includes CORS support and a POST endpoint to receive data. Save this as basic-api.js. Make sure to install express and cors, and that your package.json includes 'type: module' to use ESM syntax."
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-03/examples/basic-nodejs-api/server.js',
+					language: 'javascript'
+				},
+				{
+					path: 'Workshop-03/examples/basic-nodejs-api/package.json',
+					language: 'json'
+				}
+			]}
+			readmePath="Workshop-03/examples/basic-nodejs-api/README.md"
+			howItWorksTitle="How the Enhanced Node.js API Works"
+			footerText="This enhanced API includes CORS support and a POST endpoint to receive data. Save this as server.js. Make sure to install express and cors, and that your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
 			<strong>Testing the POST Endpoint:</strong>
@@ -568,12 +480,18 @@
 			> provider to fetch your wallet balance and log it to the console. This will help you understand
 			how Mesh works before building a full API.
 		</p>
-		<CodeCard
+		<LiveCodeCard
 			title="Fetch Wallet Balance with Mesh"
-			code={data.meshWalletCode}
-			language="javascript"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
-			howItWorksContent={meshWalletHowItWorks}
+			files={[
+				{
+					path: 'Workshop-03/examples/mesh-basics/wallet-balance.js',
+					language: 'javascript',
+					filename: 'wallet-balance.js'
+				}
+			]}
+			readmePath="Workshop-03/examples/mesh-basics/README.md"
+			repo="CardanoThings/Workshops"
+			branch="main"
 			footerText="Save this as wallet-balance.js. Make sure to install @meshsdk/core and add your mnemonic phrase to the mnemonic array in the code. Run it with 'node wallet-balance.js' to see your wallet balance logged to the console."
 		/>
 		<p class="text-lg font-thin text-white">
@@ -631,12 +549,18 @@
 				class="link">Mesh.js Transaction Builder documentation</a
 			>.
 		</p>
-		<CodeCard
+		<LiveCodeCard
 			title="Create and Submit Transaction with Mesh"
-			code={data.meshTransactionCode}
-			language="javascript"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
-			howItWorksContent={meshTransactionHowItWorks}
+			files={[
+				{
+					path: 'Workshop-03/examples/mesh-basics/send-transaction.js',
+					language: 'javascript',
+					filename: 'send-transaction.js'
+				}
+			]}
+			readmePath="Workshop-03/examples/mesh-basics/README.md"
+			repo="CardanoThings/Workshops"
+			branch="main"
 			footerText="Save this as send-transaction.js. Make sure to install @meshsdk/core and set your WALLET_MNEMONIC environment variable. Update the recipientAddress variable with a valid testnet address. Run it with 'node send-transaction.js' to create and submit a transaction."
 		/>
 		<p class="text-lg font-thin text-white">
@@ -706,12 +630,23 @@
 			the blockchain.
 		</p>
 
-		<CodeCard
+		<LiveCodeCard
 			title="Complete Node.js API with Mesh Integration"
-			code={data.meshApiCode}
-			language="javascript"
-			githubLink="https://github.com/CardanoThings/Workshops/tree/main/Workshop-03/examples/nodejs-express-api-basics"
-			howItWorksContent={meshHowItWorks}
+			files={[
+				{
+					path: 'Workshop-03/examples/mesh-nodejs-api/server.js',
+					language: 'javascript',
+					filename: 'server.js'
+				},
+				{
+					path: 'Workshop-03/examples/mesh-nodejs-api/package.json',
+					language: 'json',
+					filename: 'package.json'
+				}
+			]}
+			readmePath="Workshop-03/examples/mesh-nodejs-api/README.md"
+			repo="CardanoThings/Workshops"
+			branch="main"
 			footerText="This complete API includes Express.js server, Mesh integration with Koios provider, GET /wallet endpoint, and POST /data endpoint that receives sensor data and automatically creates transactions using the same transaction building code from earlier examples. Save this as server.js. Make sure to install express, cors, and @meshsdk/core. Add your mnemonic phrase to the mnemonic array in the code. Ensure your package.json includes 'type: module' to use ESM syntax."
 		/>
 		<p class="text-lg font-thin text-white">
