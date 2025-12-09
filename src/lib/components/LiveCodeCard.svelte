@@ -350,10 +350,12 @@
 	});
 </script>
 
-<Card.Root class="rounded-tl-none">
-	<Card.Header class="mb-0 flex flex-col gap-3 pb-0 md:flex-row md:items-start md:justify-between">
-		<Card.Title class="text-lg">{title}</Card.Title>
-		<div class="flex gap-2">
+<Card.Root class="overflow-hidden rounded-tl-none pt-2 sm:pt-6">
+	<Card.Header
+		class="mt-0 mb-0 flex flex-col gap-3 pt-0 pb-0 pl-3 sm:pl-6 md:flex-row md:items-start md:justify-between"
+	>
+		<Card.Title class="break-word0 mt-0  text-lg">{title}</Card.Title>
+		<div class="flex w-full flex-wrap gap-1 sm:w-auto">
 			{#if readme}
 				<Button
 					onclick={() => (howItWorksOpen = true)}
@@ -402,7 +404,9 @@
 			{/if}
 		</div>
 	</Card.Header>
-	<Card.Content class={footerText ? '' : 'pb-6'}>
+	<Card.Content
+		class={`${footerText ? '' : 'pb-0'} overflow-x-hidden px-3 pt-0 pb-3 sm:px-6 sm:pb-0`}
+	>
 		{#if loading}
 			<div class="flex items-center justify-center py-8">
 				<div class="flex flex-col items-center gap-2">
@@ -449,25 +453,25 @@
 			</div>
 		{:else if filesData.length > 0}
 			<!-- Always use tabs, even for single file -->
-			<Tabs.Root bind:value={activeTab} class="gap-0">
-				<div class="flex gap-0">
-					<Tabs.List class="mb-0 rounded-b-none bg-[#0b1c2c] p-1">
+			<Tabs.Root bind:value={activeTab} class="gap-0 overflow-hidden">
+				<div class="flex gap-0 overflow-x-auto">
+					<Tabs.List class="mb-0 min-w-fit flex-nowrap rounded-b-none bg-[#0b1c2c] p-1 ">
 						{#each filesData as fileData (fileData.filename)}
 							<Tabs.Trigger
 								value={fileData.filename}
-								class="cursor-pointer rounded-sm text-xs text-muted-foreground"
+								class="cursor-pointer rounded-sm text-[10px] whitespace-nowrap text-muted-foreground sm:text-xs"
 							>
 								{fileData.filename}
 							</Tabs.Trigger>
 						{/each}
 					</Tabs.List>
-					<!-- rounded bottom after last tab -->
+					<!-- rounded bottom after last tab // remove on mobile 	-->
 					<div class="bg-[#0b1c2c]">
 						<div class="h-full rounded-bl-md bg-[white] p-1"></div>
 					</div>
 				</div>
 				{#each filesData as fileData (fileData.filename)}
-					<Tabs.Content value={fileData.filename} class="mt-0 pt-0">
+					<Tabs.Content value={fileData.filename} class="mt-0 overflow-x-auto pt-0">
 						{#if fileData.loading}
 							<div class="flex items-center justify-center py-8">
 								<svg
@@ -540,7 +544,9 @@
 
 {#if readme && howItWorksOpen}
 	<Dialog.Root bind:open={howItWorksOpen}>
-		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-x-hidden overflow-y-auto pt-0">
+		<Dialog.Content
+			class="max-h-[90vh] max-w-[95vw] overflow-x-hidden overflow-y-auto pt-0 sm:max-w-3xl"
+		>
 			<div class="how-it-works-content markdown-content">
 				{#each readmeSegments as segment}
 					{#if segment.type === 'code'}

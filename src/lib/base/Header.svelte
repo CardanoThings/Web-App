@@ -9,7 +9,7 @@
 	let drawerOpen = $state(false);
 </script>
 
-<header class="mx-auto mt-6 mb-12 flex w-full max-w-4xl justify-between p-4 pt-0">
+<header class="mx-auto mt-6 mb-12 flex w-full max-w-4xl justify-between gap-2 p-4 pt-0 sm:gap-0">
 	<div class="flex gap-1">
 		<a href="/" class="pointer">
 			<h1 class="flex font-medium text-white">
@@ -20,7 +20,7 @@
 		<span class=" relative -top-0.5 text-xs font-thin text-white">Beta</span>
 	</div>
 
-	<div class="flex items-center gap-6">
+	<div class="flex items-center gap-4">
 		<!-- Desktop Navigation -->
 		<nav class="hidden items-center gap-3 text-sm text-white md:flex">
 			{#each links.filter((link) => link.headerNav) as link}
@@ -39,7 +39,9 @@
 		</nav>
 
 		<div class="flex flex-1 items-center justify-end gap-4">
-			<SearchBox />
+			<div class="hidden sm:inline-block">
+				<SearchBox />
+			</div>
 			<!-- Mobile Menu Button -->
 			<Drawer.Root bind:open={drawerOpen} direction="right">
 				<Drawer.Trigger class="">
@@ -71,6 +73,9 @@
 							</a>
 						{/each}
 					</nav>
+					<div class="mt-4 sm:hidden">
+						<SearchBox />
+					</div>
 				</Drawer.Content>
 			</Drawer.Root>
 		</div>
