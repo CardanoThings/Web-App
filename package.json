@@ -47,7 +47,6 @@
 	"dependencies": {
 		"fast-sort": "^3.4.1",
 		"highlight.js": "^11.11.1",
-		"lucide-svelte": "^0.552.0",
-		"three": "^0.180.0"
+		"lucide-svelte": "^0.552.0"
 	}
 }
