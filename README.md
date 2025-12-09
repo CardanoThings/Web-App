@@ -33,7 +33,7 @@ CardanoThings.io is a step-by-step learning platform that teaches developers how
 
 - **Framework**: [SvelteKit](https://kit.svelte.dev/) with [Svelte 5](https://svelte.dev/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) v4
-- **UI Components**: Custom components built with [bits-ui](https://www.bits-ui.com/)
+- **UI Components**: Built with [shadcn-svelte](https://shadcn-svelte.com/)
 - **Icons**: [Lucide Svelte](https://lucide.dev/)
 - **Build Tool**: [Vite](https://vitejs.dev/)
 - **Deployment**: Static site generation with `@sveltejs/adapter-static`
@@ -137,9 +137,7 @@ Content is managed through data files in `src/lib/data/`:
 - `blocks.js` - Code block definitions
 - `glossary.js` - Glossary terms
 
-## Contributing
-
-This project is part of the CardanoThings.io platform. For contributions, please follow the project's contribution guidelines.
+**Workshop Code Examples**: All code examples from the workshops (Arduino `.ino` files, Node.js, HTML, CSS, and JavaScript) are available in the [CardanoThings/Workshops](https://github.com/CardanoThings/Workshops) repository, organized by workshop with ready-to-use files.
 
 ## Links
 
