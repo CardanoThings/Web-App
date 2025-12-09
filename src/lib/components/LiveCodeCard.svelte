@@ -355,7 +355,7 @@
 		class="mt-0 mb-0 flex flex-col gap-3 pt-0 pb-0 pl-3 sm:pl-6 md:flex-row md:items-start md:justify-between"
 	>
 		<Card.Title class="break-word0 mt-0  text-lg">{title}</Card.Title>
-		<div class="flex w-full flex-wrap gap-1 sm:w-auto">
+		<div class="flex w-full flex-wrap gap-1 sm:w-auto sm:flex-nowrap">
 			{#if readme}
 				<Button
 					onclick={() => (howItWorksOpen = true)}

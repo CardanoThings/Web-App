@@ -17,11 +17,6 @@
 			type: 'Block',
 			...item
 		})),
-		...workshops.map((item) => ({
-			type: 'Workshop',
-			link: `/workshops/${item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-			...item
-		})),
 		...introductions.map((item) => ({
 			type: 'Introduction',
 			...item
