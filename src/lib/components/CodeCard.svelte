@@ -21,7 +21,7 @@
 	let howItWorksOpen = $state(false);
 </script>
 
-<Card.Root>
+<Card.Root class="rounded-tl-none">
 	<Card.Header class="mb-0 flex flex-col gap-3 pb-0 md:flex-row md:items-start md:justify-between">
 		<div class="flex flex-col gap-2">
 			<Card.Title class="text-lg">{title}</Card.Title>
@@ -83,7 +83,7 @@
 			{/if}
 		</div>
 	</Card.Header>
-	<Card.Content class={footerText ? '' : 'pb-6'}>
+	<Card.Content class={footerText ? '' : 'pb-0'}>
 		<SyntaxHighlighter {language} {code} {defaultShowComments} {defaultExpanded} />
 	</Card.Content>
 	{#if footerText}

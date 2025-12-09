@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import SectionNavigator from '$lib/components/SectionNavigator.svelte';
 	import WorkshopNavigation from '$lib/WorkshopNavigation.svelte';
-	import CodeCard from '$lib/components/CodeCard.svelte';
+	import LiveCodeCard from '$lib/components/LiveCodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import { MoveLeft } from 'lucide-svelte';
@@ -72,20 +72,29 @@
 				>
 			</li>
 		</ul>
+		<TipBox title="Mainnet Data & Examples" variant="info">
+			This workshop uses mainnet data and all examples show the tokens and NFTs of the
+			CardanoThings.io wallet.
+		</TipBox>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Understanding the Project Structure</h2>
+		<h2 class="text-4xl font-medium">Project Structure</h2>
 		<p class="text-lg font-thin text-white">
 			The CardanoTicker is organized as a multi-file Arduino project, splitting the code into
 			logical modules for easier understanding and maintenance. Each component has its own file (or
 			pair of .h and .cpp files), and we'll walk through each one step by step in the following
-			sections.
+			sections. You can view the complete project structure in the
+			<a
+				href="https://github.com/CardanoThings/Workshops/tree/main/Workshop-04/examples/CardanoTicker"
+				target="_blank"
+				class="link">GitHub repository</a
+			>.
 		</p>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Step 1: Configuration Files</h2>
+		<h2 class="text-4xl font-medium">Configuration Files</h2>
 		<p class="text-lg font-thin text-white">
 			Before we dive into the code, you need to configure the project with your wallet addresses and
 			API keys. This is similar to how you configured WiFi credentials in previous workshops.
@@ -120,6 +129,21 @@
 			<a href="https://cardanoscan.io/" target="_blank" class="link">CardanoScan</a> or
 			<a href="https://cexplorer.io/" target="_blank" class="link">Cexplorer</a>.
 		</TipBox>
+		<LiveCodeCard
+			title="Config Files"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/config.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/config.h',
+					language: 'cpp'
+				}
+			]}
+		/>
 		<h3 class="mt-6 text-2xl font-medium">secrets.h - WiFi Credentials</h3>
 		<p class="text-lg font-thin text-white">
 			The <code>secrets.h</code> file stores your WiFi credentials. This file is not committed to
@@ -139,10 +163,21 @@
 		<p class="text-lg font-thin text-white">
 			This is exactly the same process you used in previous workshops for WiFi configuration!
 		</p>
+		<LiveCodeCard
+			title="secrets.h.example"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/secrets.h.example',
+					language: 'cpp'
+				}
+			]}
+		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Step 2: WiFi Manager & Data Fetcher</h2>
+		<h2 class="text-4xl font-medium">WiFi Manager & Data Fetcher</h2>
 		<p class="text-lg font-thin text-white">
 			The WiFi manager handles connecting to WiFi and automatically reconnecting if the connection
 			drops. The data fetcher organizes all the API calls from the previous step (Koios, MinSwap,
@@ -158,10 +193,35 @@
 			<code>getWalletBalance()</code> and <code>getToken(i)</code> that the screen files use to display
 			data.
 		</p>
+		<LiveCodeCard
+			title="WiFi Manager & Data Fetcher Code"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/wifi_manager.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/wifi_manager.h',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/data_fetcher.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/data_fetcher.h',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-04/examples/CardanoTicker/data_fetcher.md"
+			howItWorksTitle="How WiFi Manager & Data Fetcher Work"
+		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Step 3: Wallet Screen</h2>
+		<h2 class="text-4xl font-medium">Wallet Screen</h2>
 		<p class="text-lg font-thin text-white">
 			After the start screen displays "CardanoTicker" on boot, the ticker automatically rotates
 			between four data screens every 10 seconds: the wallet screen, token screen, NFT screen, and
@@ -191,17 +251,27 @@
 				now")
 			</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="Wallet Screen Code"
-			code={data.walletScreenCode}
-			language="cpp"
-			filename="wallet_screen.cpp"
-			howItWorksContent="<p>The screen uses the <code>getWalletBalance()</code> function from the data fetcher to get the current balance. The &quot;Last updated&quot; time is calculated using <code>millis()</code> - the same timing technique you learned in previous workshops!</p><p>The function first draws the header using <code>renderHeader()</code>, then clears the content area. It displays the balance in large text (size 3) for emphasis, followed by a truncated stake address and the last update time. The time formatting converts milliseconds to a human-readable format (e.g., &quot;2m 30s ago&quot; or &quot;just now&quot;).</p>"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/wallet_screen.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/wallet_screen.h',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-04/examples/CardanoTicker/wallet_screen.md"
+			howItWorksTitle="How the Wallet Screen Works"
 		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Step 4: Token Screen</h2>
+		<h2 class="text-4xl font-medium">Token Screen</h2>
 		<p class="text-lg font-thin text-white">
 			The token screen displays all your token holdings in a table format. Each row shows one token
 			with its ticker symbol, amount you own, total value, and 24-hour price change.
@@ -223,17 +293,27 @@
 				<strong>24h Change:</strong> Price change percentage, color-coded green (up) or red (down)
 			</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="Token Screen Code"
-			code={data.tokenScreenCode}
-			language="cpp"
-			filename="token_screen.cpp"
-			howItWorksContent="<p>The screen loops through all tokens using <code>getTokenCount()</code> and <code>getToken(i)</code> functions from the data fetcher. For each token, it draws a row in the table. The screen can display up to 8 tokens (limited by screen space).</p><p>The 24h change is color-coded: green for positive changes (price went up) and red for negative changes (price went down). This makes it easy to see at a glance which tokens are performing well!</p><p>The function first draws column headers, then loops through each token to display its ticker, amount, value, and 24h change. Long token names are truncated to fit on screen. The function includes a safety check to stop drawing if running out of screen space.</p>"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/token_screen.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/token_screen.h',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-04/examples/CardanoTicker/token_screen.md"
+			howItWorksTitle="How the Token Screen Works"
 		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Step 5: NFT Screen</h2>
+		<h2 class="text-4xl font-medium">NFT Screen</h2>
 		<p class="text-lg font-thin text-white">
 			The NFT screen displays all your NFT collections. Each row shows one collection with its name,
 			how many NFTs you own from that collection, and the floor price.
@@ -253,17 +333,27 @@
 				<strong>Floor Price:</strong> The lowest current selling price for this collection in ADA
 			</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="NFT Screen Code"
-			code={data.nftScreenCode}
-			language="cpp"
-			filename="nft_screen.cpp"
-			howItWorksContent="<p>NFTs are grouped by Policy ID (collection identifier). If you own multiple NFTs from the same collection, they're shown as one row with the total count. The floor price comes from the Cexplorer API and shows the cheapest NFT from that collection currently for sale.</p><p>The screen uses <code>getNftCount()</code> and <code>getNFT(i)</code> functions from the data fetcher, just like the token screen!</p><p>The function displays column headers for Name, Amount, and Floor Price. For each NFT collection, it shows the collection name (truncated if too long), the number of NFTs owned, and the floor price in ADA. If floor price data isn't available yet, it displays &quot;N/A&quot;.</p>"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/nft_screen.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/nft_screen.h',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-04/examples/CardanoTicker/nft_screen.md"
+			howItWorksTitle="How the NFT Screen Works"
 		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Step 6: Status Screen</h2>
+		<h2 class="text-4xl font-medium">Status Screen</h2>
 		<p class="text-lg font-thin text-white">
 			The status screen shows technical information about your device and network connection. This
 			is useful for debugging and monitoring.
@@ -288,17 +378,27 @@
 				<strong>Uptime:</strong> How long the device has been running (e.g., "2d 5h 30m 15s")
 			</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="Status Screen Code"
-			code={data.statusScreenCode}
-			language="cpp"
-			filename="status_screen.cpp"
-			howItWorksContent="<p>The uptime is calculated using <code>millis()</code> and converted to days, hours, minutes, and seconds. This is the same timing technique you've been using throughout the workshops!</p><p>The function gathers all status information first: WiFi connection status, signal strength (RSSI), IP address, MAC address, and uptime. It then displays each piece of information in a clear format. The connection status is shown in large text (size 3) for emphasis, while other details use smaller text. If WiFi is not connected, some values show &quot;N/A&quot; or default values.</p>"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/status_screen.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/status_screen.h',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-04/examples/CardanoTicker/status_screen.md"
+			howItWorksTitle="How the Status Screen Works"
 		/>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Step 7: Scrolling Ticker</h2>
+		<h2 class="text-4xl font-medium">Scrolling Ticker</h2>
 		<p class="text-lg font-thin text-white">
 			The scrolling ticker at the bottom of the screen continuously scrolls token prices
 			horizontally. This creates a stock-market-style ticker effect!
@@ -318,12 +418,22 @@
 				<strong>24h change</strong> color-coded green (up) or red (down) (e.g., "+5.67%")
 			</li>
 		</ul>
-		<CodeCard
+		<LiveCodeCard
 			title="Scrolling Ticker Code"
-			code={data.tickerCode}
-			language="cpp"
-			filename="ticker.cpp"
-			howItWorksContent="<p>The ticker uses a sprite (off-screen buffer) to reduce flicker. Here's the clever trick:</p><ol><li>All token information is drawn into a sprite buffer (not directly to the screen)</li><li>The content is drawn twice, side by side, to create seamless looping</li><li>The sprite scrolls left, and when the first copy scrolls off, the second copy is already visible</li><li>When we reach the end, we reset to the beginning - creating an endless scroll effect!</li></ol><p>The ticker updates every 30 milliseconds to create smooth scrolling. The scroll speed is 2 pixels per update, which creates a nice, readable scrolling speed.</p><p><strong>Understanding Sprites:</strong> A sprite is an off-screen buffer (like a canvas) that you draw to, then push to the screen all at once. This reduces flicker because the screen updates in one operation instead of many small updates. Think of it like drawing on paper first, then showing the whole paper at once, rather than drawing directly on a whiteboard where people can see each line being drawn.</p>"
+			repo="CardanoThings/Workshops"
+			branch="main"
+			files={[
+				{
+					path: 'Workshop-04/examples/CardanoTicker/ticker.cpp',
+					language: 'cpp'
+				},
+				{
+					path: 'Workshop-04/examples/CardanoTicker/ticker.h',
+					language: 'cpp'
+				}
+			]}
+			readmePath="Workshop-04/examples/CardanoTicker/ticker.md"
+			howItWorksTitle="How the Scrolling Ticker Works"
 		/>
 	</section>
 
