@@ -28,8 +28,8 @@
 	}
 
 	.tag-badge-small {
-		padding: 0.25rem 0.5rem;
-		font-size: 0.7rem;
+		padding: 0.15rem 0.375rem;
+		font-size: 0.6rem;
 		border-radius: 0.25rem;
 	}
 </style>

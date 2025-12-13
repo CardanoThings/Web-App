@@ -1,5 +1,4 @@
 <script>
-	import ESP32 from '$lib/ESP32.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import SectionWorkshops from '$lib/SectionWorkshops.svelte';
 	import SectionIntroductions from '$lib/SectionIntroductions.svelte';
@@ -55,6 +54,6 @@
 	</section>
 </div>
 
-<div class="mb-8 w-full border-b border-dashed border-white pb-8">
+<!-- <div class="mb-8 w-full border-b border-dashed border-white pb-8">
 	<FeaturedProjects />
-</div>
+</div> -->
