@@ -541,42 +541,48 @@ void loop() {
     link: "/hardware/oled-display-sh1106-13inch-i2c"
   },
   {
-    name: "SHT21 Temperature Sensor (I2C)",
-    slug: "sht21-temperature-sensor-i2c",
-    intro: "A high-precision digital temperature and humidity sensor from Sensirion with I2C interface. Features excellent accuracy, low power consumption, and factory-calibrated measurements.",
+    name: "AHT10 Temperature and Humidity Sensor (I2C)",
+    slug: "aht10-temperature-humidity-sensor-i2c",
+    intro: "A high-precision digital temperature and humidity sensor from Aosong with I2C interface. Features excellent accuracy, low power consumption, and factory-calibrated measurements with fast response time.",
     images: [
       "/images/hardware/sht21-01.webp",
       "/images/hardware/sht21-02.webp"
     ],
     features: [
-      "Temperature range: -40 to +125°C",
+      "Temperature range: -40 to +85°C",
       "Temperature accuracy: ±0.3°C (typical)",
+      "Temperature resolution: 0.01°C",
       "Humidity range: 0 to 100% RH",
       "Humidity accuracy: ±2% RH (typical)",
+      "Humidity resolution: 0.024% RH",
       "I2C interface (SDA, SCL)",
-      "3.3V operation",
+      "Operating voltage: 1.8V to 6.0V (3.3V recommended)",
       "Low power consumption",
       "Factory calibrated",
       "Fast response time",
-      "No external components needed"
+      "Compact SMD package"
     ],
-    howToUse: "Connect VCC to 3.3V, GND to ground, SDA to GPIO 21 (ESP32) or SDA pin, SCL to GPIO 22 (ESP32) or SCL pin. Use Sensirion SHT2x library or SparkFun SHT21 library. The sensor requires I2C pull-up resistors (usually included on module). Default I2C address is 0x40.",
+    howToUse: "Connect VCC to 3.3V, GND to ground, SDA to GPIO 21 (ESP32) or SDA pin, SCL to GPIO 22 (ESP32) or SCL pin. Use AHT10 library or Adafruit AHTX0 library. The sensor requires I2C pull-up resistors (usually included on module). Default I2C address is 0x38. Note: For similar temperature/humidity sensing, consider the SHT21 sensor. For temperature and barometric pressure, the GY-BMP280 (BMP280) is an excellent alternative.",
     resources: [
       {
-        name: "SHT21 Datasheet",
-        url: "https://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/2_Humidity_Sensors/Sensirion_Humidity_Sensors_SHT21_Datasheet.pdf"
+        name: "AHT10 Datasheet",
+        url: "https://www.aosong.com/userfiles/files/media/AHT10%20%E8%8B%B1%E6%96%87%E7%89%88%E6%9C%AC%20Datasheet%20AHT10.pdf"
       },
       {
-        name: "Schematic",
-        url: "https://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/2_Humidity_Sensors/Application_Note_SHT2x_I2C_Interface.pdf"
+        name: "Adafruit AHTX0 Library",
+        url: "https://github.com/adafruit/Adafruit_AHTX0"
       },
       {
-        name: "SparkFun Library",
-        url: "https://github.com/sparkfun/SparkFun_SHT21_Arduino_Library"
+        name: "AHT10 Arduino Library",
+        url: "https://github.com/enjoyneering/AHT10"
       },
       {
         name: "Tutorial",
-        url: "https://learn.sparkfun.com/tutorials/sht21-humidity-sensor-hookup-guide"
+        url: "https://randomnerdtutorials.com/esp32-aht10-humidity-temperature-sensor-arduino/"
+      },
+      {
+        name: "Alternative Sensors",
+        url: "https://randomnerdtutorials.com/esp32-sensors-tutorials/"
       }
     ],
     whereToBuy: [
@@ -586,15 +592,16 @@ void loop() {
       },
       {
         name: "Amazon",
-        url: "https://www.amazon.com/s?k=sht21+temperature+sensor"
+        url: "https://www.amazon.com/s?k=aht10+temperature+humidity+sensor"
       }
     ],
     libraries: [
-      "SparkFun SHT21 Arduino Library (by SparkFun)",
+      "Adafruit AHTX0 (by Adafruit)",
+      "Adafruit Unified Sensor (dependency)",
       "Wire (built-in I2C)"
     ],
-    code: `// SHT21 Temperature and Humidity Sensor Example
-// This example demonstrates how to read temperature and humidity from SHT21 sensor
+    code: `// AHT10 Temperature and Humidity Sensor Example
+// This example demonstrates how to read temperature and humidity from AHT10 sensor
 //
 // Wiring:
 //   VCC -> 3.3V
@@ -605,43 +612,48 @@ void loop() {
 // Note: I2C pull-up resistors are usually included on the sensor module
 
 // Include required libraries
-#include <Wire.h>                // I2C communication library (built-in)
-#include <SparkFun_SHT21.h>     // SHT21 sensor library
+#include <Wire.h>                    // I2C communication library (built-in)
+#include <Adafruit_AHTX0.h>         // AHT10 sensor library
 
 // Create sensor object
-SHT21 sht21;
+Adafruit_AHTX0 aht;
 
 void setup() {
   // Initialize serial communication for debugging
   Serial.begin(115200);
   
-  // Initialize I2C bus
-  Wire.begin();
+  // Wait for serial monitor to open (optional, for debugging)
+  while (!Serial) {
+    delay(10);
+  }
   
-  // Initialize SHT21 sensor
-  sht21.begin();
+  // Initialize AHT10 sensor
+  if (!aht.begin()) {
+    Serial.println("Could not find AHT10 sensor! Check wiring.");
+    while (1) delay(10);  // Halt execution if sensor not found
+  }
   
   // Print header information
-  Serial.println("SHT21 Temperature & Humidity Sensor");
+  Serial.println("AHT10 Temperature & Humidity Sensor");
   Serial.println("-----------------------------------");
 }
 
 void loop() {
-  // Read temperature from sensor (returns value in Celsius)
-  float temperature = sht21.getTemperature();
+  // Create sensor event objects to hold readings
+  sensors_event_t humidity, temp;
   
-  // Read relative humidity from sensor (returns value as percentage)
-  float humidity = sht21.getHumidity();
+  // Read temperature and humidity from sensor
+  aht.getEvent(&humidity, &temp);
   
   // Print temperature reading with 2 decimal places
   Serial.print("Temperature: ");
-  Serial.print(temperature, 2);  // Print with 2 decimal places
+  Serial.print(temp.temperature, 2);  // Print with 2 decimal places
   Serial.println(" °C");
   
   // Print humidity reading with 2 decimal places
   Serial.print("Humidity: ");
-  Serial.print(humidity, 2);      // Print with 2 decimal places
-  Serial.println(" %RH");        // %RH = Percentage Relative Humidity
+  Serial.print(humidity.relative_humidity, 2);  // Print with 2 decimal places
+  Serial.println(" %RH");                        // %RH = Percentage Relative Humidity
   
   // Print separator line
   Serial.println("-----------------------------------");
@@ -650,6 +662,6 @@ void loop() {
   // This prevents excessive sensor queries and reduces power consumption
   delay(2000);
 }`,
-    link: "/hardware/sht21-temperature-sensor-i2c"
+    link: "/hardware/aht10-temperature-humidity-sensor-i2c"
   }
 ];
