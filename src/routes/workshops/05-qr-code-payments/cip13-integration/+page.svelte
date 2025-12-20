@@ -11,8 +11,8 @@
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
 
-	const cip13PaymentUriFormat = 'cardano:{address}?amount={amount}';
-	const cip13PaymentUriExample = 'cardano:addr1qy...xyz?amount=10.5';
+	const cip13PaymentUriFormat = 'web+cardano:{address}?amount={amount}';
+	const cip13PaymentUriExample = 'web+cardano:addr1qy...xyz?amount=10.5';
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
@@ -76,10 +76,10 @@
 			interactions.
 		</p>
 		<p class="text-lg font-thin text-white">
-			The URI scheme uses the <code class="rounded bg-gray-800 px-2 py-1 text-white">cardano:</code>
-			or <code class="rounded bg-gray-800 px-2 py-1 text-white">web+cardano:</code> prefix, depending
-			on the context and browser requirements. For payment URIs, the address is specified directly after
-			the colon, making it the default protocol when no authority is specified.
+			The URI scheme uses the <code class="rounded bg-gray-800 px-2 py-1 text-white"
+				>web+cardano:</code
+			> prefix, depending on the context and browser requirements. For payment URIs, the address is specified
+			directly after the colon, making it the default protocol when no authority is specified.
 		</p>
 		<p class="text-lg font-thin text-white">
 			CIP-13 supports multiple authorities beyond payment URIs. The standard defines a <strong
@@ -120,11 +120,10 @@
 		<p class="text-lg font-thin text-white">Where:</p>
 		<ul class="ml-6 list-disc space-y-2 text-lg font-thin text-white">
 			<li>
-				<strong>cardano:</strong> The protocol prefix (may also be
-				<code class="rounded bg-gray-800 px-2 py-1 text-white">web+cardano:</code>)
+				<strong>web+cardano:</strong> The protocol prefix
 			</li>
 			<li>
-				<strong>&#123;address&#125;:</strong> A valid Cardano address (Base58 or Bech32 format)
+				<strong>&#123;address&#125;:</strong> A valid Cardano address (Bech32 format)
 			</li>
 			<li>
 				<strong>amount:</strong> Optional parameter specifying the amount in decimal ADA (using period
@@ -142,99 +141,24 @@
 		</p>
 		<p class="mt-4 text-lg font-thin text-white">
 			<strong>Note:</strong> The amount parameter is specified in ADA, not Lovelace. The wallet will
-			handle the conversion to Lovelace (1 ADA = 1,000,000 Lovelace) when building the transaction.
+			handle the conversion to Lovelace (1 ADA = 1,000,000 Lovelace) when building the transaction and
+			add the appropriate fees to cover the transaction costs.
 		</p>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Mobile Wallets Supporting CIP-13</h2>
+		<h2 class="text-4xl font-medium">CIP-13 Support</h2>
 		<p class="text-lg font-thin text-white">
-			Several mobile wallets support CIP-13 payment URIs, making them compatible with QR code
-			payment systems. Here are some popular options:
+			We will be using Yoroi Mobile for this workshop, which fully supports CIP-13 payment URIs.
+			Make sure to install the Yoroi Mobile app on your smartphone with the mnemonic / keyphrase you
+			created in the previous workshop.
 		</p>
-		<div class="mt-4 flex flex-col gap-4">
-			<Card.Root class="bg-transparent text-white">
-				<Card.Header>
-					<Card.Title class="text-2xl">Yoroi</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<p class="text-base font-thin text-white">
-						A popular Cardano wallet available on iOS, Android, and as a browser extension. Yoroi is
-						free, open-source, and supports both Mainnet and Testnet. It supports CIP-13 payment
-						URIs, making it compatible with QR code payment systems. Yoroi is user-friendly and
-						great for beginners.
-					</p>
-				</Card.Content>
-				<Card.Footer>
-					<Button
-						href="https://yoroi-wallet.com/"
-						target="_blank"
-						rel="noopener noreferrer"
-						variant="secondary"
-						size="sm"
-						class="text-xs">Check out Yoroi Wallet</Button
-					>
-				</Card.Footer>
-			</Card.Root>
 
-			<Card.Root class="bg-transparent text-white">
-				<Card.Header>
-					<Card.Title class="text-2xl">Begin Wallet</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<p class="text-base font-thin text-white">
-						A self-custodial, open-source Cardano and Bitcoin wallet designed for beginners and
-						advanced users alike. Begin Wallet is available on iOS, Android, and as a Chrome
-						extension. It supports CIP-13 payment URIs, ADA staking, lending with Liqwid, governance
-						participation, and dApp discovery. It's open-source, audited, and puts users in full
-						control of their keys.
-					</p>
-				</Card.Content>
-				<Card.Footer>
-					<Button
-						href="https://begin.is/"
-						target="_blank"
-						rel="noopener noreferrer"
-						variant="secondary"
-						size="sm"
-						class="text-xs">Check out Begin Wallet</Button
-					>
-				</Card.Footer>
-			</Card.Root>
-
-			<Card.Root class="bg-transparent text-white">
-				<Card.Header>
-					<Card.Title class="text-2xl">Vespr</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<p class="text-base font-thin text-white">
-						A modern Cardano wallet with a focus on user experience and design. Vespr is available
-						on iOS and Android and supports CIP-13 payment URIs. It offers an intuitive interface
-						for managing ADA, tokens, and NFTs on Cardano.
-					</p>
-				</Card.Content>
-				<Card.Footer>
-					<Button
-						href="https://vespr.xyz/"
-						target="_blank"
-						rel="noopener noreferrer"
-						variant="secondary"
-						size="sm"
-						class="text-xs">Check out Vespr Wallet</Button
-					>
-				</Card.Footer>
-			</Card.Root>
-		</div>
 		<TipBox title="Testing Payment URIs" variant="info">
 			Wallet support for CIP-13 may vary. Always test your payment URIs with the wallets your users
 			are likely to use. Check the wallet's documentation or support channels for the most
 			up-to-date information on CIP support.
 		</TipBox>
-
-		<p class="text-lg font-thin text-white">
-			We will be using Yoroi Mobile for this workshop. Make sure to install the Yoroi Mobile app on
-			your smartphone with the mnemonic / keyphrase you created in the previous workshop.
-		</p>
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
