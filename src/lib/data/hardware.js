@@ -110,7 +110,8 @@ void loop() {
     intro: "The ESP32-C3 is a cost-effective, RISC-V based microcontroller with Wi-Fi and Bluetooth 5 (LE) support, perfect for IoT applications requiring low power consumption and modern architecture.",
     images: [
       "/images/hardware/esp32c3-01.webp",
-      "/images/hardware/esp32c3-02.webp"
+      "/images/hardware/esp32c3-02.webp",
+      "/images/hardware/esp32c3-03.webp"
     ],
     features: [
       "RISC-V 32-bit single-core processor (up to 160 MHz)",
@@ -214,8 +215,8 @@ void loop() {
     slug: "relay-module-3v-1channel",
     intro: "A low-voltage 3V single-channel relay module with opto-isolation, perfect for controlling AC/DC devices safely from ESP32 or other 3.3V microcontrollers without level shifters.",
     images: [
-      "/images/hardware/relais-01.webp",
-      "/images/hardware/relais-02.webp"
+      "/images/hardware/relay-01.webp",
+      "/images/hardware/relay-02.webp"
     ],
     features: [
       "3.3V operation (compatible with ESP32)",
@@ -415,8 +416,10 @@ void loop() {
     slug: "oled-display-sh1106-13inch-i2c",
     intro: "A compact 1.3-inch monochrome OLED display using the SH1106 controller with I2C interface. Features high contrast, low power consumption, and excellent visibility even in bright light conditions.",
     images: [
-      "/images/hardware/oled-display-01.webp",
-      "/images/hardware/oled-display-02.webp"
+      "/images/hardware/oled-01.webp",
+      "/images/hardware/oled-02.webp",
+      "/images/hardware/oled-03.webp",
+      "/images/hardware/oled-04.webp"
     ],
     features: [
       "1.3\" diagonal display",
@@ -545,8 +548,7 @@ void loop() {
     slug: "aht10-temperature-humidity-sensor-i2c",
     intro: "A high-precision digital temperature and humidity sensor from Aosong with I2C interface. Features excellent accuracy, low power consumption, and factory-calibrated measurements with fast response time.",
     images: [
-      "/images/hardware/sht21-01.webp",
-      "/images/hardware/sht21-02.webp"
+      "/images/hardware/aht10.webp",
     ],
     features: [
       "Temperature range: -40 to +85°C",
