@@ -23,6 +23,16 @@
 
 <SectionNavigator>
 	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">Before we get started</h2>
+		<p class="text-lg font-thin text-white">
+			For this part of the workshop, you should create a second wallet, so you send payments from
+			one wallet and listen for the payments in the other wallet. This way you can test the payment
+			listener without having to send real payments. You already know how to create a new wallet
+			from <a href="/workshops/01-basics/cardano-setup" class="link">Workshop 01</a>.
+		</p>
+	</section>
+
+	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Core Concept</h2>
 		<p class="text-lg font-thin text-white">
 			As we do not know the transaction hash or if the user even scanned the QR code and submitted
@@ -127,6 +137,13 @@
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
 		<h2 class="text-4xl font-medium">Building the Payment Listener</h2>
+		<p class="text-lg font-thin text-white">
+			This part is pretty straight forward after all you have learned so far: Add a new function to
+			display the QR code once the API on the Microcontroller receives a new payment request. Then
+			regularly check the Koios API for the payment to be confirmed on chain and an UTxO with the
+			exact lovelace amount to appear for the recipient address and display a confirmation message
+			on the TFT display.
+		</p>
 	</section>
 
 	<FurtherResources
