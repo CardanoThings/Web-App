@@ -16,13 +16,16 @@
 	import json from 'highlight.js/lib/languages/json';
 	import cpp from 'highlight.js/lib/languages/cpp';
 	import c from 'highlight.js/lib/languages/c';
+	import css from 'highlight.js/lib/languages/css';
 	import 'highlight.js/styles/base16/harmonic16-dark.css';
 
 	hljs.registerLanguage('javascript', javascript);
 	hljs.registerLanguage('xml', xml);
+	hljs.registerLanguage('html', xml); // HTML uses XML highlighting
 	hljs.registerLanguage('json', json);
 	hljs.registerLanguage('cpp', cpp);
 	hljs.registerLanguage('c', c);
+	hljs.registerLanguage('css', css);
 	hljs.registerLanguage('arduino', cpp); // Use cpp for Arduino code
 
 	/**

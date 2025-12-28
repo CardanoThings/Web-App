@@ -122,14 +122,14 @@ export const workshops = [
                 link: "/workshops/05-qr-code-payments/qr-code-creation"
             },
             {
-                title: "Building the Interface",
-                description: "You will learn how to build a simple payment user interface, running a simple web server on your Microcontroller and make it interact with the display of your Microcontroller.",
-                link: "/workshops/05-qr-code-payments/building-the-interface"
+                title: "Building the Frontend",
+                description: "You will learn how to build a simple payment user frontend, running a simple web server on your Microcontroller and (in the next step) make it interact with the display of your Microcontroller.",
+                link: "/workshops/05-qr-code-payments/building-the-frontend"
             },
             {
-                title: "Confirming the payment",
-                description: "In this last step you will implement a simple listener for the created transaction and display a confirmation, once the transaction has arrived in your wallet.",
-                link: "/workshops/05-qr-code-payments/confirming-the-payment"
+                title: "Building the Backend",
+                description: "In this last step you will implement the needed backend API endpoints on your Microcontroller to create and store new payment requests, display the CIP-13 QR code on the display of your Microcontroller and check for payments and display a confirmation message on the display of your Microcontroller.",
+                link: "/workshops/05-qr-code-payments/building-the-backend"
             }
         ],
         link: "/workshops/05-qr-code-payments"
