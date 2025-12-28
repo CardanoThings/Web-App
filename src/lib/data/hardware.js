@@ -303,8 +303,9 @@ void loop() {
     slug: "ws2812b-led-ring-12",
     intro: "A circular RGB LED ring using WS2812B addressable LEDs with 12 individually controllable pixels with 24-bit color. Perfect for creating clock-like displays, progress indicators, and circular animations.",
     images: [
-      "/images/hardware/led-matrix-01.webp",
-      "/images/hardware/led-matrix-02.webp"
+      "/images/hardware/led-ring-01.webp",
+      "/images/hardware/led-ring-02.webp",
+      "/images/hardware/led-ring-03.webp"
     ],
     features: [
       "12 WS2812B addressable RGB LEDs arranged in a circle",
