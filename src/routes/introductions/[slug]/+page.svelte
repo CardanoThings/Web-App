@@ -39,11 +39,11 @@
 						<Card.Title class="pb-0 text-lg">Key Features</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<ul class="space-y-2">
+						<ul class="ml-0 space-y-2 pl-0">
 							{#each data.keyFeatures as feature}
 								<li class="ml-0 flex items-start">
 									<div>
-										<ChevronRight size="18" class="relative top-1.5" strokeWidth="2" />
+										<ChevronRight size="18" class="relative top-1" strokeWidth="2" />
 									</div>
 									<div>
 										<span class="font-medium">{feature.split(':')[0]}</span>: {feature
@@ -61,18 +61,23 @@
 
 		<!-- Resources -->
 		{#if data.resources && data.resources.length > 0}
-			<section id="further-resources" class="w-full md:w-1/4">
+			<section id="further-resources" class="w-full md:w-1/3">
 				<Card.Root>
 					<Card.Header>
 						<Card.Title>Further Resources</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<ul class="list-none text-nowrap">
+						<ul class="ml-0 list-none pl-0 text-nowrap">
 							{#each data.resources as resource}
-								<li>
-									<a href={resource.link} target="_blank" rel="noopener noreferrer" class="link">
-										{resource.title}
-									</a>
+								<li class="ml-0 flex items-start">
+									<div>
+										<ChevronRight size="18" class="relative top-1" strokeWidth="2" />
+									</div>
+									<div>
+										<a href={resource.link} target="_blank" rel="noopener noreferrer" class="link">
+											{resource.title}
+										</a>
+									</div>
 								</li>
 							{/each}
 						</ul>

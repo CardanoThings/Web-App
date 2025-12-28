@@ -101,10 +101,6 @@ export const introductions = [
                 link: "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/"
             },
             {
-                title: "ESP8266 Community",
-                link: "https://www.esp8266.com/"
-            },
-            {
                 title: "Arduino Core for ESP32",
                 link: "https://github.com/espressif/arduino-esp32"
             },
@@ -173,10 +169,6 @@ export const introductions = [
             {
                 title: "RESTful API Tutorial",
                 link: "https://restfulapi.net/"
-            },
-            {
-                title: "Roy Fielding's Dissertation",
-                link: "https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm"
             },
             {
                 title: "REST API Design Guide",
