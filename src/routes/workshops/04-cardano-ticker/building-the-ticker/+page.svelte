@@ -6,6 +6,8 @@
 	import TipBox from '$lib/components/TipBox.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
 	import { MoveLeft } from 'lucide-svelte';
+	import ImageSlideshow from '$lib/components/ImageSlideshow.svelte';
+	import * as Card from '$lib/components/ui/card/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
 </script>
@@ -432,7 +434,7 @@
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">Getting Started</h2>
+		<h2 class="text-4xl font-medium">Putting it all together</h2>
 		<p class="text-lg font-thin text-white">
 			Now that you understand how the code works, here's how to set it up:
 		</p>
@@ -480,6 +482,42 @@
 		</TipBox>
 	</section>
 
+	<section class="mb-16 flex flex-col gap-4 text-white">
+		<h2 class="text-4xl font-medium">What's Next?</h2>
+		<p class="text-lg font-thin text-white">
+			Now that you have built your own Cardano Ticker, you can start building other projects with
+			the knowledge gained from this workshop. How about adding special screen effects when your
+			balance changes? Or another data page for your own NFT project?
+		</p>
+
+		<p>
+			To build more advanced graphics, you should look into the LVGL library to create beautiful UIs
+			for any MCU, MPU and display type.
+		</p>
+
+		<Card.Root>
+			<Card.Header>
+				<Card.Title>Cardano Ticker on your CYD/ESP32</Card.Title>
+			</Card.Header>
+			<Card.Content>
+				<ImageSlideshow
+					images={[
+						'/images/workshops/CardanoTicker1.jpg',
+						'/images/workshops/CardanoTicker2.jpg',
+						'/images/workshops/CardanoTicker3.jpg',
+						'/images/workshops/CardanoTicker4.jpg',
+						'/images/workshops/CardanoTicker5.jpg'
+					]}
+					alt="Cardano Ticker Project"
+					autoplay={true}
+					autoplayInterval={5000}
+					showIndicators={true}
+					showArrows={true}
+				/>
+			</Card.Content>
+		</Card.Root>
+	</section>
+
 	<FurtherResources
 		resources={[
 			{
@@ -511,6 +549,12 @@
 				url: 'https://cexplorer.io/',
 				description:
 					'Cardano blockchain explorer with API access. Used for fetching NFT collection information and floor prices.'
+			},
+			{
+				title: 'LVGL - Light and Versatile Graphics Library',
+				url: 'https://lvgl.io/',
+				description:
+					'If you want to build more sophisticated UIs, you can use the LVGL library to create beautiful UIs for any MCU, MPU and display type. Features 30+ built-in widgets, 100+ style properties, and web-inspired layouts.'
 			}
 		]}
 	/>

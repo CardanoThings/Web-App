@@ -7,6 +7,8 @@
 	import CodeCard from '$lib/components/CodeCard.svelte';
 	import TipBox from '$lib/components/TipBox.svelte';
 	import FurtherResources from '$lib/components/FurtherResources.svelte';
+	import ImageSlideshow from '$lib/components/ImageSlideshow.svelte';
+	import * as Card from '$lib/components/ui/card/index.js';
 	let parentPage = $derived(page.url.pathname.split('/')[2]);
 	let { data } = $props();
 </script>
@@ -292,6 +294,22 @@
 			How about a physical vending machine that accepts ADA payments? Or a smart locker, that only
 			opens when you send a certain amount of ADA to a specific address? Happy building!
 		</p>
+
+		<Card.Root>
+			<Card.Header>
+				<Card.Title>QR-Code Display on your CYD/ESP32</Card.Title>
+			</Card.Header>
+			<Card.Content>
+				<ImageSlideshow
+					images={['/images/workshops/CardanoPOS1.jpg', '/images/workshops/CardanoPOS2.jpg']}
+					alt="Cardano POS Project"
+					autoplay={true}
+					autoplayInterval={5000}
+					showIndicators={true}
+					showArrows={false}
+				/>
+			</Card.Content>
+		</Card.Root>
 
 		<TipBox title="Production readiness" variant="warning">
 			Please keep in mind, that these workshops are educational and not ready for production use.

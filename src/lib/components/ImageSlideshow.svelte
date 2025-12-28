@@ -14,37 +14,8 @@
 	} = $props();
 
 	let currentIndex = $state(0);
-	let previousIndex = $state(null);
-	let fadingOutIndex = $state(null);
 	let autoplayTimer = null;
 	let isHovered = $state(false);
-
-	// Track previous index and handle fade-out timing
-	let updateTimeoutId = null;
-	$effect(() => {
-		if (previousIndex !== null && previousIndex !== currentIndex) {
-			// Keep old image visible while new image fades in
-			fadingOutIndex = previousIndex;
-			// After new image has faded in (500ms), remove old image (triggers fade-out)
-			const fadeOutTimeout = setTimeout(() => {
-				fadingOutIndex = null;
-				// Update previousIndex after fade-out completes (another 500ms)
-				updateTimeoutId = setTimeout(() => {
-					previousIndex = currentIndex;
-					updateTimeoutId = null;
-				}, 500);
-			}, 500);
-			return () => {
-				clearTimeout(fadeOutTimeout);
-				if (updateTimeoutId) {
-					clearTimeout(updateTimeoutId);
-					updateTimeoutId = null;
-				}
-			};
-		} else if (previousIndex === null) {
-			previousIndex = currentIndex;
-		}
-	});
 
 	// Handle autoplay
 	function startAutoplay() {
@@ -107,21 +78,12 @@
 >
 	<!-- Images Container -->
 	<div class="relative aspect-video w-full">
-		<!-- Previous image fading out -->
-		{#if fadingOutIndex !== null && fadingOutIndex !== currentIndex}
-			<div class="absolute inset-0 z-0" out:fade={{ duration: 500 }}>
-				<img
-					src={images[fadingOutIndex]}
-					alt={`${alt} ${fadingOutIndex + 1}`}
-					class="h-full w-full object-cover object-center"
-					loading="lazy"
-				/>
-			</div>
-		{/if}
-
-		<!-- Current image fading in -->
 		{#key currentIndex}
-			<div class="absolute inset-0 z-10" in:fade={{ duration: 500 }}>
+			<div
+				in:fade={{ duration: 500 }}
+				out:fade={{ duration: 500, delay: 500 }}
+				class="absolute inset-0"
+			>
 				<img
 					src={images[currentIndex]}
 					alt={`${alt} ${currentIndex + 1}`}
