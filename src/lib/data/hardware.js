@@ -44,12 +44,12 @@ export const hardware = [
     whereToBuy: [
       {
         name: "AliExpress",
-        url: "https://www.aliexpress.com/item/1005001621096425.html"
+        url: "https://s.click.aliexpress.com/e/_c3AtbKgB"
       },
       {
-        name: "Amazon",
-        url: "https://www.amazon.com/s?k=esp32+cheap+yellow+display"
-      }
+        name: "Amazon Germany",
+        url: "https://amzn.to/3LEmpUo"
+      },
     ],
     libraries: [
       "TFT_eSPI (by Bodmer)",
@@ -146,11 +146,11 @@ void loop() {
     whereToBuy: [
       {
         name: "AliExpress",
-        url: "https://www.aliexpress.com/item/1005001621294563.html"
+        url: "https://s.click.aliexpress.com/e/_c3yOxbxZ"
       },
       {
-        name: "Amazon",
-        url: "https://www.amazon.com/s?k=esp32-c3+devkit"
+        name: "Amazon Germany",
+        url: "https://amzn.to/4sv2isB"
       }
     ],
     libraries: [
