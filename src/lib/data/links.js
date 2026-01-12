@@ -25,11 +25,6 @@ export const links = [
         headerNav: false
     },
     {
-        title: "Community Projects",
-        link: "/community-projects",
-        headerNav: false
-    },
-    {
         title: "Troubleshooting",
         link: "/troubleshooting",
         headerNav: false

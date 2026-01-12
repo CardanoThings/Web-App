@@ -4,9 +4,11 @@
 
 A comprehensive educational platform for building IoT projects with Cardano blockchain using ESP32-based microcontrollers. Funded by Project Catalyst Fund 11.
 
+**Version**: 0.62
+
 ## Overview
 
-CardanoThings.io is a step-by-step learning platform that teaches developers how to integrate Cardano blockchain technology with Internet of Things (IoT) devices. The platform provides workshops, introductions, hardware guides, and code blocks to help you build real-world Cardano IoT projects.
+CardanoThings.io is a step-by-step learning platform that teaches developers how to integrate Cardano blockchain technology with Internet of Things (IoT) devices. The platform provides workshops, introductions, hardware guides, code blocks, and troubleshooting resources to help you build real-world Cardano IoT projects.
 
 ## Features
 
@@ -19,22 +21,32 @@ CardanoThings.io is a step-by-step learning platform that teaches developers how
 
 - **Educational Content**:
   - Introductions to key concepts (Cardano, Blockchain, Arduino, Microcontrollers, APIs, etc.)
-  - Hardware guides for ESP32-based devices
-  - Code blocks and examples
-  - Comprehensive glossary
+  - Hardware guides for ESP32-based devices (ESP32-C3, ESP32 CYD, etc.)
+  - Building blocks - Ready-to-use code examples for common IoT tasks
+  - Comprehensive glossary with terms and definitions
+  - Troubleshooting guide with common issues and solutions
 
 - **Interactive Features**:
   - Section navigation with sticky sidebar
   - Workshop step navigation
   - Search functionality
+  - Featured projects showcase
+  - Project submission dialog for community contributions
   - Responsive design
+  - Code syntax highlighting
+  - Live code examples
 
 ## Tech Stack
 
 - **Framework**: [SvelteKit](https://kit.svelte.dev/) with [Svelte 5](https://svelte.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) v4
-- **UI Components**: Built with [shadcn-svelte](https://shadcn-svelte.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) v4 with `@tailwindcss/vite`
+- **UI Components**: Built with [shadcn-svelte](https://shadcn-svelte.com/) (bits-ui)
 - **Icons**: [Lucide Svelte](https://lucide.dev/)
+- **Code Highlighting**: [highlight.js](https://highlightjs.org/)
+- **Utilities**:
+  - [fast-sort](https://github.com/snovakovic/fast-sort) for sorting
+  - [svelte-sonner](https://github.com/wobsoriano/svelte-sonner) for notifications
+  - [vaul-svelte](https://github.com/emilkowalski/vaul) for drawer components
 - **Build Tool**: [Vite](https://vitejs.dev/)
 - **Deployment**: Static site generation with `@sveltejs/adapter-static`
 
@@ -82,6 +94,7 @@ The app will be available at `http://localhost:5173` (or the port shown in the t
 - `npm run preview` - Preview production build locally
 - `npm run format` - Format code with Prettier
 - `npm run lint` - Lint and check code formatting
+- `npm run extract-blocks` - Extract building blocks from data files to `blocks/` directory
 
 ## Building for Production
 
@@ -104,20 +117,45 @@ npm run preview
 ```text
 src/
 ├── lib/
-│   ├── base/              # Base components (Header, Footer, etc.)
+│   ├── base/              # Base components (Header, Footer, Banner, etc.)
 │   ├── components/        # Reusable components
-│   │   ├── ui/           # UI component library
+│   │   ├── ui/           # shadcn-svelte UI component library
+│   │   ├── CodeCard.svelte
+│   │   ├── LiveCodeCard.svelte
+│   │   ├── SyntaxHighlighter.svelte
 │   │   ├── SectionNavigator.svelte
+│   │   ├── SearchBox.svelte
+│   │   ├── SubmitProjectDialog.svelte
+│   │   ├── GlossaryTracker.svelte
+│   │   ├── ImageSlideshow.svelte
+│   │   ├── TipBox.svelte
 │   │   └── ...
-│   ├── data/             # Data files (workshops, introductions, etc.)
+│   ├── data/             # Content data files
+│   │   ├── workshops.js
+│   │   ├── introductions.js
+│   │   ├── hardware.js
+│   │   ├── blocks.js
+│   │   ├── glossary.js
+│   │   ├── troubleshooting.js
+│   │   ├── projects.js
+│   │   └── links.js
+│   ├── FeaturedProjects.svelte
+│   ├── SectionWorkshops.svelte
+│   ├── SectionIntroductions.svelte
+│   ├── SectionBlocks.svelte
 │   └── ...
 ├── routes/               # SvelteKit routes
-│   ├── workshops/        # Workshop pages
+│   ├── workshops/        # Workshop pages (01-basics through 05-qr-code-payments)
 │   ├── introductions/    # Introduction pages
 │   ├── hardware/         # Hardware pages
 │   ├── blocks/           # Code block pages
-│   └── glossary/         # Glossary page
-└── stores/               # Svelte stores
+│   ├── glossary/         # Glossary page
+│   ├── troubleshooting/  # Troubleshooting guide
+│   ├── about/            # About page
+│   └── ...
+├── stores/               # Svelte stores
+│   └── glossary.js
+└── app.css               # Global styles
 ```
 
 ## Key Components
@@ -125,7 +163,15 @@ src/
 - **SectionNavigator** - Provides sticky sidebar navigation for workshop steps
 - **WorkshopNavigation** - Bottom navigation between workshop steps
 - **IntroContainer** - Contextual introduction links
-- **SyntaxHighlighter** - Code syntax highlighting
+- **SyntaxHighlighter** - Code syntax highlighting with highlight.js
+- **CodeCard** - Displays code examples with syntax highlighting
+- **LiveCodeCard** - Interactive code examples
+- **FeaturedProjects** - Showcases community projects
+- **SubmitProjectDialog** - Dialog for submitting community projects
+- **SearchBox** - Global search functionality
+- **GlossaryTracker** - Tracks and highlights glossary terms
+- **ImageSlideshow** - Image carousel for hardware and workshop photos
+- **TipBox** - Displays helpful tips and notes
 
 ## Data Management
 
@@ -133,16 +179,24 @@ Content is managed through data files in `src/lib/data/`:
 
 - `workshops.js` - Workshop definitions and steps
 - `introductions.js` - Introduction content
-- `hardware.js` - Hardware information
-- `blocks.js` - Code block definitions
-- `glossary.js` - Glossary terms
+- `hardware.js` - Hardware information and specifications
+- `blocks.js` - Building block code examples with comprehensive documentation
+- `glossary.js` - Glossary terms and definitions
+- `troubleshooting.js` - Common issues and solutions
+- `projects.js` - Featured community projects
+- `links.js` - Navigation links configuration
 
 **Workshop Code Examples**: All code examples from the workshops (Arduino `.ino` files, Node.js, HTML, CSS, and JavaScript) are available in the [CardanoThings/Workshops](https://github.com/CardanoThings/Workshops) repository, organized by workshop with ready-to-use files.
+
+**Building Blocks Extraction**: The `extract-blocks.js` script can extract building blocks from `blocks.js` into the `blocks/` directory, creating individual folders with code files and README.md documentation for each block. Run `npm run extract-blocks` to generate the blocks structure.
+
+
 
 ## Links
 
 - **Website**: [cardanothings.io](https://cardanothings.io)
 - **Project Catalyst**: Funded by Project Catalyst Fund 11
+- **Workshops Repository**: [CardanoThings/Workshops](https://github.com/CardanoThings/Workshops)
 
 ---
 
