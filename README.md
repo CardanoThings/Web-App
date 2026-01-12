@@ -94,7 +94,6 @@ The app will be available at `http://localhost:5173` (or the port shown in the t
 - `npm run preview` - Preview production build locally
 - `npm run format` - Format code with Prettier
 - `npm run lint` - Lint and check code formatting
-- `npm run extract-blocks` - Extract building blocks from data files to `blocks/` directory
 
 ## Building for Production
 
