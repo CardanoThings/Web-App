@@ -18,28 +18,23 @@ export const hardware = [
       "WiFi and Bluetooth support",
       "USB-C for programming and power"
     ],
-    howToUse: "Connect via USB-C to computer, select ESP32 Dev Module in Arduino IDE. The display is pre-wired to specific GPIOs (typically TFT_CS=5, TFT_DC=2, TFT_RST=4, TFT_MOSI=23, TFT_SCLK=18, TFT_MISO=19). Use TFT_eSPI library with proper pin configuration. Touch input via XPT2046 controller on GPIOs 15, 2, 0, 4.",
     resources: [
       {
-        name: "Datasheet - ESP32",
-        url: "https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf"
+        name: "ESP32 CYD Case STL Files",
+        url: "https://www.thingiverse.com/thing:6653040"
       },
       {
-        name: "Datasheet - ILI9341",
-        url: "https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf"
+        name: "ESP32 CYD - Getting Started Guide",
+        url: "https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display"
       },
       {
-        name: "Schematic",
-        url: "https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display/blob/main/pinout.png"
+        name: "ESP32 CYD Pins",
+        url: "https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display/blob/main/PINS.md"
       },
       {
-        name: "Pinout Diagram",
-        url: "https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display/blob/main/pinout.png"
+        name: "ESP32 CYD on Random Nerd Tutorials",
+        url: "https://randomnerdtutorials.com/cheap-yellow-display-esp32-2432s028r/"
       },
-      {
-        name: "Tutorial",
-        url: "https://randomnerdtutorials.com/esp32-cheap-yellow-display/"
-      }
     ],
     whereToBuy: [
       {
@@ -47,61 +42,14 @@ export const hardware = [
         url: "https://s.click.aliexpress.com/e/_c3AtbKgB"
       },
       {
+        name: "Amazon US",
+        url: "https://amzn.to/4jy26EG"
+      },
+      {
         name: "Amazon Germany",
         url: "https://amzn.to/3LEmpUo"
       },
     ],
-    libraries: [
-      "TFT_eSPI (by Bodmer)",
-      "XPT2046_Touchscreen (by Paul Stoffregen)"
-    ],
-    code: `// Cheap Yellow Display (CYD) - TFT Display and Touchscreen Example
-// This example demonstrates how to use the integrated TFT display and touchscreen
-
-// Include required libraries
-#include <TFT_eSPI.h>              // TFT display library for ILI9341
-#include <XPT2046_Touchscreen.h>   // Touchscreen controller library
-#include <SPI.h>                   // SPI communication library
-
-// Initialize display and touchscreen objects
-TFT_eSPI tft = TFT_eSPI();                    // Create TFT display object
-XPT2046_Touchscreen ts(15);                    // Create touchscreen object (CS pin on GPIO 15)
-
-void setup() {
-  // Initialize serial communication for debugging
-  Serial.begin(115200);
-  
-  // Initialize and configure the TFT display
-  tft.init();                      // Initialize the display
-  tft.setRotation(0);              // Set display rotation (0-3 for 0°, 90°, 180°, 270°)
-  tft.fillScreen(TFT_BLACK);       // Fill screen with black color
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);  // Set text color (foreground, background)
-  tft.setTextSize(2);              // Set text size (1-8)
-  
-  // Initialize and configure the touchscreen
-  ts.begin();                      // Initialize touchscreen
-  ts.setRotation(0);               // Set touchscreen rotation to match display
-  
-  // Draw initial text on the display
-  tft.drawString("CYD Test", 50, 100);  // Draw string at coordinates (x, y)
-}
-
-void loop() {
-  // Check if the touchscreen is being touched
-  if (ts.touched()) {
-    // Get the touch point coordinates
-    TS_Point p = ts.getPoint();
-    
-    // Draw a red circle at the touch point
-    tft.fillCircle(p.x, p.y, 5, TFT_RED);  // Draw filled circle (x, y, radius, color)
-    
-    // Print touch coordinates to serial monitor
-    Serial.printf("Touch: x=%d, y=%d\\n", p.x, p.y);
-  }
-  
-  // Small delay to prevent excessive processing
-  delay(10);
-}`,
     link: "/hardware/cheap-yellow-display-cyd"
   },
   {
@@ -124,90 +72,46 @@ void loop() {
       "Lower power consumption than ESP32",
       "Built-in USB support"
     ],
-    howToUse: "Connect via USB-C to computer, select ESP32C3 Dev Module in Arduino IDE. Install ESP32 board support via Board Manager. Use GPIOs for sensors/displays, WiFi for internet connectivity. Note: Some GPIOs are input-only, check pinout before use.",
     resources: [
       {
         name: "Datasheet",
         url: "https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf"
       },
       {
-        name: "Pinout Diagram",
-        url: "https://randomnerdtutorials.com/esp32-c3-pinout-reference-gpios/"
-      },
-      {
         name: "Technical Reference Manual",
         url: "https://www.espressif.com/sites/default/files/documentation/esp32-c3_technical_reference_manual_en.pdf"
       },
       {
-        name: "Schematic",
-        url: "https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/hw-reference/esp32c3/user-guide-devkitm-1.html"
-      }
+        name: "Pinout Diagram",
+        url: "https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2025/05/ESP32-C3-Super-Mini-Pinout-f.png?w=918&quality=100&strip=all&ssl=1"
+      },
+      {
+        name: "ESP32-C3 Super Mini Case STL Files",
+        url: "https://www.printables.com/model/1137008-esp32-c3c6h2s3-super-mini-case"
+      },
+      {
+        name: "ESP32-C3 on Random Nerd Tutorials",
+        url: "https://randomnerdtutorials.com/getting-started-esp32-c3-super-mini/"
+      },
+      {
+        name: "ESP32io.com",
+        url: "https://esp32io.com/"
+      },
     ],
     whereToBuy: [
       {
         name: "AliExpress",
-        url: "https://s.click.aliexpress.com/e/_c3yOxbxZ"
+        url: "https://s.click.aliexpress.com/e/_c3Eyz6EL"
+      },
+      {
+        name: "Amazon US",
+        url: "https://amzn.to/49V8xgT"
       },
       {
         name: "Amazon Germany",
         url: "https://amzn.to/4sv2isB"
       }
     ],
-    libraries: [
-      "WiFi (built-in)",
-      "BluetoothSerial (built-in)",
-      "ArduinoJson (by Benoit Blanchon)"
-    ],
-    code: `// ESP32-C3 WiFi Connection Example
-// This example demonstrates how to connect to WiFi and blink the built-in LED
-
-// Include WiFi library (built-in)
-#include <WiFi.h>
-
-// WiFi network credentials - replace with your network details
-const char* ssid = "YOUR_WIFI_SSID";        // Your WiFi network name
-const char* password = "YOUR_WIFI_PASSWORD"; // Your WiFi password
-
-void setup() {
-  // Initialize serial communication for debugging
-  Serial.begin(115200);
-  delay(1000);  // Wait for serial monitor to open
-  
-  // Configure WiFi mode as Station (client mode)
-  WiFi.mode(WIFI_STA);
-  
-  // Set WiFi transmit power (workaround for ESP32-C3 Super Mini)
-  WiFi.setTxPower(WIFI_POWER_8_5dBm);
-  
-  // Begin WiFi connection with credentials
-  WiFi.begin(ssid, password);
-  
-  // Wait for WiFi connection to be established
-  Serial.print("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");  // Print dots while connecting
-  }
-  
-  // Connection successful - print IP address
-  Serial.println();
-  Serial.print("Connected! IP address: ");
-  Serial.println(WiFi.localIP());  // Print the assigned IP address
-  
-  // Configure built-in LED pin (GPIO 8 on ESP32-C3)
-  pinMode(8, OUTPUT);
-}
-
-void loop() {
-  // Blink the built-in LED
-  digitalWrite(8, HIGH);  // Turn LED on
-  delay(500);              // Wait 500ms
-  digitalWrite(8, LOW);    // Turn LED off
-  delay(500);              // Wait 500ms
-  
-  // Print status message
-  Serial.println("ESP32-C3 running...");
-}`,
     link: "/hardware/esp32-c3"
   },
   {
@@ -228,74 +132,30 @@ void loop() {
       "Low trigger (active LOW)",
       "No external driver circuit needed"
     ],
-    howToUse: "Connect VCC to 3.3V, GND to ground, IN to any digital GPIO pin (e.g., GPIO 12). Set pin LOW to activate relay (active LOW). The relay can control lights, motors, or other AC/DC devices up to 10A. Always use proper safety precautions when working with AC voltage.",
     resources: [
       {
-        name: "Relay Module Schematic",
-        url: "https://components101.com/sites/default/files/component_datasheet/1%20Channel%20Relay%20Module%20Datasheet.pdf"
+        name: "ESP32 IO Tutorial",
+        url: "https://esp32io.com/tutorials/esp32-relay"
       },
       {
-        name: "Tutorial",
-        url: "https://randomnerdtutorials.com/guide-for-relay-module-with-arduino/"
+        name: "Random Nerd Tutorial",
+        url: "https://randomnerdtutorials.com/esp32-relay-module-ac-web-server/"
       },
-      {
-        name: "Safety Guide",
-        url: "https://randomnerdtutorials.com/relay-module-with-esp32-esp8266-arduino/"
-      }
     ],
     whereToBuy: [
       {
         name: "AliExpress",
-        url: "https://www.aliexpress.com/item/1005001621294563.html"
+        url: "https://s.click.aliexpress.com/e/_c4dcY23d"
       },
       {
-        name: "Amazon",
-        url: "https://www.amazon.com/s?k=3v+relay+module+1+channel"
+        name: "Amazon US",
+        url: "https://amzn.to/3LHOEBA"
+      },
+      {
+        name: "Amazon Germany",
+        url: "https://amzn.to/453y85x"
       }
     ],
-    libraries: [
-      "No external library required (uses digitalWrite)"
-    ],
-    code: `// 3V Relay Module Control Example
-// This example demonstrates how to control a 3V single-channel relay module
-// 
-// Wiring:
-//   VCC -> 3.3V
-//   GND -> GND
-//   IN  -> GPIO 12
-//
-// Note: This relay module is active LOW (LOW = ON, HIGH = OFF)
-
-// Define the GPIO pin connected to the relay IN pin
-const int relayPin = 12;  // Change this to match your wiring
-
-void setup() {
-  // Initialize serial communication for debugging
-  Serial.begin(115200);
-  
-  // Configure relay pin as output
-  pinMode(relayPin, OUTPUT);
-  
-  // Set relay to OFF state initially (HIGH = OFF for active LOW relay)
-  digitalWrite(relayPin, HIGH);
-  
-  // Confirm initialization
-  Serial.println("Relay module initialized");
-}
-
-void loop() {
-  // Turn relay ON (set pin LOW for active LOW relay)
-  Serial.println("Relay ON");
-  digitalWrite(relayPin, LOW);  // LOW activates the relay
-  delay(2000);                  // Keep relay ON for 2 seconds
-  
-  // Turn relay OFF (set pin HIGH for active LOW relay)
-  Serial.println("Relay OFF");
-  digitalWrite(relayPin, HIGH); // HIGH deactivates the relay
-  delay(2000);                   // Keep relay OFF for 2 seconds
-  
-  // This creates a 2-second ON/OFF cycle
-}`,
     link: "/hardware/relay-module-3v-1channel"
   },
   {
@@ -318,7 +178,6 @@ void loop() {
       "No external resistors needed",
       "Perfect for clock displays and progress indicators"
     ],
-    howToUse: "Connect V+ to 5V, V- to ground, IN to a digital GPIO pin (e.g., GPIO 4). For ESP32, use a level shifter or connect directly (works but not recommended for long wires). Use Adafruit NeoPixel library to control individual LEDs. The ring is addressed as a linear array of 12 LEDs (0-11). Set brightness low (5/255) when powered via USB to protect the microcontroller.",
     resources: [
       {
         name: "WS2812B Datasheet",
@@ -329,87 +188,28 @@ void loop() {
         url: "https://github.com/FastLED/FastLED"
       },
       {
-        name: "Tutorial",
-        url: "https://randomnerdtutorials.com/esp32-ws2812b-addressable-rgb-leds-neopixel/"
+        name: "Adafruit NeoPixel Library",
+        url: "https://github.com/adafruit/Adafruit_NeoPixel"
       },
       {
-        name: "Schematic",
-        url: "https://learn.adafruit.com/adafruit-neopixel-uberguide/neomatrix-library"
-      }
+        name: "Adafruit NeoPixel Überguide",
+        url: "https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library-use"
+      },
     ],
     whereToBuy: [
       {
         name: "AliExpress",
-        url: "https://www.aliexpress.com/item/1005001621294563.html"
+        url: "https://s.click.aliexpress.com/e/_c3iXvLqP"
       },
       {
-        name: "Amazon",
-        url: "https://www.amazon.com/s?k=ws2812b+led+ring+12"
+        name: "Amazon US",
+        url: "https://amzn.to/3NlRBIv"
+      },
+      {
+        name: "Amazon Germany",
+        url: "https://amzn.to/3Yw2IRH"
       }
     ],
-    libraries: [
-      "FastLED (by FastLED)",
-      "Adafruit NeoPixel (alternative)"
-    ],
-    code: `// WS2812B LED Ring (12 LEDs) Example
-// This example demonstrates how to control a WS2812B LED ring with a simple blink pattern
-//
-// Wiring:
-//   V+ -> 5V
-//   V- -> GND
-//   IN -> GPIO 4 (or any digital pin)
-
-// Include Adafruit NeoPixel library
-#include <Adafruit_NeoPixel.h>
-
-// Configuration defines
-#define LED_PIN     4    // GPIO pin connected to ring IN pin
-#define NUM_LEDS    12   // Total number of LEDs in the ring
-#define BRIGHTNESS  5    // Brightness level (0-255, very low for USB power safety)
-
-// Create NeoPixel object
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
-
-void setup() {
-  // Initialize serial communication for debugging
-  Serial.begin(115200);
-  
-  // Initialize the NeoPixel ring
-  strip.begin();
-  
-  // Set brightness to a very low value to protect ESP32-C3
-  strip.setBrightness(BRIGHTNESS);
-  
-  // Clear all LEDs
-  strip.clear();
-  strip.show();
-  
-  Serial.println("WS2812B LED Ring initialized");
-}
-
-void loop() {
-  // Loop through all 12 LEDs one at a time
-  for (int i = 0; i < NUM_LEDS; i++) {
-    // Clear all LEDs first
-    strip.clear();
-    
-    // Set the current LED to white
-    strip.setPixelColor(i, strip.Color(255, 255, 255));
-    
-    // Update the ring to show the change
-    strip.show();
-    
-    // Wait 200 milliseconds before moving to next LED
-    delay(200);
-  }
-  
-  // After all LEDs have been lit, clear the display
-  strip.clear();
-  strip.show();
-  
-  // Wait 1 second before starting the sequence again
-  delay(1000);
-}`,
     link: "/hardware/ws2812b-led-ring-12"
   },
   {
@@ -433,115 +233,39 @@ void loop() {
       "Low power consumption",
       "No backlight needed"
     ],
-    howToUse: "Connect VCC to 3.3V or 5V, GND to ground, SDA to GPIO 21 (ESP32) or SDA pin, SCL to GPIO 22 (ESP32) or SCL pin. Use Adafruit SH110X or U8g2 library. The display requires I2C pull-up resistors (usually included on module). Default I2C address is 0x3C or 0x3D.",
     resources: [
       {
         name: "SH1106 Datasheet",
         url: "https://www.velleman.eu/downloads/29/infosheets/sh1106_datasheet.pdf"
       },
       {
-        name: "Adafruit SH110X Library",
-        url: "https://github.com/adafruit/Adafruit_SH110X"
+        name: "Adafruit SH1106 Library",
+        url: "https://github.com/winneymj/SH1106"
       },
       {
-        name: "Schematic",
-        url: "https://learn.adafruit.com/monochrome-oled-breakouts/wiring"
+        name: "U8glib Library",
+        url: "https://github.com/olikraus/u8glib"
       },
       {
-        name: "Tutorial",
-        url: "https://randomnerdtutorials.com/esp32-oled-display-ssd1306-sh1106/"
-      }
+        name: "Instructables Tutorial",
+        url: "https://www.instructables.com/How-to-Interface-With-OLED-13-Inch-LCD128x64/"
+      },
+
     ],
     whereToBuy: [
       {
         name: "AliExpress",
-        url: "https://www.aliexpress.com/item/1005001621294563.html"
+        url: "https://s.click.aliexpress.com/e/_c4sQlYaj"
       },
       {
-        name: "Amazon",
-        url: "https://www.amazon.com/s?k=sh1106+1.3+inch+oled"
+        name: "Amazon US",
+        url: "https://amzn.to/4pte57L"
+      },
+      {
+        name: "Amazon Germany",
+        url: "https://amzn.to/4qfU7hY"
       }
     ],
-    libraries: [
-      "Adafruit SH110X (by Adafruit)",
-      "Adafruit GFX Library (dependency)",
-      "Wire (built-in I2C)"
-    ],
-    code: `// SH1106 1.3" OLED Display Example
-// This example demonstrates how to use a SH1106 OLED display via I2C
-//
-// Wiring:
-//   VCC -> 3.3V or 5V
-//   GND -> GND
-//   SDA -> GPIO 21 (ESP32) or SDA pin
-//   SCL -> GPIO 22 (ESP32) or SCL pin
-
-// Include required libraries
-#include <Wire.h>              // I2C communication library (built-in)
-#include <Adafruit_GFX.h>      // Graphics library for drawing functions
-#include <Adafruit_SH110X.h>   // SH1106 display driver library
-
-// Display configuration
-#define SCREEN_WIDTH 128      // Display width in pixels
-#define SCREEN_HEIGHT 64      // Display height in pixels
-#define OLED_RESET -1         // Reset pin (not used, set to -1)
-#define SCREEN_ADDRESS 0x3C   // I2C address (try 0x3D if 0x3C doesn't work)
-
-// Create display object
-Adafruit_SH1106G display = Adafruit_SH1106G(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-void setup() {
-  // Initialize serial communication for debugging
-  Serial.begin(115200);
-  
-  // Initialize I2C bus and display
-  // If initialization fails, print error and stop execution
-  if (!display.begin(SCREEN_ADDRESS)) {
-    Serial.println(F("SH1106 allocation failed"));
-    for (;;);  // Infinite loop - don't proceed if display fails
-  }
-  
-  // Display splash screen (shows Adafruit logo by default)
-  display.display();
-  delay(2000);  // Show splash for 2 seconds
-  
-  // Clear the display
-  display.clearDisplay();
-  
-  // Configure text settings
-  display.setTextSize(1);                    // Set text size (1 = smallest)
-  display.setTextColor(SH110X_WHITE);        // Set text color (white on black)
-  display.setCursor(0, 0);                   // Set cursor to top-left (x, y)
-  
-  // Display initial text
-  display.println("Hello, World!");          // Print text and move to next line
-  display.println("SH1106 OLED");
-  display.println("128x64 pixels");
-  
-  // Update display to show the text
-  display.display();
-}
-
-void loop() {
-  // Clear display before drawing new content
-  display.clearDisplay();
-  
-  // Display running time
-  display.setCursor(0, 0);                   // Set cursor to top-left
-  display.print("Time: ");                   // Print label
-  display.print(millis() / 1000);            // Print seconds since startup
-  display.println(" sec");                   // Print unit and newline
-  
-  // Draw shapes to demonstrate graphics capabilities
-  display.drawRect(10, 20, 50, 30, SH110X_WHITE);   // Draw outline rectangle (x, y, width, height, color)
-  display.fillRect(70, 20, 30, 30, SH110X_WHITE);   // Draw filled rectangle (x, y, width, height, color)
-  
-  // Update display to show all changes
-  display.display();
-  
-  // Small delay for animation smoothness
-  delay(100);
-}`,
     link: "/hardware/oled-display-sh1106-13inch-i2c"
   },
   {
@@ -565,7 +289,6 @@ void loop() {
       "Fast response time",
       "Compact SMD package"
     ],
-    howToUse: "Connect VCC to 3.3V, GND to ground, SDA to GPIO 21 (ESP32) or SDA pin, SCL to GPIO 22 (ESP32) or SCL pin. Use AHT10 library or Adafruit AHTX0 library. The sensor requires I2C pull-up resistors (usually included on module). Default I2C address is 0x38. Note: For similar temperature/humidity sensing, consider the SHT21 sensor. For temperature and barometric pressure, the GY-BMP280 (BMP280) is an excellent alternative.",
     resources: [
       {
         name: "AHT10 Datasheet",
@@ -576,95 +299,24 @@ void loop() {
         url: "https://github.com/adafruit/Adafruit_AHTX0"
       },
       {
-        name: "AHT10 Arduino Library",
-        url: "https://github.com/enjoyneering/AHT10"
+        name: "AHT20 Adafruit Tutorial",
+        url: "https://learn.adafruit.com/adafruit-aht20/arduino"
       },
-      {
-        name: "Tutorial",
-        url: "https://randomnerdtutorials.com/esp32-aht10-humidity-temperature-sensor-arduino/"
-      },
-      {
-        name: "Alternative Sensors",
-        url: "https://randomnerdtutorials.com/esp32-sensors-tutorials/"
-      }
     ],
     whereToBuy: [
       {
         name: "AliExpress",
-        url: "https://www.aliexpress.com/item/1005001621294563.html"
+        url: "https://s.click.aliexpress.com/e/_c32qqi9D"
       },
       {
-        name: "Amazon",
-        url: "https://www.amazon.com/s?k=aht10+temperature+humidity+sensor"
+        name: "Amazon US",
+        url: "https://amzn.to/4jDI9fF"
+      },
+      {
+        name: "Amazon Germany",
+        url: "https://amzn.to/3Ywrml8"
       }
     ],
-    libraries: [
-      "Adafruit AHTX0 (by Adafruit)",
-      "Adafruit Unified Sensor (dependency)",
-      "Wire (built-in I2C)"
-    ],
-    code: `// AHT10 Temperature and Humidity Sensor Example
-// This example demonstrates how to read temperature and humidity from AHT10 sensor
-//
-// Wiring:
-//   VCC -> 3.3V
-//   GND -> GND
-//   SDA -> GPIO 21 (ESP32) or SDA pin
-//   SCL -> GPIO 22 (ESP32) or SCL pin
-//
-// Note: I2C pull-up resistors are usually included on the sensor module
-
-// Include required libraries
-#include <Wire.h>                    // I2C communication library (built-in)
-#include <Adafruit_AHTX0.h>         // AHT10 sensor library
-
-// Create sensor object
-Adafruit_AHTX0 aht;
-
-void setup() {
-  // Initialize serial communication for debugging
-  Serial.begin(115200);
-  
-  // Wait for serial monitor to open (optional, for debugging)
-  while (!Serial) {
-    delay(10);
-  }
-  
-  // Initialize AHT10 sensor
-  if (!aht.begin()) {
-    Serial.println("Could not find AHT10 sensor! Check wiring.");
-    while (1) delay(10);  // Halt execution if sensor not found
-  }
-  
-  // Print header information
-  Serial.println("AHT10 Temperature & Humidity Sensor");
-  Serial.println("-----------------------------------");
-}
-
-void loop() {
-  // Create sensor event objects to hold readings
-  sensors_event_t humidity, temp;
-  
-  // Read temperature and humidity from sensor
-  aht.getEvent(&humidity, &temp);
-  
-  // Print temperature reading with 2 decimal places
-  Serial.print("Temperature: ");
-  Serial.print(temp.temperature, 2);  // Print with 2 decimal places
-  Serial.println(" °C");
-  
-  // Print humidity reading with 2 decimal places
-  Serial.print("Humidity: ");
-  Serial.print(humidity.relative_humidity, 2);  // Print with 2 decimal places
-  Serial.println(" %RH");                        // %RH = Percentage Relative Humidity
-  
-  // Print separator line
-  Serial.println("-----------------------------------");
-  
-  // Wait 2 seconds before next reading
-  // This prevents excessive sensor queries and reduces power consumption
-  delay(2000);
-}`,
     link: "/hardware/aht10-temperature-humidity-sensor-i2c"
   }
 ];

@@ -77,46 +77,4 @@
 			</Card.Root>
 		</div>
 	</div>
-
-	<!-- How to Use Section -->
-	<Card.Root>
-		<Card.Header>
-			<Card.Title>How to Use</Card.Title>
-		</Card.Header>
-		<Card.Content>
-			<p>{hardware.howToUse}</p>
-		</Card.Content>
-	</Card.Root>
-
-	<!-- Libraries Section -->
-	{#if hardware.libraries && hardware.libraries.length > 0}
-		<Card.Root>
-			<Card.Header>
-				<Card.Title>Required Libraries</Card.Title>
-			</Card.Header>
-			<Card.Content>
-				<ul class="list-inside list-disc space-y-2">
-					{#each hardware.libraries as library}
-						<li>{library}</li>
-					{/each}
-				</ul>
-				<p class="mt-4 text-sm text-slate-400">
-					Install libraries via Arduino IDE: Sketch → Include Library → Manage Libraries, then
-					search for the library name.
-				</p>
-			</Card.Content>
-		</Card.Root>
-	{/if}
-
-	<!-- Code Example Section -->
-	{#if hardware.code}
-		<Card.Root>
-			<Card.Header>
-				<Card.Title>Code Example</Card.Title>
-			</Card.Header>
-			<Card.Content>
-				<SyntaxHighlighter language="arduino" code={hardware.code} />
-			</Card.Content>
-		</Card.Root>
-	{/if}
 </section>
