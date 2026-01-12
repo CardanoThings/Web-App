@@ -75,6 +75,6 @@
 	</section>
 </div>
 
-<!-- <div class="mb-8 w-full border-b border-dashed border-white pb-8">
+<div class="mb-8 w-full border-b border-dashed border-white pb-8">
 	<FeaturedProjects />
-</div> -->
+</div>
