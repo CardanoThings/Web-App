@@ -277,7 +277,7 @@
 	</section>
 
 	<section class="mb-16 flex flex-col gap-4 text-white">
-		<h2 class="text-4xl font-medium">The TapTools API</h2>
+		<h2 class="text-4xl font-medium">Other APIs</h2>
 		<p class="text-lg font-thin text-white">
 			Once you feel ready to build real products with Cardano data, you might want to consider using
 			the TapTools API:
@@ -288,6 +288,22 @@
 		<p>
 			You can check out the TapTools API documentation <a
 				href="https://openapi.taptools.io/"
+				target="_blank"
+				class="link">here</a
+			>.
+		</p>
+		<p class="text-lg font-thin text-white">
+			Another API / Oracle Provider on Cardano is called <a
+				href="https://charli3.io/"
+				target="_blank"
+				class="link">Charli3</a
+			>. Charli3 is a Cardano API provider that offers a free tier for basic usage and a paid tier
+			for more advanced usage. You can use Charli3 to fetch historical and live token prices.
+		</p>
+
+		<p>
+			You can check out the Charli3 Token API <a
+				href="https://charli3.io/api"
 				target="_blank"
 				class="link">here</a
 			>.
@@ -327,6 +343,12 @@
 				url: 'https://www.taptools.io/',
 				description:
 					'Comprehensive Cardano analytics platform. Track tokens, portfolios, and market data with detailed insights.'
+			},
+			{
+				title: 'Charli3',
+				url: 'https://charli3.io/',
+				description:
+					'Cardano API provider that offers a free tier for basic usage and a paid tier for more advanced usage. You can use Charli3 to fetch historical and live token prices.'
 			}
 		]}
 	/>
