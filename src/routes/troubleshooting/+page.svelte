@@ -2,8 +2,40 @@
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import ChevronRight from '@lucide/svelte/icons/chevron-right';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	const { data } = $props();
+
+	// Initialize accordion value from URL hash if present
+	let initialHash = null;
+	if (browser) {
+		initialHash = window.location.hash?.replace('#', '') || null;
+		if (initialHash) {
+			const itemExists = data.troubleshooting.some((item) => item.id === initialHash);
+			if (!itemExists) {
+				initialHash = null;
+			}
+		}
+	}
+
+	let accordionValue = $state(initialHash);
+	let accordionRoot;
+
+	onMount(() => {
+		if (browser && initialHash) {
+			// Set the accordion value
+			accordionValue = initialHash;
+
+			// Scroll to the item after a short delay to ensure it's rendered
+			setTimeout(() => {
+				const element = document.getElementById(initialHash);
+				if (element) {
+					element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				}
+			}, 100);
+		}
+	});
 </script>
 
 <section class="mb-16 flex flex-col gap-8 text-white">
@@ -15,14 +47,20 @@
 		</p>
 	</div>
 
-	<Accordion.Root type="single" collapsible class="w-full border-b border-dashed border-white">
+	<Accordion.Root
+		type="single"
+		collapsible
+		class="w-full border-b border-dashed border-white"
+		bind:value={accordionValue}
+		bind:this={accordionRoot}
+	>
 		{#each data.troubleshooting as item}
-			<Accordion.Item value={item.id} class="border-b border-dashed border-white">
+			<Accordion.Item value={item.id} id={item.id} class="border-b border-dashed border-white">
 				<Accordion.Trigger
 					class="cursor-pointer text-left hover:no-underline [&>svg]:h-6 [&>svg]:w-6 [&>svg]:text-white"
 				>
 					<div
-						class="flex w-full flex-col items-start gap-2 pr-4 sm:flex-row sm:items-center sm:gap-2"
+						class="flex w-full flex-col items-start gap-0 pr-4 sm:flex-row sm:items-center sm:gap-2"
 					>
 						<span class="text-lg font-normal text-white">{item.question}</span>
 						<div class="flex shrink-0 gap-1 sm:ml-2">

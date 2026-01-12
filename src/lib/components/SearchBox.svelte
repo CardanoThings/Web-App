@@ -5,6 +5,7 @@
 	import { workshops } from '$lib/data/workshops.js';
 	import { introductions } from '$lib/data/introductions.js';
 	import { glossary } from '$lib/data/glossary.js';
+	import { troubleshooting } from '$lib/data/troubleshooting.js';
 	import { cn } from '$lib/utils.js';
 	import { Search } from 'lucide-svelte';
 
@@ -26,6 +27,13 @@
 			title: item.term,
 			description: item.definition,
 			link: `/glossary?term=${encodeURIComponent(item.term)}`
+		})),
+		...troubleshooting.map((item) => ({
+			type: 'Troubleshooting',
+			title: item.question,
+			description: item.answer.replace(/<[^>]*>/g, '').substring(0, 150), // Strip HTML and limit length
+			link: `/troubleshooting#${item.id}`,
+			id: item.id
 		}))
 	];
 
@@ -43,8 +51,14 @@
 
 		// Sort to show Glossary and Introductions first
 		const sorted = matches.sort((a, b) => {
-			const priorityOrder = { Glossary: 0, Introduction: 1, Workshop: 2, Block: 3 };
-			return (priorityOrder[a.type] || 4) - (priorityOrder[b.type] || 4);
+			const priorityOrder = {
+				Glossary: 0,
+				Introduction: 1,
+				Troubleshooting: 2,
+				Workshop: 3,
+				Block: 4
+			};
+			return (priorityOrder[a.type] || 5) - (priorityOrder[b.type] || 5);
 		});
 
 		return sorted.slice(0, 10);
@@ -95,13 +109,12 @@
 								onclick={() => handleSelect(item)}
 								class="flex w-full flex-col gap-1 p-2 text-left hover:bg-accent"
 							>
-								<div class="flex items-center justify-between">
-									<span class="text-sm font-medium text-foreground">{item.title}</span>
-									<span class="text-xs text-muted-foreground">{item.type}</span>
+								<div class="text-sm font-medium text-foreground">{item.title}</div>
+								<div
+									class="inline-block w-fit rounded-md border border-gray-200 px-1 py-0.5 text-[9px] leading-tight text-muted-foreground"
+								>
+									{item.type}
 								</div>
-								<p class="truncate text-xs text-muted-foreground">
-									{item.description}
-								</p>
 							</button>
 						{/each}
 					{:else}
