@@ -32,9 +32,22 @@ export const introductions = [
                 link: "https://forum.cardano.org/"
             },
             {
-                title: "Explorer",
+                title: "Project Explorer",
                 link: "https://explorer.cardano.org/"
-            }
+            },
+            {
+                title: "Cardano Cube",
+                link: "https://cardanocube.com/"
+            },
+            {
+                title: "Lido Nation",
+                link: "https://lidonation.com/"
+            },
+            {
+                title: "CardanoScan",
+                link: "https://cardanoscan.io/"
+            },
+
         ]
     },
     {
@@ -72,7 +85,11 @@ export const introductions = [
             {
                 title: "Project Hub",
                 link: "https://create.arduino.cc/projecthub"
-            }
+            },
+            {
+                title: "PlatformIO",
+                link: "https://platformio.org/"
+            },
         ]
     },
     {
@@ -107,7 +124,11 @@ export const introductions = [
             {
                 title: "D1 Mini Documentation",
                 link: "https://www.wemos.cc/en/latest/d1/d1_mini.html"
-            }
+            },
+            {
+                title: "PlatformIO Community",
+                link: "https://community.platformio.org/"
+            },
         ]
     },
     {
