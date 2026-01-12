@@ -88,6 +88,21 @@
 			<li>Wait for the installation to complete</li>
 		</ol>
 
+		<h2 class="mt-6 text-2xl font-medium">Install CH340 Driver</h2>
+		<p class="text-lg font-thin text-white">
+			If you're using a CYD, you will need to install the CH340 driver.
+		</p>
+		<ol class="ml-4 list-decimal space-y-2">
+			<li>
+				Download the CH340 driver from <a
+					href="https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all"
+					target="_blank"
+					class="link">here</a
+				>
+			</li>
+			<li>Install the driver following the instructions for your operating system</li>
+		</ol>
+
 		<h3 class="mt-6 text-2xl font-medium">Step 2: Select Your Board</h3>
 		<p class="text-lg font-thin text-white">
 			After installation, you need to select the correct board for your ESP32 microcontroller.
@@ -199,6 +214,18 @@
 				title: 'Arduino IDE Download',
 				url: 'https://www.arduino.cc/en/software/',
 				description: 'Download the Arduino IDE and other Arduino software tools.'
+			},
+			{
+				title: 'SparkFun CH340 Driver Installation Guide',
+				url: 'https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all',
+				description:
+					'Step-by-step guide for installing CH340 USB drivers on Windows, macOS, and Linux'
+			},
+			{
+				title: 'CH340 Driver Installation Guide',
+				url: 'https://learn.adafruit.com/how-to-install-drivers-for-wch-usb-to-serial-chips-ch9102f-ch9102/overview',
+				description:
+					'Step-by-step guide for installing CH340 USB drivers on Windows, macOS, and Linux'
 			}
 		]}
 	/>

@@ -27,20 +27,23 @@
 	<SectionBlocks />
 </div> -->
 
-<div class="mb-8 flex border-b border-dashed border-white">
-	<section id="blocks" class="mb-8 w-1/2">
+<div class="mb-8 flex flex-col gap-8 border-b border-dashed border-white sm:flex-row">
+	<section id="blocks" class="sm:mb-8 sm:w-1/3">
 		<div class="mb-4 text-white">
 			<h1 class="text-3xl">Glossary</h1>
 			<p class="mt-2 max-w-[90%] text-lg font-thin">
 				A collection of terms and definitions related to all the tech used on CardanoThings.io.
 			</p>
 		</div>
-		<Button href="/glossary" class="bg-white text-black transition-all hover:bg-zinc-200"
+		<Button
+			href="/glossary"
+			size="sm"
+			class="bg-white text-xs text-black transition-all hover:bg-zinc-200"
 			>View Full Glossary</Button
 		>
 	</section>
 
-	<section id="hardware" class="mb-8 w-1/2">
+	<section id="hardware" class="sm:mb-8 sm:w-1/3">
 		<div class="mb-4 text-white">
 			<h1 class="text-3xl">Hardware</h1>
 			<p class="mt-2 max-w-[90%] text-lg font-thin">
@@ -48,8 +51,26 @@
 				CardanoThings.io
 			</p>
 		</div>
-		<Button href="/hardware" class="bg-white text-black transition-all hover:bg-zinc-200"
+		<Button
+			href="/hardware"
+			size="sm"
+			class="bg-white text-xs text-black transition-all hover:bg-zinc-200"
 			>View Hardware List</Button
+		>
+	</section>
+
+	<section id="troubleshooting" class="mb-8 sm:w-1/3">
+		<div class="mb-4 text-white">
+			<h1 class="text-3xl">Troubleshooting</h1>
+			<p class="mt-2 max-w-[90%] text-lg font-thin">
+				Common issues and solutions for building IoT projects on CardanoThings.io
+			</p>
+		</div>
+		<Button
+			href="/troubleshooting"
+			size="sm"
+			class="bg-white text-xs text-black transition-all hover:bg-zinc-200"
+			>View Troubleshooting Guide</Button
 		>
 	</section>
 </div>
