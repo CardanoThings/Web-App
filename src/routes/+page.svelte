@@ -4,6 +4,7 @@
 	import SectionIntroductions from '$lib/SectionIntroductions.svelte';
 	import SectionBlocks from '$lib/SectionBlocks.svelte';
 	import FeaturedProjects from '$lib/FeaturedProjects.svelte';
+	import SubmitProjectDialog from '$lib/components/SubmitProjectDialog.svelte';
 	let { data } = $props();
 </script>
 
@@ -77,4 +78,12 @@
 
 <div class="mb-8 w-full border-b border-dashed border-white pb-8">
 	<FeaturedProjects />
+
+	<h2 class="mt-8 text-2xl font-medium text-white">Share Your Own Projects</h2>
+	<p class="mt-4 w-1/2 text-lg font-thin text-white">
+		You are building your own Cardano related IoT project and want to get featured on
+		CardanoThings.io? Let us know and we will add it to the list!
+	</p>
+
+	<SubmitProjectDialog />
 </div>
