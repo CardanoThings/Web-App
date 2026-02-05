@@ -80,7 +80,7 @@
 	<FeaturedProjects />
 
 	<h2 class="mt-8 text-2xl font-medium text-white">Share Your Own Projects</h2>
-	<p class="mt-4 w-1/2 text-lg font-thin text-white">
+	<p class="mt-4 text-lg font-thin text-white md:w-1/2">
 		You are building your own Cardano related IoT project and want to get featured on
 		CardanoThings.io? Let us know and we will add it to the list!
 	</p>
