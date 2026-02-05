@@ -24,7 +24,8 @@
 		<div class="text-white">
 			<h1 class="text-4xl">Resources</h1>
 			<p class="mt-2 max-w-[90%] text-lg leading-relaxed font-thin">
-				Useful resources and tools for building Cardano IoT projects. Select a tag to filter the resources by category.
+				Useful resources and tools for building Cardano IoT projects. Select a tag to filter the
+				resources by category.
 			</p>
 
 			{#if selectedTag}
@@ -67,7 +68,7 @@
 						variant="secondary"
 						class="text-xs"
 					>
-						Visit Resource
+						Visit Website
 					</Button>
 				</Card.Footer>
 			</Card.Root>
