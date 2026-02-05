@@ -16,11 +16,14 @@
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
-	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
+	<a
+		href={`/workshops/${parentPage}`}
+		class="flex items-center gap-2 text-lg font-normal text-white sm:max-w-[50%]"
+	>
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
+		{data.workshop.title}
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
+	<h2 class="text-5xl font-medium text-white sm:max-w-[50%] sm:text-6xl">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
 		{data.step.description}
 	</p>
@@ -114,8 +117,8 @@
 			manually entering addresses.
 		</p>
 		<p class="text-lg font-thin text-white">A Cardano payment URI follows this format:</p>
-		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm text-white">
-			<pre>{cip13PaymentUriFormat}</pre>
+		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm text-white overflow-x-auto">
+			<pre class="break-all whitespace-pre-wrap">{cip13PaymentUriFormat}</pre>
 		</div>
 		<p class="text-lg font-thin text-white">Where:</p>
 		<ul class="ml-6 list-disc space-y-2 text-lg font-thin text-white">
@@ -131,8 +134,8 @@
 			</li>
 		</ul>
 		<p class="text-lg font-thin text-white">Example:</p>
-		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm text-white">
-			<pre>{cip13PaymentUriExample}</pre>
+		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm text-white overflow-x-auto">
+			<pre class="break-all whitespace-pre-wrap">{cip13PaymentUriExample}</pre>
 		</div>
 		<p class="text-lg font-thin text-white">
 			When a user clicks or scans a payment URI, a compatible wallet will open with the recipient

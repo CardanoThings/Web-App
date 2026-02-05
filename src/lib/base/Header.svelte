@@ -17,7 +17,6 @@
 				<span class="font-thin">Things</span>
 			</h1>
 		</a>
-		<span class=" relative -top-0.5 text-xs font-thin text-white">Beta</span>
 	</div>
 
 	<div class="flex items-center gap-4">

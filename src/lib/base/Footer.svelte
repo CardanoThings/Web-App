@@ -27,9 +27,11 @@
 			</p>
 		</div>
 
-		<section class="flex flex-row items-center justify-between gap-2 px-5 pb-4">
-			<p class="text-xs">&copy; 2025 CardanoThings. All rights reserved.</p>
-			<span class="text-xs text-zinc-400">Version: {version}</span>
+		<section class="flex flex-row items-start justify-between gap-2 px-5 pb-4">
+			<p class="text-xs">
+				&copy; 2025 CardanoThings. <br class="sm:hidden" />All rights reserved.
+			</p>
+			<span class="text-xs whitespace-nowrap text-zinc-400">Version: {version}</span>
 		</section>
 	</div>
 </footer>

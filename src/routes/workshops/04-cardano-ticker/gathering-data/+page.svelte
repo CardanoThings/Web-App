@@ -11,11 +11,14 @@
 </script>
 
 <section class="mb-16 flex flex-col gap-4 text-white">
-	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
+	<a
+		href={`/workshops/${parentPage}`}
+		class="flex items-center gap-2 text-lg font-normal text-white sm:max-w-[50%]"
+	>
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
+		{data.workshop.title}
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
+	<h2 class="text-5xl font-medium text-white sm:max-w-[50%] sm:text-6xl">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
 		{data.step.description}
 	</p>
@@ -89,7 +92,7 @@
 		<p class="text-lg font-thin text-white">
 			MinSwap exposes an API endpoint to fetch all tokens and prices for a specific wallet address
 			at
-			<code class="rounded bg-white/10 px-1 py-0.5 font-mono text-sm"
+			<code class="inline-block rounded bg-white/10 px-1 py-0.5 font-mono text-sm break-all"
 				>https://monorepo-mainnet-prod.minswap.org/v1/portfolio/tokens?address=[WALLETADDRESS]&only_minswap=true&filter_small_value=false</code
 			> with [WALLETADDRESS] being your wallet address.
 		</p>
@@ -207,7 +210,7 @@
 		</p>
 		<p class="text-lg font-thin text-white">
 			We will use the Cexplorer API to fetch the floorprices for NFT collections by using the
-			endpoint <code>https://api-mainnet-stage.cexplorer.io/v1/policy/detail?id=[POLICYID]</code> with
+			endpoint <code class="inline-block break-all">https://api-mainnet-stage.cexplorer.io/v1/policy/detail?id=[POLICYID]</code> with
 			[POLICYID] being the policy ID of the NFT collection.
 		</p>
 

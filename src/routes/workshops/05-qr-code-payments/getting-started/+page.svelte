@@ -11,11 +11,14 @@
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
-	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
+	<a
+		href={`/workshops/${parentPage}`}
+		class="flex items-center gap-2 text-lg font-normal text-white sm:max-w-[50%]"
+	>
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
+		{data.workshop.title}
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
+	<h2 class="text-5xl font-medium text-white sm:max-w-[50%] sm:text-6xl">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
 		{data.step.description}
 	</p>
@@ -59,8 +62,8 @@
 			webserver example follows this structure:
 		</p>
 
-		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm">
-			<pre class="text-white">basic-webserver/
+		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm overflow-x-auto">
+			<pre class="text-white break-all whitespace-pre-wrap">basic-webserver/
 ├── basic-webserver.ino    # Main Arduino sketch
 ├── web_server.h            # Web server header file
 ├── web_server.cpp          # Web server implementation
@@ -97,8 +100,8 @@
 			>:
 		</p>
 
-		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm">
-			<pre class="text-white">{`if (!LittleFS.begin(true)) {
+		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm overflow-x-auto">
+			<pre class="text-white break-all whitespace-pre-wrap">{`if (!LittleFS.begin(true)) {
   Serial.println("ERROR: LittleFS Mount Failed");
   return;
 }`}</pre>
@@ -248,8 +251,8 @@
 		<p class="text-lg font-thin text-white">
 			This is a simple HTML file that demonstrates the basic structure. Once you upload this file to
 			LittleFS (using Arduino IDE's "ESP32 Sketch Data Upload" tool), it will be accessible at
-			<code class="rounded bg-gray-800 px-2 py-1 text-white">http://[ESP32_IP_ADDRESS]/</code> or
-			<code class="rounded bg-gray-800 px-2 py-1 text-white"
+			<code class="inline-block rounded bg-gray-800 px-2 py-1 text-white break-all">http://[ESP32_IP_ADDRESS]/</code> or
+			<code class="inline-block rounded bg-gray-800 px-2 py-1 text-white break-all"
 				>http://[ESP32_IP_ADDRESS]/index.html</code
 			>.
 		</p>
@@ -303,11 +306,11 @@
 				<ul class="mt-2 ml-6 list-disc space-y-1">
 					<li>
 						<strong>Mac/Linux:</strong>
-						<code class="rounded bg-gray-800 px-2 py-1 text-white">~/.arduinoIDE/plugins/</code>
+						<code class="inline-block rounded bg-gray-800 px-2 py-1 text-white break-all">~/.arduinoIDE/plugins/</code>
 					</li>
 					<li>
 						<strong>Windows:</strong>
-						<code class="rounded bg-gray-800 px-2 py-1 text-white"
+						<code class="inline-block rounded bg-gray-800 px-2 py-1 text-white break-all"
 							>C:\Users\&lt;username&gt;\.arduinoIDE\plugins\</code
 						>
 					</li>
@@ -412,8 +415,8 @@
 			After the sketch uploads and connects to WiFi, check the Serial Monitor. You should see a
 			message like:
 		</p>
-		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm">
-			<pre class="text-white">Web server started on http://192.168.1.100</pre>
+		<div class="rounded-lg bg-gray-800/50 p-4 font-mono text-sm overflow-x-auto">
+			<pre class="text-white break-all whitespace-pre-wrap">Web server started on http://192.168.1.100</pre>
 		</div>
 		<p class="text-lg font-thin text-white">
 			Note down the IP address shown in this message - you'll need it to access your webserver.
@@ -423,7 +426,7 @@
 		<ol class="list-inside list-decimal space-y-2 text-lg font-thin text-white">
 			<li>Open a web browser on any device connected to the same WiFi network as your ESP32</li>
 			<li>
-				Navigate to <code class="rounded bg-gray-800 px-2 py-1 text-white"
+				Navigate to <code class="inline-block rounded bg-gray-800 px-2 py-1 text-white break-all"
 					>http://[ESP32_IP_ADDRESS]</code
 				>
 				(replace <code class="rounded bg-gray-800 px-2 py-1 text-white">[ESP32_IP_ADDRESS]</code> with

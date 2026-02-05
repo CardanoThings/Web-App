@@ -12,11 +12,14 @@
 </script>
 
 <section class="mb-8 flex flex-col gap-4 text-white">
-	<a href={`/workshops/${parentPage}`} class="flex items-center gap-2">
+	<a
+		href={`/workshops/${parentPage}`}
+		class="flex items-center gap-2 text-lg font-normal text-white sm:max-w-[50%]"
+	>
 		<MoveLeft size="20" />
-		<h1 class="text-lg font-normal text-white sm:max-w-[50%]">{data.workshop.title}</h1>
+		{data.workshop.title}
 	</a>
-	<h2 class="text-6xl font-medium text-white sm:max-w-[50%]">{data.step.title}</h2>
+	<h2 class="text-5xl font-medium text-white sm:max-w-[50%] sm:text-6xl">{data.step.title}</h2>
 	<p class="text-lg font-thin text-white sm:max-w-[50%]">
 		{data.step.description}
 	</p>
@@ -111,7 +114,7 @@
 			A transaction hash, also known as a txhash or transaction ID, is a unique identifier for a
 			specific transaction on the blockchain. It's a long hexadecimal string that acts like a
 			fingerprint for that transaction. On Cardano, transaction hashes look like this:
-			<code class="rounded bg-white/10 px-1 py-0.5 font-mono text-sm"
+			<code class="inline-block rounded bg-white/10 px-1 py-0.5 font-mono text-sm break-all"
 				>d4d57c0339eb955c4c5f80d87779bbf6b820aa0387b2349adf2f7c7ce074c909</code
 			>
 			- a 64-character hexadecimal string (they do not start with "0x" like some other blockchains).
@@ -130,7 +133,7 @@
 			<li>
 				You'll see the transaction details, including the transaction hash (a 64-character
 				hexadecimal string, for example: <code
-					class="rounded bg-white/10 px-1 py-0.5 font-mono text-xs"
+					class="inline-block rounded bg-white/10 px-1 py-0.5 font-mono text-xs break-all"
 					>d4d57c0339eb955c4c5f80d87779bbf6b820aa0387b2349adf2f7c7ce074c909</code
 				>)
 			</li>

@@ -55,9 +55,9 @@
 </script>
 
 <section class="mb-16 flex flex-col gap-4 text-white">
-	<h1 class="max-w-[50%] text-6xl font-medium text-white">
+	<h1 class="text-5xl font-medium text-white sm:max-w-[50%] sm:text-6xl">
 		{workshop.title.split(':')[0]}:
-		<br />
+		<br class="hidden sm:block" />
 		{workshop.title.split(':')[1]}
 	</h1>
 	<div class="max-w-[420px]">
