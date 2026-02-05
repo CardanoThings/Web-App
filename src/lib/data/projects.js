@@ -6,5 +6,13 @@ export const projects = [
         author: "elRaulito",
         link_author: "https://github.com/elRaulito",
         image: "https://raw.githubusercontent.com/elRaulito/IoT-NMKR-integration-Open-Source-/main/images/1.png"
+    },
+    {
+        title: "StarchMiner Lite",
+        description: "ESP32-based Starch miner. Go potatoes!",
+        link: "https://github.com/MadOrkestra/StarchMinerLite/",
+        author: "Mad Orkestra",
+        link_author: "https://github.com/madorkestra",
+        image: "https://raw.githubusercontent.com/MadOrkestra/StarchMinerLite/main/preview.jpg"
     }
 ]
