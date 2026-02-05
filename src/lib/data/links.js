@@ -25,6 +25,11 @@ export const links = [
         headerNav: false
     },
     {
+        title: "Resources",
+        link: "/resources",
+        headerNav: false
+    },
+    {
         title: "Troubleshooting",
         link: "/troubleshooting",
         headerNav: false
