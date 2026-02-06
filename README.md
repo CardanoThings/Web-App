@@ -4,7 +4,7 @@
 
 A comprehensive educational platform for building IoT projects with Cardano blockchain using ESP32-based microcontrollers. Funded by Project Catalyst Fund 11.
 
-**Version**: 0.62
+**Version**: 1.0
 
 ## Overview
 
@@ -23,6 +23,7 @@ CardanoThings.io is a step-by-step learning platform that teaches developers how
   - Introductions to key concepts (Cardano, Blockchain, Arduino, Microcontrollers, APIs, etc.)
   - Hardware guides for ESP32-based devices (ESP32-C3, ESP32 CYD, etc.)
   - Building blocks - Ready-to-use code examples for common IoT tasks
+  - **Resources** - Curated list of Cardano tools, APIs, and explorers with tag-based filtering
   - Comprehensive glossary with terms and definitions
   - Troubleshooting guide with common issues and solutions
 
@@ -148,6 +149,7 @@ src/
 │   ├── introductions/    # Introduction pages
 │   ├── hardware/         # Hardware pages
 │   ├── blocks/           # Code block pages
+│   ├── resources/        # Resources page (Cardano tools, APIs; filterable by tags)
 │   ├── glossary/         # Glossary page
 │   ├── troubleshooting/  # Troubleshooting guide
 │   ├── about/            # About page
@@ -183,13 +185,14 @@ Content is managed through data files in `src/lib/data/`:
 - `glossary.js` - Glossary terms and definitions
 - `troubleshooting.js` - Common issues and solutions
 - `projects.js` - Featured community projects
+- `resources.js` - Curated Cardano resources (APIs, explorers, tools) with tags
 - `links.js` - Navigation links configuration
 
 **Workshop Code Examples**: All code examples from the workshops (Arduino `.ino` files, Node.js, HTML, CSS, and JavaScript) are available in the [CardanoThings/Workshops](https://github.com/CardanoThings/Workshops) repository, organized by workshop with ready-to-use files.
 
 **Building Blocks Extraction**: The `extract-blocks.js` script can extract building blocks from `blocks.js` into the `blocks/` directory, creating individual folders with code files and README.md documentation for each block. Run `npm run extract-blocks` to generate the blocks structure.
 
-
+**Resources Page** (`/resources`): Displays a card grid of Cardano-related resources (APIs, blockchain explorers, tools) loaded from `resources.js`. Resources are sorted by title and can be filtered by clicking tags (e.g. Cardano, API, Blockchain Explorer).
 
 ## Links
 
