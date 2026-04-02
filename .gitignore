@@ -38,5 +38,8 @@ blocks/
 # Workshops
 /Workshops
 
+# Mirrored workshop files for /cache/ (from sync:workshops)
+static/cache/
+
 # Version file
 static/version.json

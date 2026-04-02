@@ -1,11 +1,12 @@
 {
 	"name": "CardanoThings-Web",
 	"private": true,
-	"version": "1.0",
+	"version": "1.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
+		"sync:workshops": "node scripts/sync-workshops-to-static.mjs",
+		"dev": "npm run sync:workshops && vite dev",
+		"build": "npm run sync:workshops && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"format": "prettier --write .",

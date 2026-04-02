@@ -75,6 +75,8 @@ CardanoThings.io is a step-by-step learning platform that teaches developers how
    yarn install
    ```
 
+3. **Workshop code (required)** — Live workshop examples are loaded from a local mirror of [CardanoThings/Workshops](https://github.com/CardanoThings/Workshops). Clone that repository into **`./Workshops`** at this project’s root (same level as `package.json`). `npm run dev` and `npm run build` run `npm run sync:workshops` first, which copies files into `static/cache/` so the app serves them at `/cache/...`. In CI, check out the Workshops repo into `./Workshops` before building. Override the path with `WORKSHOPS_DIR` if needed.
+
 ## Development
 
 Start the development server:
@@ -90,8 +92,9 @@ The app will be available at `http://localhost:5173` (or the port shown in the t
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
+- `npm run sync:workshops` - Copy `./Workshops` into `static/cache/` (also runs automatically before `dev` and `build`)
+- `npm run dev` - Sync workshops, then start development server
+- `npm run build` - Sync workshops, then build for production
 - `npm run preview` - Preview production build locally
 - `npm run format` - Format code with Prettier
 - `npm run lint` - Lint and check code formatting

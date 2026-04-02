@@ -4,7 +4,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
-	import { onMount } from 'svelte';
+	import { getLiveCodeRawUrl } from '$lib/live-code-source.js';
 
 	let {
 		title = 'Code Example',
@@ -79,14 +79,11 @@
 		}
 	});
 
-	// Generate raw GitHub URL
 	function getRawUrl(filePath) {
-		return `https://raw.githubusercontent.com/${repo}/${branch}/${filePath}`;
+		return getLiveCodeRawUrl(repo, branch, filePath);
 	}
 
-	const rawReadmeUrl = readmePath
-		? `https://raw.githubusercontent.com/${repo}/${branch}/${readmePath}`
-		: null;
+	const rawReadmeUrl = readmePath ? getLiveCodeRawUrl(repo, branch, readmePath) : null;
 
 	async function fetchFile(fileData) {
 		const url = getRawUrl(fileData.path);
@@ -109,7 +106,7 @@
 		return files.map((f) => `${f.path}:${f.language || ''}`).join('|');
 	}
 
-	async function fetchFromGitHub() {
+	async function fetchWorkshopFiles() {
 		const filesToFetch = normalizedFiles();
 		if (filesToFetch.length === 0) {
 			error = 'No files provided';
@@ -139,7 +136,7 @@
 
 		try {
 			// Fetch all files in parallel
-			const fetchPromises = filesData.map(async (fileData, index) => {
+			const fetchPromises = filesData.map(async (fileData) => {
 				fileData.loading = true;
 				try {
 					const code = await fetchFile(fileData);
@@ -178,7 +175,7 @@
 			}
 		} catch (err) {
 			error = err.message;
-			console.error('Error fetching from GitHub:', err);
+			console.error('Error fetching workshop files:', err);
 		} finally {
 			loading = false;
 		}
@@ -345,7 +342,7 @@
 
 		// Only fetch if files have changed or haven't been fetched yet
 		if (currentKey !== lastFetchKey) {
-			fetchFromGitHub();
+			fetchWorkshopFiles();
 		}
 	});
 </script>
@@ -449,7 +446,7 @@
 					<p class="text-sm font-medium text-red-500">Error loading code</p>
 				</div>
 				<p class="mt-2 text-sm text-red-400">{error}</p>
-				<Button onclick={fetchFromGitHub} variant="outline" size="sm" class="mt-3">Retry</Button>
+				<Button onclick={fetchWorkshopFiles} variant="outline" size="sm" class="mt-3">Retry</Button>
 			</div>
 		{:else if filesData.length > 0}
 			<!-- Always use tabs, even for single file -->
