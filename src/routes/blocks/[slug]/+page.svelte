@@ -42,7 +42,7 @@
 				<h3 class="mb-2 text-xl font-semibold text-white">Features</h3>
 				<ul class="my-2 list-disc pl-6 text-white/90">
 					{#each data.features as feature}
-						<li class="my-2">{feature}</li>
+						<li class="my-2 text-white">{feature}</li>
 					{/each}
 				</ul>
 			</div>
