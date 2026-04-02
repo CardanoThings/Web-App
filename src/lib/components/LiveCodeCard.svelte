@@ -4,7 +4,12 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
+	import { tick } from 'svelte';
 	import { getLiveCodeRawUrl } from '$lib/live-code-source.js';
+	import {
+		focusDialogCloseWithoutScrolling,
+		resetScrollableElementToTop
+	} from '$lib/utils.js';
 
 	let {
 		title = 'Code Example',
@@ -37,6 +42,8 @@
 	let loading = $state(false);
 	let error = $state(null);
 	let howItWorksOpen = $state(false);
+	/** @type {HTMLElement | null} */
+	let howItWorksContentEl = $state(null);
 	let activeTab = $state('');
 	let lastFetchKey = $state('');
 	let readmeSegments = $state([]);
@@ -540,9 +547,25 @@
 </Card.Root>
 
 {#if readme && howItWorksOpen}
-	<Dialog.Root bind:open={howItWorksOpen}>
+	<Dialog.Root
+		bind:open={howItWorksOpen}
+		onOpenChangeComplete={async (open) => {
+			if (!open) return;
+			await tick();
+			await tick();
+			resetScrollableElementToTop(howItWorksContentEl);
+		}}
+	>
 		<Dialog.Content
+			bind:ref={howItWorksContentEl}
 			class="max-h-[90vh] max-w-[95vw] overflow-x-hidden overflow-y-auto pt-0 sm:max-w-3xl"
+			onOpenAutoFocus={(e) => {
+				e.preventDefault();
+				requestAnimationFrame(() => {
+					resetScrollableElementToTop(howItWorksContentEl);
+					focusDialogCloseWithoutScrolling(howItWorksContentEl);
+				});
+			}}
 		>
 			<div class="how-it-works-content markdown-content">
 				{#each readmeSegments as segment}

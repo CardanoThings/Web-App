@@ -4,6 +4,11 @@
 	import SyntaxHighlighter from '$lib/components/SyntaxHighlighter.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { tick } from 'svelte';
+	import {
+		focusDialogCloseWithoutScrolling,
+		resetScrollableElementToTop
+	} from '$lib/utils.js';
 
 	let {
 		title = 'Code Example',
@@ -19,6 +24,8 @@
 	} = $props();
 
 	let howItWorksOpen = $state(false);
+	/** @type {HTMLElement | null} */
+	let howItWorksContentEl = $state(null);
 </script>
 
 <Card.Root class="rounded-tl-none">
@@ -96,8 +103,26 @@
 </Card.Root>
 
 {#if howItWorksContent}
-	<Dialog.Root bind:open={howItWorksOpen}>
-		<Dialog.Content class="max-h-[90vh] max-w-3xl overflow-x-hidden overflow-y-auto">
+	<Dialog.Root
+		bind:open={howItWorksOpen}
+		onOpenChangeComplete={async (open) => {
+			if (!open) return;
+			await tick();
+			await tick();
+			resetScrollableElementToTop(howItWorksContentEl);
+		}}
+	>
+		<Dialog.Content
+			bind:ref={howItWorksContentEl}
+			class="max-h-[90vh] max-w-3xl overflow-x-hidden overflow-y-auto"
+			onOpenAutoFocus={(e) => {
+				e.preventDefault();
+				requestAnimationFrame(() => {
+					resetScrollableElementToTop(howItWorksContentEl);
+					focusDialogCloseWithoutScrolling(howItWorksContentEl);
+				});
+			}}
+		>
 			<Dialog.Header>
 				<Dialog.Title>{howItWorksTitle}</Dialog.Title>
 			</Dialog.Header>
