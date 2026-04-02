@@ -158,6 +158,7 @@ export let glossary = [
         definition: "A Cardano Improvement Proposal that defines a standard URI scheme for Cardano payments. It allows applications to create payment links (like 'web+cardano://address?amount=1000000') that can be opened by Cardano mobile wallets, similar to how 'bitcoin:' URIs work for Bitcoin.",
         links: [
             { title: "CIP-13 Specification", url: "https://cips.cardano.org/cips/cip13/" },
+            { title: "CIP-13 microsite", url: "https://cip13.cardanothings.io/" },
             { title: "CIP-13 Workshop", url: "/workshops/05-qr-code-payments/cip13-integration" }
         ]
     },

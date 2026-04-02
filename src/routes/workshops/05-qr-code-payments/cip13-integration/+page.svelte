@@ -188,6 +188,12 @@
 					'The complete specification for CIP-13 Cardano URI Scheme, including payment URIs, stake pool URIs, grammar definitions, and security considerations.'
 			},
 			{
+				title: 'CIP-13 microsite',
+				url: 'https://cip13.cardanothings.io/',
+				description:
+					'Examples, web+cardano usage, and a tracker of CIP-13 wallet integrations from Cardano Things.'
+			},
+			{
 				title: 'CIP-1: CIP Process',
 				url: 'https://cips.cardano.org/cips/cip1/',
 				description:

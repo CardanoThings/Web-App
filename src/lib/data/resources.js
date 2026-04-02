@@ -112,5 +112,11 @@ export const resources = [
         tags: ["Cardano", "Library", "API"],
         description: "Dolos is a lightweight Cardano node by TxPipe. It provides a Mini Blockfrost API for accessing Cardano blockchain data. Good for building your own API applications on Cardano.",
         link: "https://docs.txpipe.io/dolos"
+    },
+    {
+        title: "CIP-13 microsite",
+        tags: ["Cardano", "Education"],
+        description: "Cardano Things microsite with CIP-13 examples, web+cardano usage, and a tracker of wallet integrations for the standard.",
+        link: "https://cip13.cardanothings.io/"
     }
 ]
