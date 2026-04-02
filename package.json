@@ -1,7 +1,7 @@
 {
 	"name": "CardanoThings-Web",
 	"private": true,
-	"version": "1.1",
+	"version": "1.1.1",
 	"type": "module",
 	"scripts": {
 		"sync:workshops": "node scripts/sync-workshops-to-static.mjs",

@@ -5,7 +5,7 @@ export const projects = [
         link: "https://github.com/elRaulito/IoT-NMKR-integration-Open-Source-",
         author: "elRaulito",
         link_author: "https://github.com/elRaulito",
-        image: "https://raw.githubusercontent.com/elRaulito/IoT-NMKR-integration-Open-Source-/main/images/1.png"
+        image: "/images/community/1.png"
     },
     {
         title: "StarchMiner Lite",
@@ -13,6 +13,6 @@ export const projects = [
         link: "https://github.com/MadOrkestra/StarchMinerLite/",
         author: "Mad Orkestra",
         link_author: "https://github.com/madorkestra",
-        image: "https://raw.githubusercontent.com/MadOrkestra/StarchMinerLite/main/preview.jpg"
+        image: "/images/community/2.jpg"
     }
 ]
